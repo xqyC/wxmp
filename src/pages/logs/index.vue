@@ -1,16 +1,38 @@
 <template>
   <div>
-      <swiper v-if="imgUrls.length > 0" indidator-dots="imgUrls.length > 1" >
-      <block v-for="(item, index) in imgUrls" :key="index" >
+    <swiper
+      style="width:100%;height:384rpx"
+      indidator-dots="true"
+      indicator-dots="true"
+      interval="2000"
+      autoplay="true"
+      circular="true"
+      duration="500"
+    >
+      <block v-for="(item, index) in imgUrls" :key="index">
         <swiper-item>
-          <image :src="item" mode="scaleToFill"></image>
+          <image :src="item" mode="scaleToFill" style="width:100%;" />
         </swiper-item>
       </block>
     </swiper>
-
-    <ul class="container log-list">
-      <li v-for="(log, index) in logs" :class="{ red: aa }" :key="index" class="log-item">
-        <card :text="(index + 1) + ' . ' + log"></card>
+    <ul class="log-list">
+      <li>
+        <a href="/pages/index/main" class="counter">
+          <img src="../../../static/images/visitor.png"/>
+          <p>访客预约</p>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/index/main" class="counter">
+          <img src="../../../static/images/trans.png"/>
+          <p>运输申报</p>
+        </a>
+      </li>
+      <li>
+        <a href="/pages/index/main" class="counter">
+           <img src="../../../static/images/moveaply.png"/>
+          <p>危废申报</p>
+        </a>
       </li>
     </ul>
   </div>
@@ -24,14 +46,13 @@ export default {
   components: {
     card
   },
-
   data () {
     return {
       logs: [],
       imgUrls: [
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/newsPicture/05558951-de60-49fb-b674-dd906c8897a6',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/coursePicture/0fbcfdf7-0040-4692-8f84-78bb21f3395d',
-        'http://mss.sankuai.com/v1/mss_51a7233366a4427fa6132a6ce72dbe54/management-school-picture/7683b32e-4e44-4b2f-9c03-c21f34320870'
+        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598613663147&di=620c5a193bed87caaff8ed7142aaea2d&imgtype=0&src=http%3A%2F%2Fccdn.goodq.top%2Fcaches%2Fde5d2fe4c60bdee7f17d574bfcca95b6%2FaHR0cDovL3d3dy5qdW5zaXNvZnQuY29tLmNuL3FmeS1jb250ZW50L3VwbG9hZHMvMjAxOS8wMS84YzU3YzU5M2UwMmMzNDBhMzJkYjQyZGU5MDM4NjE5Mi5qcGc_p_p100_p_2FYX',
+        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598613707727&di=8361390802ce2f1859986de7c01cacdd&imgtype=0&src=http%3A%2F%2Fwww.xianjichina.com%2Fdata%2Fediter%2F20180718%2Fimage%2F6ad39d97a69a9cd55c96379b5bfbc5a2.png',
+        'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1477228353,3477237665&fm=26&gp=0.jpg'
       ]
     }
   },
@@ -51,11 +72,21 @@ export default {
 <style>
 .log-list {
   display: flex;
-  flex-direction: column;
-  padding: 40rpx;
+  padding: 20rpx;
 }
-
-.log-item {
-  margin: 10rpx;
+.log-list > li>a {
+  width: 100px;
+  height: 130px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.log-list > li > a>img {
+  width: 90px;
+  height: 80px;
+  background: pink;
+  margin-bottom: 5px;
 }
 </style>
