@@ -17,13 +17,13 @@
     </swiper>
     <ul class="log-list">
       <li>
-        <a href="/pages/index/main" class="counter">
+        <a href="/pages/visitor/main" class="counter">
           <img src="../../../static/images/visitor.png"/>
           <p>访客预约</p>
         </a>
       </li>
       <li>
-        <a href="/pages/index/main" class="counter">
+        <a href="/pages/transport/main" class="counter">
           <img src="../../../static/images/trans.png"/>
           <p>运输申报</p>
         </a>
