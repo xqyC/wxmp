@@ -60,7 +60,7 @@
             :file-list="item.fileList"
             :max-count="item.maxCount"
             @afterRead="item.afterRead($event,index)"
-            @delete="item.del_img"
+            @delete="item.del_img($event,index)"
           ></van-uploader>
         </div>
         <!-- 多行文本 -->
@@ -397,209 +397,164 @@ export default {
           title:"司机驾驶证:",
           show:true,
           type:"upload",
-          maxCount:3,
+          maxCount:1,
           accept:'image',
           disabled:true,
           required:true,
-          fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
-          },
-        ],
+          fileList: [],
         afterRead(event,index){
           const { file } = event.mp.detail;
           this.fileList.push({
-             url:file.path,
+            url:file.path,
             name: file.name,
             isImage: true,
             deletable: true,
           })
         },
         del_img(event){
-          console.log(event)
-        }
+          this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"车辆行驶证:",
           disabled:true,
-            maxCount:3,
+            maxCount:1,
            type:"upload",
            required:true,
            show:true,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"审批文件:",
            type:"upload",
-             maxCount:3,
-          disabled:true,
+           maxCount:1,
+           disabled:true,
            required:true,
            show:true,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+           fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"其他审批文件1:",
-            maxCount:3,
+          maxCount:1,
            type:"upload",
           disabled:true,
            required:false,
            show:true,
            required:false,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"其他审批文件2:",
-            maxCount:3,
+           maxCount:1,
            type:"upload",
           disabled:true,
            show:true,
            required:false,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"其他审批文件3:",
-            maxCount:3,
+            maxCount:1,
            type:"upload",
           disabled:true,
            show:true,
            required:false,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"其他审批文件4:",
-            maxCount:3,
+          maxCount:1,
            type:"upload",
           disabled:true,
            show:true,
            required:false,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },{
           title:"其他审批文件5:",
-            maxCount:3,
-           type:"upload",
+          maxCount:1,
+          type:"upload",
           disabled:true,
           required:false,
-           show:true,
-           fileList: [
-          { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'http://iph.href.lu/60x60?text=default',
-            name: '图片2',
-            isImage: true,
-            deletable: true,
+          show:true,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
           },
-        ],
-        afterRead(event){
-
-          console.log(event)
-        },
-        del_img(event){
-          console.log(event)
-        }
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },
         {
           type:"textarea",
