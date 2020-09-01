@@ -608,6 +608,9 @@ export default {
 }
 </script>
 <style>
+.van-cell:after{
+  border-bottom: 0 !important;
+}
 .actiondata {
   line-height: 2;
   text-align: center;
