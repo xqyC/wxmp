@@ -12,7 +12,7 @@
           :disabled="item.disabled"
           v-show="item.show ?item.show:true"
           :required="item.required"
-          :error-message="errorMessage.userInput"
+          :error-message="errorMessage[prop]"
         ></van-field>
         <!-- 下拉选择 -->
         <div v-else-if="item.type=='select'">
@@ -29,8 +29,7 @@
           ></van-field>
           <van-action-sheet
             :show="item.showsecect"
-            title="标题"
-            cancel-text="取消"
+            :title="item.titlename"
             @close="item.Close(index)"
             @cancel="item.cancel(index)"
             @select="item.onSelect(index)"
@@ -49,16 +48,30 @@
         </div>
         <!-- 上传文件 -->
         <div v-else-if="item.type=='upload' && item.show==true ">
-          <van-field :label="item.title" :required="item.required" :disabled="item.disabled"></van-field>
+          <van-field
+            title-class="van-cell__title"
+            value-class="cell-value"
+            :label="item.title"
+            :accept="item.accept"
+            :required="item.required"
+            :disabled="item.disabled"
+          ></van-field>
           <van-uploader
             :file-list="item.fileList"
-            @afterRead="item.afterRead"
+            :max-count="item.maxCount"
+            @afterRead="item.afterRead($event,index)"
             @delete="item.del_img"
           ></van-uploader>
         </div>
         <!-- 多行文本 -->
         <div v-else-if="item.type=='textarea'">
-          <van-field :label="item.title" :required="item.required" :disabled="item.disabled"></van-field>
+          <van-field
+            :label="item.title"
+            value-class="van-cell__value"
+            :required="item.required"
+            :disabled="item.disabled"
+            :error-message="errorMessage[prop]"
+          ></van-field>
           <van-cell-group>
             <van-field input-class="textbord" v-model="value[item.prop]" :type="item.type" />
           </van-cell-group>
@@ -67,13 +80,14 @@
           <!--时间 -->
           <van-field
             :label="item.title"
+            class="van-hairline--bottom"
             v-model="value[item.prop]"
             :placeholder="item.placeholder"
             :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
             :required="item.required"
-            :error-message="errorMessage.userInput"
+            :error-message="errorMessage[prop]"
             @click="item.secetevent(index)"
           ></van-field>
           <van-popup :show="item.showsecect" position="bottom">
@@ -128,6 +142,7 @@ export default {
         formdata:[{
           title:"访问单位:",
           type:"select",
+          titlename:"==访问单位==",
           disabled:true,
           prop:"name",
           placeholder:"请选择访问单位",
@@ -217,9 +232,6 @@ export default {
              this.formdata[index].showsecect=true;
               console.log("弹出")
           },
-        cancel(index){
-          console.log("取消")
-        },
         Close(index){
           this.showsecect=false
           console.log("关闭按钮")
@@ -331,6 +343,7 @@ export default {
         },
           {
            title:"入园方式:",
+          titlename:"==入园方式==",
           type:"select",
           disabled:false,
           prop:"traffic",
@@ -362,9 +375,6 @@ export default {
              this.formdata[index].showsecect=true;
               console.log("弹出")
             },
-          cancel(index){
-            console.log("取消")
-          },
           Close(index){
             this.showsecect=false
             console.log("按钮")
@@ -387,9 +397,11 @@ export default {
           title:"司机驾驶证:",
           show:true,
           type:"upload",
+          maxCount:3,
+          accept:'image',
           disabled:true,
           required:true,
-           fileList: [
+          fileList: [
           { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
           // Uploader 根据文件后缀来判断是否为图片文件
           // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
@@ -400,9 +412,14 @@ export default {
             deletable: true,
           },
         ],
-        afterRead(event){
-
-          console.log(event)
+        afterRead(event,index){
+          const { file } = event.mp.detail;
+          this.fileList.push({
+             url:file.path,
+            name: file.name,
+            isImage: true,
+            deletable: true,
+          })
         },
         del_img(event){
           console.log(event)
@@ -410,6 +427,7 @@ export default {
         },{
           title:"车辆行驶证:",
           disabled:true,
+            maxCount:3,
            type:"upload",
            required:true,
            show:true,
@@ -434,6 +452,7 @@ export default {
         },{
           title:"审批文件:",
            type:"upload",
+             maxCount:3,
           disabled:true,
            required:true,
            show:true,
@@ -457,6 +476,7 @@ export default {
         }
         },{
           title:"其他审批文件1:",
+            maxCount:3,
            type:"upload",
           disabled:true,
            required:false,
@@ -482,6 +502,7 @@ export default {
         }
         },{
           title:"其他审批文件2:",
+            maxCount:3,
            type:"upload",
           disabled:true,
            show:true,
@@ -506,6 +527,7 @@ export default {
         }
         },{
           title:"其他审批文件3:",
+            maxCount:3,
            type:"upload",
           disabled:true,
            show:true,
@@ -530,6 +552,7 @@ export default {
         }
         },{
           title:"其他审批文件4:",
+            maxCount:3,
            type:"upload",
           disabled:true,
            show:true,
@@ -554,6 +577,7 @@ export default {
         }
         },{
           title:"其他审批文件5:",
+            maxCount:3,
            type:"upload",
           disabled:true,
           required:false,
@@ -624,5 +648,22 @@ export default {
 }
 .actiondata:not(:last-child) {
   border-bottom: 1px solid #f2f2f2;
+}
+
+.van-cell {
+  padding: 15px !important;
+}
+.field-index--van-field > .van-cell__title {
+  max-width: 260px !important;
+  min-width: 260px !important;
+}
+.van-field__input--textarea {
+  height: 120px !important;
+  min-height: 120px !important;
+  border: 1px solid #000 !important;
+  padding: 5px !important;
+}
+.van-cell__value {
+  overflow: auto !important;
 }
 </style>
