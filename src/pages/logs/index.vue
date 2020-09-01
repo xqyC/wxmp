@@ -86,7 +86,6 @@ export default {
 .log-list > li > a>img {
   width: 90px;
   height: 80px;
-  background: pink;
   margin-bottom: 5px;
 }
 </style>
