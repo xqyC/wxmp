@@ -34,7 +34,7 @@
             @cancel="item.cancel(index)"
             @select="item.onSelect(index)"
           >
-            <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-show="item.show" />
+            <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" />
             <div
               v-for="(list,ind) in item.actions"
               :key="ind"
@@ -115,10 +115,8 @@ import {formatWithSeperator}  from  "../../utils/datetime"
 export default { 
     name:"visitor",
     data() {
+      let that=this
         return {
-        name: '',
-        sex: '',
-        realname:'',
         errorMessage: { userInput:"", pwdInput:"", zipCode:"" },
         identity:'',
         message:'',
@@ -144,7 +142,7 @@ export default {
           type:"select",
           titlename:"==访问单位==",
           disabled:true,
-          prop:"name",
+          prop:"fwdeptName",
           placeholder:"请选择访问单位",
           required:true,
           contact:"wap-home-o",
@@ -152,84 +150,9 @@ export default {
           activeaction:'',
           show:true,
           searchvalue:'',
-          actions: [
-                {
-                name: '选项1',
-                 openType: 'share',
-              },
-              {
-                name: '选项2',
-                 openType: 'share',
-              },
-              {
-                name: '选项3',
-                openType: 'share',
-              },
-                {
-                name: '选项4',
-                 openType: 'share',
-              },
-              {
-                name: '选项5',
-                 openType: 'share',
-              },
-              {
-                name: '选项6',
-                openType: 'share',
-                 openType: 'share',
-              },
-                {
-                name: '选项7',
-                 openType: 'share',
-              },
-              {
-                name: '选项8',
-                 openType: 'share',
-              },
-              {
-                name: '选项9',
-                openType: 'share',
-              },
-                  {
-                name: '选项10',
-                 openType: 'share',
-              },
-              {
-                name: '选项11',
-                 openType: 'share',
-              },
-              {
-                name: '选项12',
-                openType: 'share',
-              },
-                  {
-                name: '选项13',
-                 openType: 'share',
-              },
-              {
-                name: '选项14',
-                 openType: 'share',
-              },
-              {
-                name: '选项15',
-                subname: '副文本',
-                openType: 'share',
-              },
-                  {
-                name: '选项16',
-                 openType: 'share',
-              },
-              {
-                name: '选项17',
-                 openType: 'share',
-              },
-              {
-                name: '选项18',
-                openType: 'share',
-              },
-          ],
+          actions: [],
           secetevent:(index)=>{
-             this.formdata[index].showsecect=true;
+             that.formdata[index].showsecect=true;
               console.log("弹出")
           },
         Close(index){
@@ -237,8 +160,10 @@ export default {
           console.log("关闭按钮")
         },
         onSearch(index,ind){
-           this.activeaction=ind;
-          console.log("选中")
+          this.activeaction=ind;
+          that.value.fwdeptName=this.actions[ind].name
+          this.showsecect=false
+          //  console.log("选中")
           },
         },
         {
@@ -253,7 +178,7 @@ export default {
         {
           title:"预约来访时间:",
           type:"datetime",
-          prop:"startime",
+          prop:"begTime",
           disabled:true,
           placeholder:"请输入预约来访时间",
           required:true,
@@ -263,9 +188,8 @@ export default {
           show:true,
           searchvalue:'',
           secetevent:(index)=>{
-             console.log(this.formdata[index])
-             this.formdata[index].showsecect=true;
-             
+             console.log(that.formdata[index])
+             that.formdata[index].showsecect=true;
               console.log("弹出")
           },
         minDate: new Date().getTime(),
@@ -274,15 +198,14 @@ export default {
         //确定
         confirm:(e,index)=>{
         let time= formatWithSeperator(e.mp.detail,"-",":") 
-        this.formdata[index].showsecect=false;
-           console.log(time)
-        },
-
+        that.value.begTime = time
+        that.formdata[index].showsecect=false;
+          },
         },
         {
           title:"预约离开时间:",
           type:"datetime",
-           prop:"endtime",
+           prop:"endTime",
           disabled:true,
           placeholder:"请输入预约离开时间",
           required:true,
@@ -291,7 +214,7 @@ export default {
           activeaction:'',
           searchvalue:'',
           secetevent:(index)=>{
-             this.formdata[index].showsecect=true;
+             that.formdata[index].showsecect=true;
               console.log()
               console.log("弹出")
           },
@@ -301,14 +224,15 @@ export default {
             //确定
         confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
-          this.formdata[index].showsecect=false;
+          that.value.endTime = time
+          that.formdata[index].showsecect=false;
             console.log(time)
           },
         },
         {
           title:"所属企业:",
           type:"text",
-           prop:"compay",
+          prop:"fromDeptName",
           disabled:false,
           placeholder:"请输入所属企业",
           required:false,
@@ -316,7 +240,7 @@ export default {
         },
         {
           title:"访客姓名:",
-           prop:"namefang",
+          prop:"peopleName",
           type:"text",
           disabled:false,
           placeholder:"请输入访客姓名",
@@ -326,7 +250,7 @@ export default {
         {
           title:"访客身份证号:",
           type:"text",
-           prop:"indify",
+          prop:"idCard",
           disabled:false,
           placeholder:"请输入访客身份证号",
           required:true,
@@ -335,7 +259,7 @@ export default {
         {
           title:"访客手机号:",
           type:"text",
-           prop:"phone",
+           prop:"peopleTel",
           disabled:false,
           placeholder:"请输入访客手机号",
           required:true,
@@ -346,52 +270,95 @@ export default {
           titlename:"==入园方式==",
           type:"select",
           disabled:false,
-          prop:"traffic",
-          placeholder:"请输入入园方式",
+          prop:"isOrnot",
+          placeholder:"请选择入园方式",
           required:true,
           contact:"logistics",
           showsecect:false,
           activeaction:'',
-          show:true,
+          show:false,
           searchvalue:'',
-          actions:[{
-                  name: '步行',
+          actions:[
+            {
+                name: '步行',
                 openType: 'share',
             },
             {
-                  name: '电动车',
+                name: '电动车',
                 openType: 'share',
             },
             {
-                  name: '自驾车',
+                name: '自驾车',
                 openType: 'share',
             },
                {
-                  name: '货车',
+                name: '货车',
                 openType: 'share',
+            },
+            {
+                name: '客车',
+                openType: 'share',
+            },
+            {
+                name: '特种车辆',
+                openType: 'share',
+            },
+             {
+                name: '农用车',
+                openType: 'share',
+            },
+            {
+              name: '其他',
+               openType: 'share',
             },
             ],
           secetevent:(index)=>{
-             this.formdata[index].showsecect=true;
-              console.log("弹出")
+             that.formdata[index].showsecect=true;
             },
           Close(index){
             this.showsecect=false
-            console.log("按钮")
           },
           onSearch(index,ind){
             this.activeaction=ind;
-            console.log("搜索")
+            that.value.isOrnot=this.actions[ind].name;
+             this.showsecect=false
           },
         },
         {
           title:"访客车牌号:",
           type:"text",
-           prop:"caridify",
+          prop:"load",
           disabled:false,
           placeholder:"请输入访客车牌号",
           required:true,
           contact:"logistics",
+        },
+        {
+          title:"载重量:",
+          type:"text",
+          prop:"carNum",
+          disabled:false,
+          placeholder:"请输入载重量",
+          required:true,
+          contact:"logistics",
+        },
+        {
+          title:"载客人数:",
+          type:"text",
+          prop:"carrays",
+          disabled:false,
+          placeholder:"请输入载客人数",
+          required:true,
+          contact:"friends-o",
+        },
+               {
+          title:"限载人数:",
+          type:"text",
+          prop:"posting",
+          disabled:false,
+          placeholder:"请输入限载人数",
+          required:true,
+          contact:"friends-o",
         },
         {
           title:"司机驾驶证:",
@@ -439,7 +406,7 @@ export default {
            type:"upload",
            maxCount:1,
            disabled:true,
-           required:true,
+           required:false,
            show:true,
            fileList: [],
           afterRead(event,index){
@@ -559,7 +526,7 @@ export default {
         {
           type:"textarea",
           title:"随行人员姓名(逗号分隔):",
-          prop:"personnel",
+          prop:"followMan",
           disabled:false,
           placeholder:"请输入随行人员姓名",
           required:false,
@@ -568,7 +535,7 @@ export default {
             {
           type:"textarea",
           title:"申请说明",
-          prop:"description",
+          prop:"remark",
           disabled:false,
           placeholder:"请输入申请说明",
           required:true,
@@ -577,11 +544,34 @@ export default {
         ], 
         };
     },
+    created(){
+      //访问单位
+      this.$http.post({
+      url: 'system/department!ajaxAppDepts',
+        data : {},
+      }).then(res => {
+          if(res.result=="success"){
+            res.data.map(item=>{
+              item.name =item.deptName
+            })
+            this.formdata[0].actions= res.data
+          }
+      })
+    },
     methods: {
+      //提交
         onClickButtonSubmit(values) {
-        if(this.name ==''){
-          this.errorMessage.pwdInput = "昵称不能为空" 
-        }
+           this.$http.post({
+            url: 'app!ajaxCommitTemp',
+              data : {},
+            }).then(res => {
+                if(res.result=="success"){
+                  res.data.map(item=>{
+              item.name =item.deptName
+            })
+            this.formdata[0].actions= res.data
+          }
+      })
         },
       },
 }
