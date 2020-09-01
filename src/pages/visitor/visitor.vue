@@ -617,7 +617,7 @@ export default {
 .van-field__body--textarea.van-field__body--ios{
   margin-top: 0 !important;
 }
-.van-field__input{
+.van-field__body--text .van-field__input{
   text-align: right !important;
 }
 </style>
