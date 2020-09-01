@@ -56,7 +56,7 @@
             :required="item.required"
             :disabled="item.disabled"
           ></van-field>
-          <van-uploader
+          <van-uploader style="padding: 0 30rpx"
             :file-list="item.fileList"
             :max-count="item.maxCount"
             @afterRead="item.afterRead($event,index)"
@@ -123,7 +123,7 @@ export default {
         identity:'',
         message:'',
         value:{},
-         formatter (type, value) {
+          formatter (type, value) {
             if (type === 'year') {
               return `${value}年`
             } else if (type === 'month') {
@@ -653,20 +653,26 @@ export default {
   border-bottom: 1px solid #f2f2f2;
 }
 
-.van-cell {
+/* .van-cell {
   padding: 15px !important;
-}
+} */
 .field-index--van-field > .van-cell__title {
-  max-width: 260px !important;
-  min-width: 260px !important;
+  max-width: 160px !important;
+  min-width: 160px !important;
 }
 .van-field__input--textarea {
   height: 120px !important;
   min-height: 120px !important;
-  border: 1px solid #000 !important;
-  padding: 5px !important;
+  border: 1px solid #666 !important;
+  /* padding: 5px !important; */
 }
 .van-cell__value {
   overflow: auto !important;
+}
+.van-field__body--textarea.van-field__body--ios{
+  margin-top: 0 !important;
+}
+.van-field__input{
+  text-align: right !important;
 }
 </style>
