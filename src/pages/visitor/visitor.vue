@@ -58,6 +58,7 @@
             style="padding: 0 30rpx"
             :file-list="item.fileList"
             :multiple="item.multiple"
+            :maxCount="item.maxCount"
             @afterRead="item.afterRead($event,index)"
             @delete="item.del_img($event,index)"
           ></van-uploader>
@@ -603,6 +604,7 @@ export default {
           judge:false,//判断
           show:false,
           multiple:false,
+          maxCount:1,
           message:'请上传司机驾驶证',
           type:"upload",
           accept:'image',
@@ -610,7 +612,7 @@ export default {
           required:true,
           fileList: [],
           afterRead(event,index){
-            console.log(JSON.stringify(event))
+          console.log(event)
           const { file } = event.mp.detail;
           this.fileList.push({
             url:file.path,
@@ -642,6 +644,7 @@ export default {
           title:"车辆行驶证:",
           message:'请上传车辆行驶证',
           judge:false,//判断
+           maxCount:1,
           disabled:true,
           multiple:false,
           type:"upload",
@@ -668,6 +671,7 @@ export default {
         },{
           title:"审批文件:",
            type:"upload",
+            maxCount:1,
            judge:true,//判断
            multiple:false,
            disabled:true,
@@ -690,6 +694,7 @@ export default {
           title:"其他审批文件1:",
            judge:true,//判断
            multiple:false,
+            maxCount:1,
            type:"upload",
           disabled:true,
            required:false,
@@ -710,6 +715,7 @@ export default {
           }
         },{
           title:"其他审批文件2:",
+           maxCount:1,
            judge:true,//判断
            multiple:false,
            type:"upload",
@@ -731,6 +737,7 @@ export default {
           }
         },{
           title:"其他审批文件3:",
+           maxCount:1,
            judge:true,//判断
             multiple:false,
            type:"upload",
@@ -752,6 +759,7 @@ export default {
           }
         },{
           title:"其他审批文件4:",
+           maxCount:1,
            judge:true,//判断
            multiple:false,
            type:"upload",
@@ -782,6 +790,7 @@ export default {
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
+            Toast(file.name)
             this.fileList.push({
               url:file.path,
               name: file.name,

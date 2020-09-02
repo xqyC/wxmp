@@ -1,0 +1,31 @@
+<template name="eb930ed6">
+  <view class="_div data-v-56236a35">
+    <swiper style="width:100%;height:384rpx" indidator-dots="true" indicator-dots="true" interval="2000" autoplay="true" circular="true" duration="500" class="_swiper data-v-56236a35">
+      <block wx:key="index" key="{{index}}" wx:for="{{imgUrls}}" wx:for-index="index" wx:for-item="item">
+        <swiper-item class="_swiper-item data-v-56236a35">
+          <image src="{{item}}" mode="scaleToFill" style="width:100%;" class="_image data-v-56236a35"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="_ul data-v-56236a35 log-list">
+      <view class="_li data-v-56236a35">
+        <navigator url="/pages/visitor/main" class="_a data-v-56236a35 counter">
+          <image src="/static/images/visitor.png" class="_img data-v-56236a35"></image>
+          <view class="_p data-v-56236a35">访客预约</view>
+        </navigator>
+      </view>
+      <view class="_li data-v-56236a35">
+        <navigator url="/pages/transport/main" class="_a data-v-56236a35 counter">
+          <image src="/static/images/trans.png" class="_img data-v-56236a35"></image>
+          <view class="_p data-v-56236a35">运输申报</view>
+        </navigator>
+      </view>
+      <view class="_li data-v-56236a35">
+        <navigator url="/pages/index/main" class="_a data-v-56236a35 counter">
+          <image src="/static/images/moveaply.png" class="_img data-v-56236a35"></image>
+          <view class="_p data-v-56236a35">危废申报</view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+</template>
