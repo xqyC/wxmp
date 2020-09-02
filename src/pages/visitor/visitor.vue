@@ -4,34 +4,32 @@
       <div v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
         <van-field
-          v-if="item.type=='text'"
+          v-if="item.type=='text' && item.show==true"
           :label="item.title"
-          v-model="value[item.prop]"
+          :value="value[item.prop]"
+          @blur="item.change($event,index)"
           :placeholder="item.placeholder"
           :left-icon="item.contact"
           :disabled="item.disabled"
           v-show="item.show ?item.show:true"
           :required="item.required"
-          :error-message="errorMessage[prop]"
         ></van-field>
         <!-- 下拉选择 -->
         <div v-else-if="item.type=='select'">
           <van-field
             :label="item.title"
-            v-model="value[item.prop]"
+            :value="value[item.prop]"
             :placeholder="item.placeholder"
             :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
             :required="item.required"
-            :error-message="errorMessage.userInput"
             @click="item.secetevent(index)"
           ></van-field>
           <van-action-sheet
             :show="item.showsecect"
             :title="item.titlename"
             @close="item.Close(index)"
-            @cancel="item.cancel(index)"
             @select="item.onSelect(index)"
           >
             <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" />
@@ -56,9 +54,10 @@
             :required="item.required"
             :disabled="item.disabled"
           ></van-field>
-          <van-uploader style="padding: 0 30rpx"
+          <van-uploader
+            style="padding: 0 30rpx"
             :file-list="item.fileList"
-            :max-count="item.maxCount"
+            :multiple="item.multiple"
             @afterRead="item.afterRead($event,index)"
             @delete="item.del_img($event,index)"
           ></van-uploader>
@@ -70,35 +69,34 @@
             value-class="van-cell__value"
             :required="item.required"
             :disabled="item.disabled"
-            :error-message="errorMessage[prop]"
+            @blur="item.change($event,index)"
           ></van-field>
           <van-cell-group>
-            <van-field input-class="textbord" v-model="value[item.prop]" :type="item.type" />
+            <van-field input-class="textbord" :value="value[item.prop]" :type="item.type" />
           </van-cell-group>
         </div>
-        <div v-else>
+        <div v-else-if="item.type=='datetime'">
           <!--时间 -->
           <van-field
             :label="item.title"
             class="van-hairline--bottom"
-            v-model="value[item.prop]"
+            :value="value[item.prop]"
             :placeholder="item.placeholder"
             :left-icon="item.contact"
             :disabled="item.disabled"
-            v-show="item.show ?item.show:true"
             :required="item.required"
-            :error-message="errorMessage[prop]"
+            :errorMessage="errorMessage[prop]"
             @click="item.secetevent(index)"
           ></van-field>
           <van-popup :show="item.showsecect" position="bottom">
             <van-datetime-picker
-              v-model="item.currentDate"
+              :value="item.currentDate"
               :type="item.type"
               :min-date="item.minDate"
               :lazy-render="false"
               :max-date="item.maxDate"
               :formatter="formatter"
-              @cancel="item.showsecect=false"
+              @cancel="item.cancel($event,index)"
               @confirm="item.confirm($event,index)"
             />
           </van-popup>
@@ -108,255 +106,511 @@
         <van-button type="primary" size="large" @click="onClickButtonSubmit">提交信息</van-button>
       </div>
     </cell-groups>
+    <van-toast id="van-toast" />
   </div>
 </template>
 <script>
 import {formatWithSeperator}  from  "../../utils/datetime"
+import {ID,isMobile,regxcard,regxPlusDecimal2,number}  from  "../../utils/validate"
+import Toast from '../../../dist/wx/vant-weapp/dist/toast/toast';
 export default { 
-  name:"visitor",
-  data() {
-    let that=this
-    return {
-      errorMessage: { userInput:"", pwdInput:"", zipCode:"" },
-      identity:'',
-      message:'',
-      value:{},
-      formatter (type, value) {
-        if (type === 'year') {
-          return `${value}年`
-        } else if (type === 'month') {
-          return `${value}月`
-        } else if (type === 'day') {
-          return `${value}日`
-        } else if (type === 'hour') {
-          return `${value}时`
-        } else if (type === 'minute') {
-          return `${value}分`
-        } else if (type === 'second') {
-          return `${value}秒`
-        }
-        return value
-      },
-      formdata:[{
-        title:"访问单位:",
-        type:"select",
-        titlename:"==访问单位==",
-        disabled:true,
-        prop:"fwdeptName",
-        placeholder:"请选择访问单位",
-        required:true,
-        contact:"wap-home-o",
-        showsecect:false,
-        activeaction:'',
-        show:true,
-        searchvalue:'',
-        actions: [],
-        secetevent:(index)=>{
-          that.formdata[index].showsecect=true;
-          console.log("弹出")
+    name:"visitor",
+    data() {
+       let that=this
+        return {
+        errorMessage: { fwdeptName:"访客单位不能为空", pwdInput:"", zipCode:"" },
+        value:{
+          leixing:'访客临时通行卡'
         },
+          formatter (type, value) {
+            if (type === 'year') {
+              return `${value}年`
+            } else if (type === 'month') {
+              return `${value}月`
+            } else if (type === 'day') {
+              return `${value}日`
+            } else if (type === 'hour') {
+              return `${value}时`
+            } else if (type === 'minute') {
+              return `${value}分`
+            } else if (type === 'second') {
+              return `${value}秒`
+            }
+            return value
+          },
+        formdata:[{
+          title:"访问单位:",
+          type:"select",
+          judge:false,//判断
+          titlename:"==访问单位==",
+          disabled:true,
+          prop:"fwdeptName",
+          placeholder:"请选择访问单位",
+          required:true,
+          contact:"wap-home-o",
+          showsecect:false,
+          activeaction:'',
+          show:true,
+          message:'请选择访问单位',
+          searchvalue:'',
+          actions: [],
+          secetevent:(index)=>{
+             that.formdata[index].showsecect=true;
+          },
+          //关闭弹框
         Close(index){
           this.showsecect=false
-          console.log("关闭按钮")
+          if(that.value.fwdeptName){
+            this.judge=true
+          }else{
+              this.judge=false
+             this.message="请选择访问单位"
+             Toast(this.message);
+          }
         },
+        //选中
         onSearch(index,ind){
-          this.activeaction=ind;
-          that.value.fwdeptName=this.actions[ind].name
-          this.showsecect=false
-          //  console.log("选中")
+            this.activeaction=ind;
+            that.value.fwdeptName=this.actions[ind].name
+            this.showsecect=false
+            this.judge=true;
+            },
+          },
+        {
+          title:"临时卡类型:",
+          type:"text",
+          disabled:true,
+          show:true,
+          prop:"leixing",
+          placeholder:"",
+          required:false,
+          contact:"credit-pay",
         },
-      },{
-        title:"临时卡类型:",
-        type:"text",
-        disabled:true,
-        prop:"leixing",
-        placeholder:"",
-        required:false,
-        contact:"credit-pay",
-      },{
-        title:"预约来访时间:",
-        type:"datetime",
-        prop:"begTime",
-        disabled:true,
-        placeholder:"请输入预约来访时间",
-        required:true,
-        contact:"underway-o",
-        showsecect:false,
-        activeaction:'',
-        show:true,
-        searchvalue:'',
-        secetevent:(index)=>{
-          console.log(that.formdata[index])
-          that.formdata[index].showsecect=true;
-          console.log("弹出")
-        },
+        {
+          title:"预约来访时间:",
+          judge:false,//判断
+          message:'请选择预约来访时间',
+          type:"datetime",
+          prop:"begTime",
+          disabled:true,
+          placeholder:"请选择预约来访时间",
+          required:true,
+          contact:"underway-o",
+          showsecect:false,
+          activeaction:'',
+          show:true,
+          searchvalue:'',
+          secetevent:(index)=>{
+              that.formdata[index].showsecect=true;
+              that.value.endTime ='';
+          },
         minDate: new Date().getTime(),
         maxDate: new Date(2060, 10, 1).getTime(),
         currentDate: new Date().getTime(),
         //确定
         confirm:(e,index)=>{
-          let time= formatWithSeperator(e.mp.detail,"-",":") 
-          that.value.begTime = time
-          that.formdata[index].showsecect=false;
+              let time= formatWithSeperator(e.mp.detail,"-",":") 
+              that.value.begTime = time
+              that.formdata[index].showsecect=false;
+              this.judge=true
+          },
+          cancel:(e,index)=>{
+            console.log(that.formdata[index].showsecect)
+            if(that.value.begTime){
+                this.judge=true
+              }else{
+                this.judge=false
+                this.message="请选择预约来访时间"
+                Toast(this.message);
+            }
+            that.formdata[index].showsecect=false;
+          }
         },
-      },{
-        title:"预约离开时间:",
-        type:"datetime",
-        prop:"endTime",
-        disabled:true,
-        placeholder:"请输入预约离开时间",
-        required:true,
-        contact:"underway-o",
-        showsecect:false,
-        activeaction:'',
-        searchvalue:'',
-        secetevent:(index)=>{
-          that.formdata[index].showsecect=true;
-          console.log()
-          console.log("弹出")
-        },
-        minDate: new Date().getTime(),
-        maxDate: new Date(2060, 10, 1).getTime(),
-        currentDate: new Date().getTime(),
-        //确定
+        {
+          title:"预约离开时间:",
+           judge:false,//判断
+           message:'请选择预约离开时间',
+           type:"datetime",
+           prop:"endTime",
+          disabled:true,
+          placeholder:"请选择预约离开时间",
+          required:true,
+          contact:"underway-o",
+          showsecect:false,
+          show:true,
+          activeaction:'',
+          searchvalue:'',
+          secetevent:(index)=>{
+             if(that.value.begTime){
+               that.formdata[index].showsecect=true;
+             }else{
+               this.message="请先选择预约来访时间"
+               Toast(this.message)
+             }
+          },
+          minDate: new Date().getTime(),
+          maxDate: new Date(2060, 10, 1).getTime(),
+          currentDate: new Date().getTime(),
+            //确定
         confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
-          that.value.endTime = time
-          that.formdata[index].showsecect=false;
-          console.log(time)
-        }
-      },{
-        title:"所属企业:",
-        type:"text",
-        prop:"fromDeptName",
-        disabled:false,
-        placeholder:"请输入所属企业",
-        required:false,
-        contact:"wap-home-o",
-      },{
-        title:"访客姓名:",
-        prop:"peopleName",
-        type:"text",
-        disabled:false,
-        placeholder:"请输入访客姓名",
-        required:true,
-        contact:"user-circle-o",
-      },{
-        title:"访客身份证号:",
-        type:"text",
-        prop:"idCard",
-        disabled:false,
-        placeholder:"请输入访客身份证号",
-        required:true,
-        contact:"comment-o",
-      },{
-        title:"访客手机号:",
-        type:"text",
-        prop:"peopleTel",
-        disabled:false,
-        placeholder:"请输入访客手机号",
-        required:true,
-        contact:"phone-circle-o",
-      },{
-        title:"入园方式:",
-        titlename:"==入园方式==",
-        type:"select",
-        disabled:false,
-        prop:"isOrnot",
-        placeholder:"请选择入园方式",
-        required:true,
-        contact:"logistics",
-        showsecect:false,
-        activeaction:'',
-        show:false,
-        searchvalue:'',
-        actions:[
-          {
-            name: '步行',
-            openType: 'share',
+            if(time>that.value.begTime){
+                this.judge=true
+                that.value.endTime = time
+                that.formdata[index].showsecect=false;
+           }else {
+              this.judge=false
+              this.message="预约离开时间必须大于预约来访时间"
+              Toast(this.message);
+             }
           },
-          {
-            name: '电动车',
-            openType: 'share',
-          },
-          {
-            name: '自驾车',
-            openType: 'share',
-          },
-          {
-            name: '货车',
-            openType: 'share',
-          },
-          {
-            name: '客车',
-            openType: 'share',
-          },
-          {
-            name: '特种车辆',
-            openType: 'share',
-          },
-          {
-            name: '农用车',
-            openType: 'share',
-          },
-          {
-            name: '其他',
-            openType: 'share',
-          },
-        ],
-        secetevent:(index)=>{
-          that.formdata[index].showsecect=true;
+        cancel:(e,index)=>{
+          if(that.value.endTime){
+              this.judge=true
+           }else {
+              this.judge=false
+              this.message="请选择预约离开时间"
+              Toast(this.message);
+           }
+          }
         },
-        Close(index){
-          this.showsecect=false
+        {
+          title:"所属企业:",
+          judge:true,//判断
+          show:true,
+          type:"text",
+          prop:"fromDeptName",
+          disabled:false,
+          placeholder:"请输入所属企业",
+          required:false,
+          contact:"wap-home-o",
+          change:(event)=>{
+               that.value.fromDeptName=event.mp.detail.value
+          }
         },
-        onSearch(index,ind){
-          this.activeaction=ind;
-          that.value.isOrnot=this.actions[ind].name;
-          this.showsecect=false
-        }
-      },{
-        title:"访客车牌号:",
-        type:"text",
-        prop:"load",
-        disabled:false,
-        placeholder:"请输入访客车牌号",
-        required:true,
-        contact:"logistics",
-      },{
-        title:"载重量:",
-        type:"text",
-        prop:"carNum",
-        disabled:false,
-        placeholder:"请输入载重量",
-        required:true,
-        contact:"logistics",
-      },{
-        title:"载客人数:",
-        type:"text",
-        prop:"carrays",
-        disabled:false,
-        placeholder:"请输入载客人数",
-        required:true,
-        contact:"friends-o",
-      },{
-        title:"限载人数:",
-        type:"text",
-        prop:"posting",
-        disabled:false,
-        placeholder:"请输入限载人数",
-        required:true,
-        contact:"friends-o",
-      },{
-        title:"司机驾驶证:",
-        show:true,
-        type:"upload",
-        maxCount:1,
-        accept:'image',
-        disabled:true,
-        required:true,
-        fileList: [],
-        afterRead(event,index){
+        {
+          title:"访客姓名:",
+          prop:"peopleName",
+          judge:false,//判断
+          show:true,
+          message:'请输入访客姓名',
+          type:"text",
+          disabled:false,
+          placeholder:"请输入访客姓名",
+          required:true,
+          contact:"user-circle-o",
+          change:(event)=>{
+               that.value.peopleName=event.mp.detail.value
+               if(that.value.peopleName){
+                 this.judge=true
+               }else{
+                 this.judge=false
+                 this.message="请输入访客姓名"
+                 Toast(this.message);
+               }
+          }
+        },
+        {
+          title:"访客身份证号:",
+          judge:false,//判断
+          message:'请输入访客身份证号',
+          required:true,
+          show:true,
+          type:"text",
+          prop:"idCard",
+          disabled:false,
+          placeholder:"请输入访客身份证号",
+          contact:"idcard",
+          change:(event)=>{
+               that.value.idCard=event.mp.detail.value
+               if(that.value.idCard){
+                  this.judge=true
+               }else{
+                   this.judge=false
+                   this.message="请输入访客身份证号"
+                    Toast(this.message);
+                   return
+               }
+              if(ID(that.value.idCard)){
+                this.judge=true
+              }else{
+                this.judge=false
+                this.message="请输入正确的身份证号"
+                Toast(this.message);
+                return
+              }
+          }
+        },
+        {
+          title:"访客手机号:",
+          show:true,
+          judge:false,//判断
+          message:'请输入访客手机号',
+          type:"text",
+           prop:"peopleTel",
+          disabled:false,
+          placeholder:"请输入访客手机号",
+          required:true,
+          contact:"phone-circle-o",
+          change:(event)=>{
+               that.value.peopleTel=event.mp.detail.value
+               if(that.value.peopleTel){
+                 this.judge=true
+               }else{
+                  this.judge=false
+                  this.message="请输入访客手机号"
+                 Toast(this.message);
+                  return
+               }
+               if(isMobile(that.value.peopleTel)){
+                  this.judge=true
+               }else {
+                 this.judge=false
+                 this.message="请输入真确的手机号码"
+                 Toast(this.message);
+                  return
+               }
+          }
+        },
+          {
+          title:"入园方式:",
+          judge:false,//判断
+          message:'请选择入园方式',
+          required:true,
+          titlename:"==入园方式==",
+          type:"select",
+          disabled:true,
+          prop:"isOrnot",
+          placeholder:"请选择入园方式",
+          contact:"logistics",
+          showsecect:false,
+          activeaction:'',
+          show:true,
+          searchvalue:'',
+          actions:[
+            {
+                name: '步行',
+                openType: 'share',
+            },
+            {
+                name: '电动车',
+                openType: 'share',
+            },
+            {
+                name: '自驾车',
+                openType: 'share',
+            },
+               {
+                name: '货车',
+                openType: 'share',
+            },
+            {
+                name: '客车',
+                openType: 'share',
+            },
+            {
+                name: '特种车辆',
+                openType: 'share',
+            },
+             {
+                name: '农用车',
+                openType: 'share',
+            },
+            {
+              name: '其他',
+               openType: 'share',
+            },
+            ],
+          secetevent:(index)=>{
+             that.formdata[index].showsecect=true;
+            },
+          Close(index){
+            if(that.value.isOrnot){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请选择选择入园方式"
+              Toast(this.message);
+            }
+            this.showsecect=false
+          },
+          onSearch(index,ind){
+            this.activeaction=ind;
+            that.value.isOrnot=this.actions[ind].name;
+            this.judge=true
+            this.showsecect=false
+            if(that.value.isOrnot=="自驾车" || that.value.isOrnot=="特种车辆" ||that.value.isOrnot=="农用车" ||that.value.isOrnot=="货车"||that.value.isOrnot=="客车"){
+                for(var i=9;i<that.formdata.length;i++){
+                if(i==10 ||i ==11 || i== 12){
+                    if(that.value.isOrnot=="货车"){
+                      that.formdata[10].show=true;
+                      that.formdata[11].show=false;
+                      that.formdata[12].show=false;
+                    }else if(that.value.isOrnot=="客车" ){
+                        that.formdata[11].show=true;
+                        that.formdata[12].show=true;
+                        that.formdata[10].show=false;
+                    }else{
+                      that.formdata[i].show=false;
+                    }
+                  }else{
+                     that.formdata[i].show=true;
+                  }
+                }
+                return
+             }else{
+                for(var i=9;i<that.formdata.length;i++){
+                     if(that.value.isOrnot=="其他"){
+                        if(i>=15){
+                          that.formdata[i].show=true;
+                        }else{
+                             that.formdata[i].show=false;
+                        }
+                      }else{
+                        that.formdata[i].show=false;
+                      }
+                        
+                  }
+                }
+          },
+        },
+        {
+          title:"访客车牌号:",
+          judge:false,//判断
+          message:'请输入访客车牌号',
+          type:"text",
+          prop:"load",
+          disabled:false,
+          placeholder:"请输入访客车牌号",
+          required:true,
+          show:false,
+          contact:"logistics",
+          change:(event,index)=>{
+               that.value.load=event.mp.detail.value
+               if(that.value.load){
+                  this.judge=true
+               }else{
+                  this.judge=false
+                  this.message="请输入访客车牌号"
+                 Toast(this.message);
+                  return
+               }
+               if(regxcard(that.value.load)){
+                  this.judge=true
+               }else{
+                 this.judge=false
+                  this.message="请输入正确的车牌号"
+                 Toast(this.message);
+                 return
+               }
+          }
+        },
+        {
+          title:"载重量:",
+          judge:false,//判断
+          message:'请输入载重量',
+          show:false,
+          type:"text",
+          prop:"carNum",
+          disabled:false,
+          placeholder:"请输入载重量",
+          required:true,
+          contact:"logistics",
+          change:(event)=>{
+              that.value.carNum=event.mp.detail.value
+              if(that.value.carNum){
+                  this.judge=true
+               }else{
+                  this.judge=false
+                  this.message="请输入载重量"
+                 Toast(this.message);
+                  return
+               }
+               if(regxPlusDecimal2(that.value.carNum)){
+                  this.judge=true
+               }else{
+                 this.judge=false
+                  this.message="请输入数字最多保留2位小数"
+                 Toast(this.message);
+                 return
+               }
+          }
+        },
+        {
+          title:"载客人数:",
+           judge:false,//判断
+           message:'',
+          type:"text",
+          prop:"carrays",
+           show:false,
+          disabled:false,
+          placeholder:"请输入载客人数",
+          required:true,
+          contact:"friends-o",
+          change:(event)=>{
+               that.value.carrays=event.mp.detail.value
+                if(that.value.carrays){
+                  this.judge=true
+               }else{
+                  this.judge=false
+                  this.message="请输入载客人数"
+                 Toast(this.message);
+                  return
+               }
+               if(number(that.value.carrays)){
+                  this.judge=true
+               }else{
+                 this.judge=false
+                  this.message="请输入数字"
+                 Toast(this.message);
+                 return
+               }
+          }
+        },
+         {
+          title:"限载人数:",
+           judge:false,//判断
+           message:'',
+          type:"text",
+          prop:"posting",
+           show:false,
+          disabled:false,
+          placeholder:"请输入限载人数",
+          required:true,
+          contact:"friends-o",
+          change:(event)=>{
+               that.value.posting=event.mp.detail.value
+              if(that.value.posting){
+                  this.judge=true
+               }else{
+                  this.judge=false
+                  this.message="请输入限载人数"
+                 Toast(this.message);
+                  return
+               }
+               if(number(that.value.posting)){
+                  this.judge=true
+               }else{
+                 this.judge=false
+                  this.message="请输入数字"
+                 Toast(this.message);
+                 return
+               }
+          }
+        },
+        {
+          title:"司机驾驶证:",
+          judge:false,//判断
+          show:false,
+          multiple:false,
+          message:'请上传司机驾驶证',
+          type:"upload",
+          accept:'image',
+          disabled:true,
+          required:true,
+          fileList: [],
+          afterRead(event,index){
+            console.log(JSON.stringify(event))
           const { file } = event.mp.detail;
           this.fileList.push({
             url:file.path,
@@ -364,204 +618,241 @@ export default {
             isImage: true,
             deletable: true,
           })
+          this.judge=true;
+            // that.$http.post({
+            // url: 'app!fileUpload',
+            //   data : {
+            //     'uploadFileName': imgName,
+            //    'imgbese':image
+            //   },
+            // }).then(res => {
+            //     if(res.result=="success"){
+               
+            //     }
+            // })
         },
         del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"车辆行驶证:",
-        disabled:true,
-        maxCount:1,
-        type:"upload",
-        required:true,
-        show:true,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
+            this.fileList.splice(event.mp.detail.index,1); 
+            if(this.fileList.length<1){
+                this.judge=false;
+                Toast(this.message)
+            }
+          }
+        },{
+          title:"车辆行驶证:",
+          message:'请上传车辆行驶证',
+          judge:false,//判断
+          disabled:true,
+          multiple:false,
+          type:"upload",
+          required:true,
+          show:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+            this.judge=true;
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+            if(this.fileList.length<1){
+                this.judge=false;
+                Toast(this.message)
+            }
+          }
+        },{
+          title:"审批文件:",
+           type:"upload",
+           judge:true,//判断
+           multiple:false,
+           disabled:true,
+           required:false,
+           show:false,
+           fileList: [],
+           afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
+        },{
+          title:"其他审批文件1:",
+           judge:true,//判断
+           multiple:false,
+           type:"upload",
+          disabled:true,
+           required:false,
+           show:false,
+           required:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
+        },{
+          title:"其他审批文件2:",
+           judge:true,//判断
+           multiple:false,
+           type:"upload",
+          disabled:true,
+           show:false,
+           required:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
+        },{
+          title:"其他审批文件3:",
+           judge:true,//判断
+            multiple:false,
+           type:"upload",
+          disabled:true,
+           show:false,
+           required:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
+        },{
+          title:"其他审批文件4:",
+           judge:true,//判断
+           multiple:false,
+           type:"upload",
+           disabled:true,
+           show:false,
+           required:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
+        },{
+          title:"其他审批文件5:",
+          judge:true,//判断
+           multiple:false,
+          type:"upload",
+          disabled:true,
+          required:false,
+          show:false,
+          fileList: [],
+          afterRead(event,index){
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+          },
+          del_img(event){
+            this.fileList.splice(event.mp.detail.index,1); 
+          }
         },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"审批文件:",
-        type:"upload",
-        maxCount:1,
-        disabled:true,
-        required:false,
-        show:true,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
+        {
+          type:"textarea",
+          title:"随行人员姓名(逗号分隔):",
+          judge:true,//判断
+          prop:"followMan",
+          disabled:false,
+          placeholder:"请输入随行人员姓名",
+          required:false,
+          contact:"user-circle-o",
+          change:(event,index)=>{
+             that.value.followMan=event.mp.detail.value
+          }
         },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"其他审批文件1:",
-        maxCount:1,
-        type:"upload",
-        disabled:true,
-        required:false,
-        show:true,
-        required:false,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
+        {
+          type:"textarea",
+          title:"申请说明",
+          judge:false,//判断
+          message:"请输入申请说明",
+          prop:"remark",
+          disabled:false,
+          placeholder:"请输入申请说明",
+          required:true,
+          contact:"edit",
+          change:(event,index)=>{
+              that.value.remark=event.mp.detail.value
+              if(that.value.remark){
+                  this.judge=true
+              }else{
+                this.judge=false;
+                Toast(message)
+              }
+          }
         },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"其他审批文件2:",
-        maxCount:1,
-        type:"upload",
-        disabled:true,
-        show:true,
-        required:false,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
-        },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"其他审批文件3:",
-        maxCount:1,
-        type:"upload",
-        disabled:true,
-        show:true,
-        required:false,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
-        },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"其他审批文件4:",
-        maxCount:1,
-        type:"upload",
-        disabled:true,
-        show:true,
-        required:false,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
-        },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        title:"其他审批文件5:",
-        maxCount:1,
-        type:"upload",
-        disabled:true,
-        required:false,
-        show:true,
-        fileList: [],
-        afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
-        },
-        del_img(event){
-          this.fileList.splice(event.mp.detail.index,1); 
-        }
-      },{
-        type:"textarea",
-        title:"随行人员姓名(逗号分隔):",
-        prop:"followMan",
-        disabled:false,
-        placeholder:"请输入随行人员姓名",
-        required:false,
-        contact:"user-circle-o",
-      },{
-        type:"textarea",
-        title:"申请说明",
-        prop:"remark",
-        disabled:false,
-        placeholder:"请输入申请说明",
-        required:true,
-        contact:"edit",
-      }]
-    }
-  },
-  created(){
-    //访问单位
-    this.$http.post({
-      url: 'system/department!ajaxAppDepts',
-      data : {},
-    }).then(res => {
-      if(res.result=="success"){
-        res.data.map(item=>{
-          item.name =item.deptName
-        })
-        this.formdata[0].actions= res.data
-      }
-    })
-  },
-  methods: {
-    //提交
-    onClickButtonSubmit(values) {
+        ], 
+        };
+    },
+    created(){
+      //访问单位
       this.$http.post({
-        url: 'app!ajaxCommitTemp',
+      url: 'system/department!ajaxAppDepts',
         data : {},
       }).then(res => {
-        if(res.result=="success"){
-          res.data.map(item=>{
-            item.name =item.deptName
-          })
-          this.formdata[0].actions= res.data
-        }
+          if(res.result=="success"){
+            res.data.map(item=>{
+              item.name =item.deptName
+            })
+            this.formdata[0].actions= res.data
+          }
       })
     },
-  },
+    methods: {
+      //提交app!ajaxCommitTemp
+        onClickButtonSubmit(values) {
+            console.log(this.vlaue)
+        },
+      },
 }
 </script>
 <style>
-.van-cell:after{
+.van-cell:after {
   border-bottom: 0 !important;
 }
 .actiondata {
@@ -582,9 +873,6 @@ export default {
   border-bottom: 1px solid #f2f2f2;
 }
 
-/* .van-cell {
-  padding: 15px !important;
-} */
 .field-index--van-field > .van-cell__title {
   max-width: 160px !important;
   min-width: 160px !important;
@@ -593,15 +881,18 @@ export default {
   height: 120px !important;
   min-height: 120px !important;
   border: 1px solid #666 !important;
-  /* padding: 5px !important; */
+  padding: 15px !important;
 }
 .van-cell__value {
   overflow: auto !important;
 }
-.van-field__body--textarea.van-field__body--ios{
+.van-field__body--textarea.van-field__body--ios {
   margin-top: 0 !important;
 }
-.van-field__body--text .van-field__input{
+.van-field__body--text .van-field__input {
   text-align: right !important;
+}
+.van-toast {
+  background-color: rgba(255, 0, 0, 0.7) !important;
 }
 </style>

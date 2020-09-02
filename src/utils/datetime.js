@@ -40,7 +40,30 @@ export function formatWithSeperator(datetime, dateSeprator, timeSeprator, type) 
     return timeFormat;
   }
 }
-
+//Base64Image
+export function getBase64Image(img) {
+  var w = 800
+  imgWidth = img.width;
+  imgHeight = img.height;
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+  if (Math.max(imgWidth, imgHeight) > w) {
+   if (imgWidth > imgHeight) {
+    canvas.width = w;
+    canvas.height = w * imgHeight / imgWidth;
+   } else {
+    canvas.height = w;
+    canvas.width = w * imgWidth / imgHeight;
+   }
+  } else {
+   canvas.width = imgWidth;
+   canvas.height = imgHeight;
+  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  var dataUrl = canvas.toDataURL("image/png", 0.8);
+  return dataUrl;
+ }
 // util.js
 const that = {}
 that.formatDateStr = function (date) {

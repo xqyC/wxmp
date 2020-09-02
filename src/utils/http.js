@@ -23,8 +23,15 @@ function request (url, method, data) {
         'content-type': 'application/json' // 默认值
       },
       success: function (res) {
+        var json = res.data
+        if (typeof json != 'object') {
+          if (json != null) {
+            json = json.replace("\ufeff", "")
+            json = JSON.parse(json)
+          }
+        }
         wx.hideLoading()
-        resolve(res.data)
+        resolve(json)
       },
       fail: function (res) {
         wx.hideLoading()

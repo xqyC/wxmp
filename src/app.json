@@ -15,7 +15,8 @@
     "van-action-sheet": "vant-weapp/dist/action-sheet/index",
     "van-search": "vant-weapp/dist/search/index",
     "van-datetime-picker":"vant-weapp/dist/datetime-picker/index",
-    "van-popup":"vant-weapp/dist/popup/index"
+    "van-popup":"vant-weapp/dist/popup/index",
+    "van-toast": "vant-weapp/dist/toast/index"
   },
   "window": {
     "backgroundTextStyle": "light",
