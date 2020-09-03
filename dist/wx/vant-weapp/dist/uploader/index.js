@@ -51,7 +51,7 @@ VantComponent({
         previewFullImage: {
           type: Boolean,
           value: true,
-        },
+        },\
         imageFit: {
           type: String,
           value: 'scaleToFill',
