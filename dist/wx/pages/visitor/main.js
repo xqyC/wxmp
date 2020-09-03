@@ -208,6 +208,14 @@ if (false) {(function () {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -692,7 +700,6 @@ if (false) {(function () {
         required: true,
         fileList: [],
         afterRead: function afterRead(event, index) {
-          console.log(event);
           var file = event.mp.detail.file;
 
           this.fileList.push({
@@ -702,17 +709,12 @@ if (false) {(function () {
             deletable: true
           });
           this.judge = true;
-          // that.$http.post({
-          // url: 'app!fileUpload',
-          //   data : {
-          //     'uploadFileName': imgName,
-          //    'imgbese':image
-          //   },
-          // }).then(res => {
-          //     if(res.result=="success"){
-
-          //     }
-          // })
+          that.$http.post({
+            url: 'app!fileUpload',
+            data: myForm
+          }).then(function (res) {
+            console.log(res);
+          });
         },
         del_img: function del_img(event) {
           this.fileList.splice(event.mp.detail.index, 1);
@@ -888,6 +890,7 @@ if (false) {(function () {
       }, {
         type: "textarea",
         title: "随行人员姓名(逗号分隔):",
+        message: "",
         judge: true, //判断
         prop: "followMan",
         disabled: false,
@@ -1361,38 +1364,44 @@ function getSystemInfoSync() {
 
 "use strict";
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return _c('view', {
     staticClass: "visitor"
-  }, [_c('cell-groups', {
+  }, [_c('form', {
     attrs: {
-      "mpcomid": '13'
+      "catchsubmit": "formSubmit",
+      "catchreset": "formReset"
     }
   }, [_vm._l((_vm.formdata), function(item, index) {
-    return _c('div', {
+    return _c('view', {
       key: index
-    }, [(item.type == 'text' && item.show == true) ? _c('van-field', {
+    }, [(item.type == 'text' && item.show == true) ? _c('view', {
+      staticClass: "weui-cell__bd",
+      staticStyle: {
+        "margin": "30rpx 0"
+      }
+    }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
       directives: [{
         name: "show",
         rawName: "v-show",
         value: (item.show ? item.show : true),
         expression: "item.show ?item.show:true"
       }],
+      staticClass: "weui-input",
       attrs: {
-        "label": item.title,
         "value": _vm.value[item.prop],
+        "name": item.prop,
         "placeholder": item.placeholder,
         "left-icon": item.contact,
         "disabled": item.disabled,
         "required": item.required,
-        "eventid": '7_' + index,
-        "mpcomid": '11_' + index
+        "eventid": '0_' + index
       },
       on: {
         "blur": function($event) {
           item.change($event, index)
         }
       }
-    }) : (item.type == 'select') ? _c('div', [_c('van-field', {
+    })]) : (item.type == 'select') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
       directives: [{
         name: "show",
         rawName: "v-show",
@@ -1400,14 +1409,13 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         expression: "item.show ?item.show:true"
       }],
       attrs: {
-        "label": item.title,
         "value": _vm.value[item.prop],
+        "name": item.prop,
         "placeholder": item.placeholder,
         "left-icon": item.contact,
         "disabled": item.disabled,
         "required": item.required,
-        "eventid": '0_' + index,
-        "mpcomid": '0_' + index
+        "eventid": '1_' + index
       },
       on: {
         "click": function($event) {
@@ -1418,8 +1426,8 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "show": item.showsecect,
         "title": item.titlename,
-        "eventid": '2_' + index,
-        "mpcomid": '2_' + index
+        "eventid": '3_' + index,
+        "mpcomid": '1_' + index
       },
       on: {
         "close": function($event) {
@@ -1433,15 +1441,15 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "value": item.searchvalue,
         "placeholder": "请输入搜索关键词",
-        "mpcomid": '1_' + index
+        "mpcomid": '0_' + index
       }
     }) : _vm._e(), _vm._v(" "), _vm._l((item.actions), function(list, ind) {
-      return _c('div', {
+      return _c('view', {
         key: ind,
         staticClass: "actiondata",
         class: item.activeaction == ind ? 'activeaction' : '',
         attrs: {
-          "eventid": '1_' + index + '-' + ind
+          "eventid": '2_' + index + '-' + ind
         },
         on: {
           "click": function($event) {
@@ -1451,72 +1459,57 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('div', [_c('van-field', {
-      attrs: {
-        "title-class": "van-cell__title",
-        "value-class": "cell-value",
-        "label": item.title,
-        "accept": item.accept,
-        "required": item.required,
-        "disabled": item.disabled,
-        "mpcomid": '3_' + index
-      }
-    }), _vm._v(" "), _c('van-uploader', {
-      staticStyle: {
-        "padding": "0 30rpx"
-      },
-      attrs: {
-        "file-list": item.fileList,
-        "multiple": item.multiple,
-        "maxCount": item.maxCount,
-        "eventid": '3_' + index,
-        "mpcomid": '4_' + index
-      },
-      on: {
-        "afterRead": function($event) {
-          item.afterRead($event, index)
-        },
-        "delete": function($event) {
-          item.del_img($event, index)
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), (item.fileList) ? _c('view', {
+      staticClass: "uploader-img  flex justify-content-start"
+    }, _vm._l((item.fileList), function(file, ind) {
+      return _c('view', {
+        key: ind,
+        staticClass: "uploader-list"
+      }, [_c('image', {
+        attrs: {
+          "src": file.path,
+          "data-index": ind,
+          "mode": "scaleToFill",
+          "bindtap": "previewImg1"
         }
-      }
-    })], 1) : (item.type == 'textarea') ? _c('div', [_c('van-field', {
+      }), _vm._v(" "), _c('image', {
+        staticClass: "delete",
+        attrs: {
+          "data-index": ind,
+          "src": file.src,
+          "mode": "widthFix",
+          "bindtap": "deleteImg"
+        }
+      })])
+    })) : _vm._e(), _vm._v(" "), _c('view', {
+      staticClass: "upAdd",
       attrs: {
-        "label": item.title,
-        "value-class": "van-cell__value",
+        "bindtap": "chooseImg"
+      }
+    }, [_c('image', {
+      attrs: {
+        "src": item.src,
+        "mode": "widthFix"
+      }
+    })])]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
+      attrs: {
         "required": item.required,
         "disabled": item.disabled,
-        "eventid": '4_' + index,
-        "mpcomid": '5_' + index
+        "eventid": '4_' + index
       },
       on: {
         "blur": function($event) {
           item.change($event, index)
         }
       }
-    }), _vm._v(" "), _c('van-cell-group', {
+    })]) : (item.type == 'datetime') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
       attrs: {
-        "mpcomid": '7_' + index
-      }
-    }, [_c('van-field', {
-      attrs: {
-        "input-class": "textbord",
         "value": _vm.value[item.prop],
-        "type": item.type,
-        "mpcomid": '6_' + index
-      }
-    })], 1)], 1) : (item.type == 'datetime') ? _c('div', [_c('van-field', {
-      staticClass: "van-hairline--bottom",
-      attrs: {
-        "label": item.title,
-        "value": _vm.value[item.prop],
+        "name": item.prop,
         "placeholder": item.placeholder,
-        "left-icon": item.contact,
         "disabled": item.disabled,
         "required": item.required,
-        "errorMessage": _vm.errorMessage[_vm.prop],
-        "eventid": '5_' + index,
-        "mpcomid": '8_' + index
+        "eventid": '5_' + index
       },
       on: {
         "click": function($event) {
@@ -1527,7 +1520,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "show": item.showsecect,
         "position": "bottom",
-        "mpcomid": '10_' + index
+        "mpcomid": '3_' + index
       }
     }, [_c('van-datetime-picker', {
       attrs: {
@@ -1538,7 +1531,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "max-date": item.maxDate,
         "formatter": _vm.formatter,
         "eventid": '6_' + index,
-        "mpcomid": '9_' + index
+        "mpcomid": '2_' + index
       },
       on: {
         "cancel": function($event) {
@@ -1548,23 +1541,21 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
           item.confirm($event, index)
         }
       }
-    })], 1)], 1) : _vm._e()], 1)
-  }), _vm._v(" "), _c('div', {
-    staticClass: "pd15"
-  }, [_c('van-button', {
+    })], 1)], 1) : _vm._e()])
+  }), _vm._v(" "), _c('view', {
+    staticClass: "btn-area"
+  }, [_c('button', {
+    staticStyle: {
+      "margin": "30rpx 0"
+    },
     attrs: {
       "type": "primary",
-      "size": "large",
-      "eventid": '8',
-      "mpcomid": '12'
-    },
-    on: {
-      "click": _vm.onClickButtonSubmit
+      "formType": "onClickButtonSubmit"
     }
   }, [_vm._v("提交信息")])], 1)], 2), _vm._v(" "), _c('van-toast', {
     attrs: {
       "id": "van-toast",
-      "mpcomid": '14'
+      "mpcomid": '4'
     }
   })], 1)
 }

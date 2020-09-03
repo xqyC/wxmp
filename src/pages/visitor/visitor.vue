@@ -1,31 +1,34 @@
 <template>
-  <div class="visitor">
-    <cell-groups>
-      <div v-for="(item,index) in formdata" :key="index">
+  <view class="visitor">
+    <form catchsubmit="formSubmit" catchreset="formReset">
+      <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
-        <van-field
-          v-if="item.type=='text' && item.show==true"
-          :label="item.title"
-          :value="value[item.prop]"
-          @blur="item.change($event,index)"
-          :placeholder="item.placeholder"
-          :left-icon="item.contact"
-          :disabled="item.disabled"
-          v-show="item.show ?item.show:true"
-          :required="item.required"
-        ></van-field>
+          <view class="weui-cell__bd" style="margin: 30rpx 0"  v-if="item.type=='text' && item.show==true" >
+              <text>{{item.title}}</text>
+              <input class="weui-input"     
+                :value="value[item.prop]"
+                :name="item.prop"
+                @blur="item.change($event,index)"
+                :placeholder="item.placeholder"
+                :left-icon="item.contact"
+                :disabled="item.disabled"
+                v-show="item.show ?item.show:true"
+                :required="item.required" 
+              >
+            </view>
         <!-- 下拉选择 -->
-        <div v-else-if="item.type=='select'">
-          <van-field
-            :label="item.title"
+        <view v-else-if="item.type=='select'">
+          <text>{{item.title}}</text>
+          <input
             :value="value[item.prop]"
+            :name="item.prop"
             :placeholder="item.placeholder"
             :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
             :required="item.required"
             @click="item.secetevent(index)"
-          ></van-field>
+          />
           <van-action-sheet
             :show="item.showsecect"
             :title="item.titlename"
@@ -33,7 +36,7 @@
             @select="item.onSelect(index)"
           >
             <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" />
-            <div
+            <view
               v-for="(list,ind) in item.actions"
               :key="ind"
               class="actiondata"
@@ -41,54 +44,59 @@
               @click="item.onSearch(index,ind)"
             >
               <span class="actionsvalue">{{list.name}}</span>
-            </div>
+            </view>
           </van-action-sheet>
-        </div>
+        </view>
         <!-- 上传文件 -->
-        <div v-else-if="item.type=='upload' && item.show==true ">
-          <van-field
-            title-class="van-cell__title"
-            value-class="cell-value"
-            :label="item.title"
-            :accept="item.accept"
-            :required="item.required"
-            :disabled="item.disabled"
-          ></van-field>
-          <van-uploader
+        <view v-else-if="item.type=='upload' && item.show==true ">
+          <text>{{item.title}}</text>
+          <view  class='uploader-img  flex justify-content-start' v-if="item.fileList">
+            <view class='uploader-list' v-for="(file,ind) in item.fileList" :key="ind">
+              <image :src='file.path' :data-index="ind" mode="scaleToFill" bindtap='previewImg1'/>
+              <image class='delete' :data-index="ind" :src='file.src' mode="widthFix" bindtap='deleteImg'/>
+            </view>
+          </view>
+          <view class='upAdd' bindtap='chooseImg'>
+             <image :src='item.src' mode="widthFix"/>
+           </view>
+          <!-- <view class='uploader-img  flex justify-content-start' wx:if="{{item.fileList}}"> -->
+          <!-- <view class='uploader-list' wx:for="{{item.fileList}}" wx:key="item.length">
+             <image src='{{item.path}}' data-index="{{item.index}}" mode="scaleToFill" bindtap='previewImg1'/>
+             <image class='delete' data-index="{{index}}" src='' mode="widthFix" bindtap='deleteImg'/>
+          </view> -->
+        <!-- </view> -->
+        <!-- <view class='upAdd' bindtap='chooseImg'>
+          <image src='' mode="widthFix"/>
+        </view> -->
+          <!-- <van-uploader
             style="padding: 0 30rpx"
             :file-list="item.fileList"
             :multiple="item.multiple"
             :maxCount="item.maxCount"
             @afterRead="item.afterRead($event,index)"
             @delete="item.del_img($event,index)"
-          ></van-uploader>
-        </div>
+          ></van-uploader> -->
+        </view>
         <!-- 多行文本 -->
-        <div v-else-if="item.type=='textarea'">
-          <van-field
-            :label="item.title"
-            value-class="van-cell__value"
+        <view v-else-if="item.type=='textarea'">
+          <text>{{item.title}}</text>
+          <textarea 
             :required="item.required"
             :disabled="item.disabled"
-            @blur="item.change($event,index)"
-          ></van-field>
-          <van-cell-group>
-            <van-field input-class="textbord" :value="value[item.prop]" :type="item.type" />
-          </van-cell-group>
-        </div>
-        <div v-else-if="item.type=='datetime'">
+            @blur="item.change($event,index)">
+          </textarea>
+        </view>
+        <view v-else-if="item.type=='datetime'">
           <!--时间 -->
-          <van-field
-            :label="item.title"
-            class="van-hairline--bottom"
+          <text>{{item.title}}</text>
+          <input 
             :value="value[item.prop]"
+            :name="item.prop"
             :placeholder="item.placeholder"
-            :left-icon="item.contact"
             :disabled="item.disabled"
             :required="item.required"
-            :errorMessage="errorMessage[prop]"
             @click="item.secetevent(index)"
-          ></van-field>
+          />
           <van-popup :show="item.showsecect" position="bottom">
             <van-datetime-picker
               :value="item.currentDate"
@@ -101,17 +109,17 @@
               @confirm="item.confirm($event,index)"
             />
           </van-popup>
-        </div>
-      </div>
-      <div class="pd15">
-        <van-button type="primary" size="large" @click="onClickButtonSubmit">提交信息</van-button>
-      </div>
-    </cell-groups>
+        </view>
+      </view>
+        <view class="btn-area">
+          <button style="margin: 30rpx 0" type="primary" formType="onClickButtonSubmit">提交信息</button>
+        </view>
+    </form>
     <van-toast id="van-toast" />
-  </div>
+  </view>
 </template>
 <script>
-import {formatWithSeperator}  from  "../../utils/datetime"
+import {formatWithSeperator,getBase64Image}  from  "../../utils/datetime"
 import {ID,isMobile,regxcard,regxPlusDecimal2,number}  from  "../../utils/validate"
 import Toast from '../../../dist/wx/vant-weapp/dist/toast/toast';
 export default { 
@@ -612,7 +620,6 @@ export default {
           required:true,
           fileList: [],
           afterRead(event,index){
-          console.log(event)
           const { file } = event.mp.detail;
           this.fileList.push({
             url:file.path,
@@ -621,17 +628,12 @@ export default {
             deletable: true,
           })
           this.judge=true;
-            // that.$http.post({
-            // url: 'app!fileUpload',
-            //   data : {
-            //     'uploadFileName': imgName,
-            //    'imgbese':image
-            //   },
-            // }).then(res => {
-            //     if(res.result=="success"){
-               
-            //     }
-            // })
+          that.$http.post({
+                  url: 'app!fileUpload',
+                  data:myForm
+                  }).then(res => {
+                    console.log(res)
+                  })
         },
         del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
@@ -805,6 +807,7 @@ export default {
         {
           type:"textarea",
           title:"随行人员姓名(逗号分隔):",
+          message:"",
           judge:true,//判断
           prop:"followMan",
           disabled:false,
@@ -861,47 +864,4 @@ export default {
 }
 </script>
 <style>
-.van-cell:after {
-  border-bottom: 0 !important;
-}
-.actiondata {
-  line-height: 2;
-  text-align: center;
-  font-size: 18px;
-  cursor: pointer;
-}
-.activeaction {
-  background: #1989fa;
-  color: #fff;
-  line-height: 2;
-  text-align: center;
-  font-size: 18px;
-  cursor: pointer;
-}
-.actiondata:not(:last-child) {
-  border-bottom: 1px solid #f2f2f2;
-}
-
-.field-index--van-field > .van-cell__title {
-  max-width: 160px !important;
-  min-width: 160px !important;
-}
-.van-field__input--textarea {
-  height: 120px !important;
-  min-height: 120px !important;
-  border: 1px solid #666 !important;
-  padding: 15px !important;
-}
-.van-cell__value {
-  overflow: auto !important;
-}
-.van-field__body--textarea.van-field__body--ios {
-  margin-top: 0 !important;
-}
-.van-field__body--text .van-field__input {
-  text-align: right !important;
-}
-.van-toast {
-  background-color: rgba(255, 0, 0, 0.7) !important;
-}
 </style>

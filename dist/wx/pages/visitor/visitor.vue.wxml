@@ -1,36 +1,34 @@
 <template name="2af27700">
-  <view class="_div data-v-7467729a visitor">
-    <cell-groups class="_cell-groups data-v-7467729a">
-      <view wx:key="index" key="{{index}}" wx:for="{{formdata}}" wx:for-index="index" wx:for-item="item" class="_div data-v-7467729a">
-        <van-field wx:if="{{item.type=='text' && item.show==true}}" label="{{item.title}}" value="{{value[item.prop]}}" bindblur="handleProxy" placeholder="{{item.placeholder}}" left-icon="{{item.contact}}" disabled="{{item.disabled}}" hidden="{{!(item.show ?item.show:true)}}" required="{{item.required}}" data-eventid="{{'7_'+index}}" data-comkey="{{$k}}" class="_van-field data-v-7467729a"></van-field>
-        <view wx:elif="{{item.type=='select'}}" class="_div data-v-7467729a">
-          <van-field label="{{item.title}}" value="{{value[item.prop]}}" placeholder="{{item.placeholder}}" left-icon="{{item.contact}}" disabled="{{item.disabled}}" hidden="{{!(item.show ?item.show:true)}}" required="{{item.required}}" bindtap="handleProxy" data-eventid="{{'0_'+index}}" data-comkey="{{$k}}" class="_van-field data-v-7467729a"></van-field>
-          <van-action-sheet show="{{item.showsecect}}" title="{{item.titlename}}" bindclose="handleProxy" bindselect="handleProxy" data-eventid="{{'2_'+index}}" data-comkey="{{$k}}" class="_van-action-sheet data-v-7467729a">
+  <view class="_view data-v-7467729a visitor">
+    <form catchsubmit="formSubmit" catchreset="formReset" class="_form data-v-7467729a">
+      <view wx:key="index" key="{{index}}" wx:for="{{formdata}}" wx:for-index="index" wx:for-item="item" class="_view data-v-7467729a">
+        <view class="_view data-v-7467729a weui-cell__bd" style="margin: 30rpx 0" wx:if="{{item.type=='text' && item.show==true}}"><text class="_text data-v-7467729a">{{item.title}}</text> <input class="_input data-v-7467729a weui-input" value="{{value[item.prop]}}" name="{{item.prop}}" bindblur="handleProxy" placeholder="{{item.placeholder}}" left-icon="{{item.contact}}" disabled="{{item.disabled}}" hidden="{{!(item.show ?item.show:true)}}" required="{{item.required}}" data-eventid="{{'0_'+index}}" data-comkey="{{$k}}" /></view>
+        <view wx:elif="{{item.type=='select'}}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text> <input value="{{value[item.prop]}}" name="{{item.prop}}" placeholder="{{item.placeholder}}" left-icon="{{item.contact}}" disabled="{{item.disabled}}" hidden="{{!(item.show ?item.show:true)}}" required="{{item.required}}" bindtap="handleProxy" data-eventid="{{'1_'+index}}" data-comkey="{{$k}}" class="_input data-v-7467729a" />
+          <van-action-sheet show="{{item.showsecect}}" title="{{item.titlename}}" bindclose="handleProxy" bindselect="handleProxy" data-eventid="{{'3_'+index}}" data-comkey="{{$k}}" class="_van-action-sheet data-v-7467729a">
             <van-search value="{{item.searchvalue}}" placeholder="请输入搜索关键词" wx:if="{{item.show}}" class="_van-search data-v-7467729a"></van-search>
-            <view wx:key="ind" key="{{ind}}" class="_div data-v-7467729a actiondata {{item.activeaction == ind ? 'activeaction' : ''}}" bindtap="handleProxy" data-eventid="{{'1_'+index+'-'+ind}}" data-comkey="{{$k}}" wx:for="{{item.actions}}" wx:for-index="ind" wx:for-item="list"><label class="_span data-v-7467729a actionsvalue">{{list.name}}</label></view>
+            <view wx:key="ind" key="{{ind}}" class="_view data-v-7467729a actiondata {{item.activeaction == ind ? 'activeaction' : ''}}" bindtap="handleProxy" data-eventid="{{'2_'+index+'-'+ind}}" data-comkey="{{$k}}" wx:for="{{item.actions}}" wx:for-index="ind" wx:for-item="list"><label class="_span data-v-7467729a actionsvalue">{{list.name}}</label></view>
           </van-action-sheet>
         </view>
-        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_div data-v-7467729a">
-          <van-field title-class="van-cell__title" value-class="cell-value" label="{{item.title}}" accept="{{item.accept}}" required="{{item.required}}" disabled="{{item.disabled}}" class="_van-field data-v-7467729a"></van-field>
-          <van-uploader style="padding: 0 30rpx" file-list="{{item.fileList}}" multiple="{{item.multiple}}" maxCount="{{item.maxCount}}" bindafterRead="handleProxy" binddelete="handleProxy" data-eventid="{{'3_'+index}}" data-comkey="{{$k}}" class="_van-uploader data-v-7467729a"></van-uploader>
+        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text>
+          <view class="_view data-v-7467729a uploader-img  flex justify-content-start" wx:if="{{item.fileList}}">
+            <view class="_view data-v-7467729a uploader-list" wx:key="ind" key="{{ind}}" wx:for="{{item.fileList}}" wx:for-index="ind" wx:for-item="file">
+              <image src="{{file.path}}" data-index="{{ind}}" mode="scaleToFill" bindtap="previewImg1" class="_image data-v-7467729a"></image>
+              <image class="_image data-v-7467729a delete" data-index="{{ind}}" src="{{file.src}}" mode="widthFix" bindtap="deleteImg"></image>
+            </view>
+          </view>
+          <view class="_view data-v-7467729a upAdd" bindtap="chooseImg">
+            <image src="{{item.src}}" mode="widthFix" class="_image data-v-7467729a"></image>
+          </view>
         </view>
-        <view wx:elif="{{item.type=='textarea'}}" class="_div data-v-7467729a">
-          <van-field label="{{item.title}}" value-class="van-cell__value" required="{{item.required}}" disabled="{{item.disabled}}" bindblur="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_van-field data-v-7467729a"></van-field>
-          <van-cell-group class="_van-cell-group data-v-7467729a">
-            <van-field input-class="textbord" value="{{value[item.prop]}}" type="{{item.type}}" class="_van-field data-v-7467729a"></van-field>
-          </van-cell-group>
-        </view>
-        <view wx:elif="{{item.type=='datetime'}}" class="_div data-v-7467729a">
-          <van-field label="{{item.title}}" class="_van-field data-v-7467729a van-hairline--bottom" value="{{value[item.prop]}}" placeholder="{{item.placeholder}}" left-icon="{{item.contact}}" disabled="{{item.disabled}}" required="{{item.required}}" errorMessage="{{errorMessage[prop]}}" bindtap="handleProxy" data-eventid="{{'5_'+index}}" data-comkey="{{$k}}"></van-field>
+        <view wx:elif="{{item.type=='textarea'}}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text> <textarea required="{{item.required}}" disabled="{{item.disabled}}" bindblur="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_textarea data-v-7467729a" /></view>
+        <view wx:elif="{{item.type=='datetime'}}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text> <input value="{{value[item.prop]}}" name="{{item.prop}}" placeholder="{{item.placeholder}}" disabled="{{item.disabled}}" required="{{item.required}}" bindtap="handleProxy" data-eventid="{{'5_'+index}}" data-comkey="{{$k}}" class="_input data-v-7467729a" />
           <van-popup show="{{item.showsecect}}" position="bottom" class="_van-popup data-v-7467729a">
             <van-datetime-picker value="{{item.currentDate}}" type="{{item.type}}" min-date="{{item.minDate}}" lazy-render="{{false}}" max-date="{{item.maxDate}}" formatter="{{formatter}}" bindcancel="handleProxy" bindconfirm="handleProxy" data-eventid="{{'6_'+index}}" data-comkey="{{$k}}" class="_van-datetime-picker data-v-7467729a"></van-datetime-picker>
           </van-popup>
         </view>
       </view>
-      <view class="_div data-v-7467729a pd15">
-        <van-button type="primary" size="large" bindtap="handleProxy" data-eventid="{{'8'}}" data-comkey="{{$k}}" class="_van-button data-v-7467729a">提交信息</van-button>
-      </view>
-    </cell-groups>
+      <view class="_view data-v-7467729a btn-area"><button style="margin: 30rpx 0" type="primary" formType="onClickButtonSubmit" class="_button data-v-7467729a">提交信息</button></view>
+    </form>
     <van-toast id="van-toast" class="_van-toast data-v-7467729a"></van-toast>
   </view>
 </template>
