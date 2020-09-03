@@ -203,20 +203,6 @@ if (false) {(function () {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -699,15 +685,7 @@ if (false) {(function () {
         accept: 'image',
         disabled: true,
         required: true,
-        fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-        {
-          url: 'http://iph.href.lu/60x60?text=default',
-          name: '图片2',
-          isImage: true,
-          deletable: true
-        }],
+        fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' }],
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
@@ -720,7 +698,10 @@ if (false) {(function () {
           this.judge = true;
           that.$http.post({
             url: 'app!fileUpload',
-            data: myForm
+            data: {
+              'uploadFileName': file.name,
+              'imgbese': file
+            }
           }).then(function (res) {
             console.log(res);
           });
@@ -877,6 +858,7 @@ if (false) {(function () {
         title: "其他审批文件5:",
         judge: true, //判断
         multiple: false,
+        maxCount: 1,
         type: "upload",
         disabled: true,
         required: false,
@@ -885,7 +867,6 @@ if (false) {(function () {
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
-          Object(__WEBPACK_IMPORTED_MODULE_3__dist_wx_vant_weapp_dist_toast_toast__["a" /* default */])(file.name);
           this.fileList.push({
             url: file.path,
             name: file.name,
@@ -1468,22 +1449,30 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), (item.fileList) ? _c('view', _vm._l((item.fileList), function(file, ind) {
-      return _c('view', {
-        key: ind
-      }, [_c('img', {
-        attrs: {
-          "src": file.url,
-          "data-index": ind,
-          "mode": "scaleToFill",
-          "bindtap": "previewImg1"
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('van-uploader', {
+      staticStyle: {
+        "padding": "0 30rpx"
+      },
+      attrs: {
+        "file-list": item.fileList,
+        "multiple": item.multiple,
+        "maxCount": item.maxCount,
+        "eventid": '4_' + index,
+        "mpcomid": '2_' + index
+      },
+      on: {
+        "afterRead": function($event) {
+          item.afterRead($event, index)
+        },
+        "delete": function($event) {
+          item.del_img($event, index)
         }
-      })])
-    })) : _vm._e()]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
+      }
+    })], 1) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
         "required": item.required,
         "disabled": item.disabled,
-        "eventid": '4_' + index
+        "eventid": '5_' + index
       },
       on: {
         "blur": function($event) {
@@ -1497,7 +1486,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "placeholder": item.placeholder,
         "disabled": item.disabled,
         "required": item.required,
-        "eventid": '5_' + index
+        "eventid": '6_' + index
       },
       on: {
         "click": function($event) {
@@ -1508,7 +1497,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "show": item.showsecect,
         "position": "bottom",
-        "mpcomid": '3_' + index
+        "mpcomid": '4_' + index
       }
     }, [_c('van-datetime-picker', {
       attrs: {
@@ -1518,8 +1507,8 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "lazy-render": false,
         "max-date": item.maxDate,
         "formatter": _vm.formatter,
-        "eventid": '6_' + index,
-        "mpcomid": '2_' + index
+        "eventid": '7_' + index,
+        "mpcomid": '3_' + index
       },
       on: {
         "cancel": function($event) {
@@ -1543,7 +1532,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._v("提交信息")])], 1)], 2), _vm._v(" "), _c('van-toast', {
     attrs: {
       "id": "van-toast",
-      "mpcomid": '4'
+      "mpcomid": '5'
     }
   })], 1)
 }
