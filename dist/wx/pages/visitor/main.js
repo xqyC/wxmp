@@ -216,6 +216,7 @@ if (false) {(function () {
 //
 //
 //
+//
 
 
 
@@ -698,7 +699,15 @@ if (false) {(function () {
         accept: 'image',
         disabled: true,
         required: true,
-        fileList: [],
+        fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
+        // Uploader 根据文件后缀来判断是否为图片文件
+        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+        {
+          url: 'http://iph.href.lu/60x60?text=default',
+          name: '图片2',
+          isImage: true,
+          deletable: true
+        }],
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
@@ -1459,39 +1468,18 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), (item.fileList) ? _c('view', {
-      staticClass: "uploader-img  flex justify-content-start"
-    }, _vm._l((item.fileList), function(file, ind) {
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), (item.fileList) ? _c('view', _vm._l((item.fileList), function(file, ind) {
       return _c('view', {
-        key: ind,
-        staticClass: "uploader-list"
-      }, [_c('image', {
+        key: ind
+      }, [_c('img', {
         attrs: {
-          "src": file.path,
+          "src": file.url,
           "data-index": ind,
           "mode": "scaleToFill",
           "bindtap": "previewImg1"
         }
-      }), _vm._v(" "), _c('image', {
-        staticClass: "delete",
-        attrs: {
-          "data-index": ind,
-          "src": file.src,
-          "mode": "widthFix",
-          "bindtap": "deleteImg"
-        }
       })])
-    })) : _vm._e(), _vm._v(" "), _c('view', {
-      staticClass: "upAdd",
-      attrs: {
-        "bindtap": "chooseImg"
-      }
-    }, [_c('image', {
-      attrs: {
-        "src": item.src,
-        "mode": "widthFix"
-      }
-    })])]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
+    })) : _vm._e()]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
         "required": item.required,
         "disabled": item.disabled,

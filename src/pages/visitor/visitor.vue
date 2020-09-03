@@ -3,19 +3,24 @@
     <form catchsubmit="formSubmit" catchreset="formReset">
       <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
-          <view class="weui-cell__bd" style="margin: 30rpx 0"  v-if="item.type=='text' && item.show==true" >
-              <text>{{item.title}}</text>
-              <input class="weui-input"     
-                :value="value[item.prop]"
-                :name="item.prop"
-                @blur="item.change($event,index)"
-                :placeholder="item.placeholder"
-                :left-icon="item.contact"
-                :disabled="item.disabled"
-                v-show="item.show ?item.show:true"
-                :required="item.required" 
-              >
-            </view>
+        <view
+          class="weui-cell__bd"
+          style="margin: 30rpx 0"
+          v-if="item.type=='text' && item.show==true"
+        >
+          <text>{{item.title}}</text>
+          <input
+            class="weui-input"
+            :value="value[item.prop]"
+            :name="item.prop"
+            @blur="item.change($event,index)"
+            :placeholder="item.placeholder"
+            :left-icon="item.contact"
+            :disabled="item.disabled"
+            v-show="item.show ?item.show:true"
+            :required="item.required"
+          />
+        </view>
         <!-- 下拉选择 -->
         <view v-else-if="item.type=='select'">
           <text>{{item.title}}</text>
@@ -50,24 +55,20 @@
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
           <text>{{item.title}}</text>
-          <view  class='uploader-img  flex justify-content-start' v-if="item.fileList">
-            <view class='uploader-list' v-for="(file,ind) in item.fileList" :key="ind">
-              <image :src='file.path' :data-index="ind" mode="scaleToFill" bindtap='previewImg1'/>
-              <image class='delete' :data-index="ind" :src='file.src' mode="widthFix" bindtap='deleteImg'/>
+          <view v-if="item.fileList">
+            <view v-for="(file,ind) in item.fileList" :key="ind">
+              <img :src="file.url" :data-index="ind" mode="scaleToFill" bindtap="previewImg1" />
             </view>
           </view>
-          <view class='upAdd' bindtap='chooseImg'>
-             <image :src='item.src' mode="widthFix"/>
-           </view>
           <!-- <view class='uploader-img  flex justify-content-start' wx:if="{{item.fileList}}"> -->
           <!-- <view class='uploader-list' wx:for="{{item.fileList}}" wx:key="item.length">
              <image src='{{item.path}}' data-index="{{item.index}}" mode="scaleToFill" bindtap='previewImg1'/>
              <image class='delete' data-index="{{index}}" src='' mode="widthFix" bindtap='deleteImg'/>
-          </view> -->
-        <!-- </view> -->
-        <!-- <view class='upAdd' bindtap='chooseImg'>
+          </view>-->
+          <!-- </view> -->
+          <!-- <view class='upAdd' bindtap='chooseImg'>
           <image src='' mode="widthFix"/>
-        </view> -->
+          </view>-->
           <!-- <van-uploader
             style="padding: 0 30rpx"
             :file-list="item.fileList"
@@ -75,21 +76,21 @@
             :maxCount="item.maxCount"
             @afterRead="item.afterRead($event,index)"
             @delete="item.del_img($event,index)"
-          ></van-uploader> -->
+          ></van-uploader>-->
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'">
           <text>{{item.title}}</text>
-          <textarea 
+          <textarea
             :required="item.required"
             :disabled="item.disabled"
-            @blur="item.change($event,index)">
-          </textarea>
+            @blur="item.change($event,index)"
+          ></textarea>
         </view>
         <view v-else-if="item.type=='datetime'">
           <!--时间 -->
           <text>{{item.title}}</text>
-          <input 
+          <input
             :value="value[item.prop]"
             :name="item.prop"
             :placeholder="item.placeholder"
@@ -111,9 +112,9 @@
           </van-popup>
         </view>
       </view>
-        <view class="btn-area">
-          <button style="margin: 30rpx 0" type="primary" formType="onClickButtonSubmit">提交信息</button>
-        </view>
+      <view class="btn-area">
+        <button style="margin: 30rpx 0" type="primary" formType="onClickButtonSubmit">提交信息</button>
+      </view>
     </form>
     <van-toast id="van-toast" />
   </view>
@@ -618,7 +619,17 @@ export default {
           accept:'image',
           disabled:true,
           required:true,
-          fileList: [],
+            fileList: [
+             { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
+              // Uploader 根据文件后缀来判断是否为图片文件
+              // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+              {
+                url: 'http://iph.href.lu/60x60?text=default',
+                name: '图片2',
+                isImage: true,
+                deletable: true,
+              },
+            ],
           afterRead(event,index){
           const { file } = event.mp.detail;
           this.fileList.push({
@@ -864,4 +875,7 @@ export default {
 }
 </script>
 <style>
+.visitor{
+  margin:0 20px;
+}
 </style>
