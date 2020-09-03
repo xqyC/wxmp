@@ -777,7 +777,7 @@ export default {
           }
         },{
           title:"其他审批文件5:",
-          judge:true,//判断
+          judge:true,//判断8608917@qq.com
            multiple:false,
               maxCount:1,
           type:"upload",
