@@ -23,3 +23,6 @@
   border-radius: 10rpx;
   padding: 10rpx;
 }
+.actiondata {
+  padding: 0 36rpx 10rpx;
+}

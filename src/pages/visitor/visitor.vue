@@ -689,14 +689,14 @@ export default {
           }
         },{
           title:"其他审批文件1:",
-           judge:true,//判断
-           multiple:false,
-            maxCount:1,
-           type:"upload",
+          judge:true,//判断
+          multiple:false,
+          maxCount:1,
+          type:"upload",
           disabled:true,
-           required:false,
-           show:false,
-           required:false,
+          required:false,
+          show:false,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -712,13 +712,13 @@ export default {
           }
         },{
           title:"其他审批文件2:",
-           maxCount:1,
-           judge:true,//判断
-           multiple:false,
-           type:"upload",
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
           disabled:true,
-           show:false,
-           required:false,
+          show:false,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -734,13 +734,13 @@ export default {
           }
         },{
           title:"其他审批文件3:",
-           maxCount:1,
-           judge:true,//判断
-            multiple:false,
-           type:"upload",
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
           disabled:true,
-           show:false,
-           required:false,
+          show:false,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -756,13 +756,13 @@ export default {
           }
         },{
           title:"其他审批文件4:",
-           maxCount:1,
-           judge:true,//判断
-           multiple:false,
-           type:"upload",
-           disabled:true,
-           show:false,
-           required:false,
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
+          disabled:true,
+          show:false,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -779,8 +779,8 @@ export default {
         },{
           title:"其他审批文件5:",
           judge:true,//判断8608917@qq.com
-           multiple:false,
-              maxCount:1,
+          multiple:false,
+          maxCount:1,
           type:"upload",
           disabled:true,
           required:false,
@@ -887,5 +887,8 @@ export default {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px;
+}
+.actiondata{
+  padding: 0 18px 5px;
 }
 </style>
