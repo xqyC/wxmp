@@ -490,7 +490,7 @@ if (false) {(function () {
         contact: "logistics",
         showsecect: false,
         activeaction: '',
-        show: true,
+        show: false,
         searchvalue: '',
         actions: [{
           name: '步行',
