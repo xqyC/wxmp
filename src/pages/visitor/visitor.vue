@@ -53,11 +53,13 @@
         </view>
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
-          <text>{{item.title}}</text>
-          <view v-if="item.fileList">
-            <view v-for="(file,ind) in item.fileList" :key="ind">
-              <img :src="file.url" :data-index="ind" mode="scaleToFill" bindtap="previewImg1" />
-            </view>
+          <view>{{item.title}}</view>
+          <view class='ui_uploader_cell'>
+              <view class='ui_uploader_item' v-for="(file,ind) in item.fileList" :key="ind">
+                 <icon class='ui_uploader_item_icon' bindtap='clearImg'  type="clear" size="20" color="red"/>
+                 <image bindtap='showImg'  :src='file.src'></image>
+              </view>
+              <image bindtap='showImg' @click="upload"  src='../../../static/images/add.jpg'  v-if="item.fileList.length<1?true:false"></image>
           </view>
         </view>
         <!-- 多行文本 -->
@@ -244,7 +246,7 @@ export default {
           maxDate: new Date(2060, 10, 1).getTime(),
           currentDate: new Date().getTime(),
             //确定
-        confirm:(e,index)=>{
+          confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
             if(time>that.value.begTime){
                 this.judge=true
@@ -605,15 +607,10 @@ export default {
              { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
               // Uploader 根据文件后缀来判断是否为图片文件
               // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-              {
-                url: 'http://iph.href.lu/60x60?text=default',
-                name: '图片2',
-                isImage: true,
-                deletable: true,
-              },
             ],
           afterRead(event,index){
           const { file } = event.mp.detail;
+          console.log(file)
           this.fileList.push({
             url:file.path,
             name: file.name,
@@ -622,11 +619,16 @@ export default {
           })
           this.judge=true;
           that.$http.post({
-                  url: 'app!fileUpload',
-                  data:myForm
-                  }).then(res => {
-                    console.log(res)
-                  })
+            url: 'app!fileUpload',
+            data:{
+            'uploadFileName': file.name,
+            'imgbese':file
+            },
+            }).then(res => {
+               console.log(res)
+            }).catch(err=>{
+               console.log(err)
+            })
         },
         del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
@@ -776,16 +778,16 @@ export default {
           }
         },{
           title:"其他审批文件5:",
-          judge:true,//判断
+          judge:true,//判断8608917@qq.com
            multiple:false,
+              maxCount:1,
           type:"upload",
           disabled:true,
           required:false,
-          show:false,
+            show:false,
           fileList: [],
-          afterRead(event,index){
+           afterRead(event,index){
             const { file } = event.mp.detail;
-            Toast(file.name)
             this.fileList.push({
               url:file.path,
               name: file.name,
@@ -853,7 +855,10 @@ export default {
         onClickButtonSubmit(values) {
             console.log(this.vlaue)
         },
-      },
+        clearImg(e){
+          console.log(e)
+        }
+      }
 }
 </script>
 <style>

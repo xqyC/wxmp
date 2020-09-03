@@ -199,6 +199,8 @@ if (false) {(function () {
 //
 //
 //
+//
+//
 
 
 
@@ -681,18 +683,11 @@ if (false) {(function () {
         accept: 'image',
         disabled: true,
         required: true,
-        fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-        // Uploader 根据文件后缀来判断是否为图片文件
-        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-        {
-          url: 'http://iph.href.lu/60x60?text=default',
-          name: '图片2',
-          isImage: true,
-          deletable: true
-        }],
+        fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' }],
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
+          console.log(file);
           this.fileList.push({
             url: file.path,
             name: file.name,
@@ -702,9 +697,14 @@ if (false) {(function () {
           this.judge = true;
           that.$http.post({
             url: 'app!fileUpload',
-            data: myForm
+            data: {
+              'uploadFileName': file.name,
+              'imgbese': file
+            }
           }).then(function (res) {
             console.log(res);
+          }).catch(function (err) {
+            console.log(err);
           });
         },
         del_img: function del_img(event) {
@@ -857,8 +857,9 @@ if (false) {(function () {
         }
       }, {
         title: "其他审批文件5:",
-        judge: true, //判断
+        judge: true, //判断8608917@qq.com
         multiple: false,
+        maxCount: 1,
         type: "upload",
         disabled: true,
         required: false,
@@ -867,7 +868,6 @@ if (false) {(function () {
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
-          Object(__WEBPACK_IMPORTED_MODULE_3__dist_wx_vant_weapp_dist_toast_toast__["a" /* default */])(file.name);
           this.fileList.push({
             url: file.path,
             name: file.name,
@@ -934,6 +934,9 @@ if (false) {(function () {
     //提交app!ajaxCommitTemp
     onClickButtonSubmit: function onClickButtonSubmit(values) {
       console.log(this.vlaue);
+    },
+    clearImg: function clearImg(e) {
+      console.log(e);
     }
   }
 });
@@ -1450,24 +1453,42 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), (item.fileList) ? _c('view', _vm._l((item.fileList), function(file, ind) {
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('view', {
+      staticClass: "ui_uploader_cell"
+    }, [_vm._l((item.fileList), function(file, ind) {
       return _c('view', {
-        key: ind
-      }, [_c('img', {
+        key: ind,
+        staticClass: "ui_uploader_item"
+      }, [_c('icon', {
+        staticClass: "ui_uploader_item_icon",
         attrs: {
-          "src": file.url,
-          "data-index": ind,
-          "mode": "scaleToFill",
-          "bindtap": "previewImg1"
+          "bindtap": "clearImg",
+          "type": "clear",
+          "size": "20",
+          "color": "red"
         }
-      })])
-    })) : _vm._e()]) : (item.type == 'textarea') ? _c('view', {
+      }), _vm._v(" "), _c('image', {
+        attrs: {
+          "bindtap": "showImg",
+          "src": file.src
+        }
+      })], 1)
+    }), _vm._v(" "), (item.fileList.length < 1 ? true : false) ? _c('image', {
+      attrs: {
+        "bindtap": "showImg",
+        "src": "../../../static/images/add.jpg",
+        "eventid": '4_' + index
+      },
+      on: {
+        "click": _vm.upload
+      }
+    }) : _vm._e()], 2)]) : (item.type == 'textarea') ? _c('view', {
       staticClass: "rich"
     }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
         "required": item.required,
         "disabled": item.disabled,
-        "eventid": '4_' + index
+        "eventid": '5_' + index
       },
       on: {
         "blur": function($event) {
@@ -1484,7 +1505,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "placeholder": item.placeholder,
         "disabled": item.disabled,
         "required": item.required,
-        "eventid": '5_' + index
+        "eventid": '6_' + index
       },
       on: {
         "click": function($event) {
@@ -1505,7 +1526,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "lazy-render": false,
         "max-date": item.maxDate,
         "formatter": _vm.formatter,
-        "eventid": '6_' + index,
+        "eventid": '7_' + index,
         "mpcomid": '2_' + index
       },
       on: {

@@ -9,17 +9,20 @@
             <view wx:key="ind" key="{{ind}}" class="_view data-v-7467729a actiondata {{item.activeaction == ind ? 'activeaction' : ''}}" bindtap="handleProxy" data-eventid="{{'2_'+index+'-'+ind}}" data-comkey="{{$k}}" wx:for="{{item.actions}}" wx:for-index="ind" wx:for-item="list"><label class="_span data-v-7467729a actionsvalue">{{list.name}}</label></view>
           </van-action-sheet>
         </view>
-        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text>
-          <view wx:if="{{item.fileList}}" class="_view data-v-7467729a">
-            <view wx:key="ind" key="{{ind}}" wx:for="{{item.fileList}}" wx:for-index="ind" wx:for-item="file" class="_view data-v-7467729a">
-              <image src="{{file.url}}" data-index="{{ind}}" mode="scaleToFill" bindtap="previewImg1" class="_img data-v-7467729a"></image>
+        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a">
+          <view class="_view data-v-7467729a">{{item.title}}</view>
+          <view class="_view data-v-7467729a ui_uploader_cell">
+            <view class="_view data-v-7467729a ui_uploader_item" wx:key="ind" key="{{ind}}" wx:for="{{item.fileList}}" wx:for-index="ind" wx:for-item="file">
+              <icon class="_icon data-v-7467729a ui_uploader_item_icon" bindtap="clearImg" type="clear" size="20" color="red"></icon>
+              <image bindtap="showImg" src="{{file.src}}" class="_image data-v-7467729a"></image>
             </view>
+            <image bindtap="handleProxy" src="../../../static/images/add.jpg" wx:if="{{item.fileList.length<1?true:false}}" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_image data-v-7467729a"></image>
           </view>
         </view>
-        <view wx:elif="{{item.type=='textarea'}}" class="_view data-v-7467729a rich"><text class="_text data-v-7467729a">{{item.title}}</text> <textarea required="{{item.required}}" disabled="{{item.disabled}}" bindblur="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_textarea data-v-7467729a" /></view>
-        <view wx:elif="{{item.type=='datetime'}}" class="_view data-v-7467729a weui-cell__bd"><text class="_text data-v-7467729a">{{item.title}}</text> <input class="_input data-v-7467729a weui-input weui-sele" value="{{value[item.prop]}}" name="{{item.prop}}" placeholder="{{item.placeholder}}" disabled="{{item.disabled}}" required="{{item.required}}" bindtap="handleProxy" data-eventid="{{'5_'+index}}" data-comkey="{{$k}}" />
+        <view wx:elif="{{item.type=='textarea'}}" class="_view data-v-7467729a rich"><text class="_text data-v-7467729a">{{item.title}}</text> <textarea required="{{item.required}}" disabled="{{item.disabled}}" bindblur="handleProxy" data-eventid="{{'5_'+index}}" data-comkey="{{$k}}" class="_textarea data-v-7467729a" /></view>
+        <view wx:elif="{{item.type=='datetime'}}" class="_view data-v-7467729a weui-cell__bd"><text class="_text data-v-7467729a">{{item.title}}</text> <input class="_input data-v-7467729a weui-input weui-sele" value="{{value[item.prop]}}" name="{{item.prop}}" placeholder="{{item.placeholder}}" disabled="{{item.disabled}}" required="{{item.required}}" bindtap="handleProxy" data-eventid="{{'6_'+index}}" data-comkey="{{$k}}" />
           <van-popup show="{{item.showsecect}}" position="bottom" class="_van-popup data-v-7467729a">
-            <van-datetime-picker value="{{item.currentDate}}" type="{{item.type}}" min-date="{{item.minDate}}" lazy-render="{{false}}" max-date="{{item.maxDate}}" formatter="{{formatter}}" bindcancel="handleProxy" bindconfirm="handleProxy" data-eventid="{{'6_'+index}}" data-comkey="{{$k}}" class="_van-datetime-picker data-v-7467729a"></van-datetime-picker>
+            <van-datetime-picker value="{{item.currentDate}}" type="{{item.type}}" min-date="{{item.minDate}}" lazy-render="{{false}}" max-date="{{item.maxDate}}" formatter="{{formatter}}" bindcancel="handleProxy" bindconfirm="handleProxy" data-eventid="{{'7_'+index}}" data-comkey="{{$k}}" class="_van-datetime-picker data-v-7467729a"></van-datetime-picker>
           </van-popup>
         </view>
       </view>

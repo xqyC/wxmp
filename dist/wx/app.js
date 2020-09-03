@@ -2,15 +2,15 @@ require("./common/manifest.js")
 require("./common/vendor.js")
 global.webpackJsonpMpvue([5],{
 
-/***/ 53:
+/***/ 38:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_http__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__App__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_http__ = __webpack_require__(43);
 
 
 
@@ -23,17 +23,17 @@ app.$mount();
 
 /***/ }),
 
-/***/ 55:
+/***/ 40:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(42);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(56)
+  __webpack_require__(41)
 }
-var normalizeComponent = __webpack_require__(9)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 
 /* template */
@@ -75,14 +75,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 56:
+/***/ 41:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 57:
+/***/ 42:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119,15 +119,12 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 58:
+/***/ 43:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise__);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise__);
 
 
 //新沂地址
@@ -138,29 +135,23 @@ var httpUrl = "http://192.168.0.184:8080/XYHGYQ/";
 // 荣
 // var httpUrl="http://192.168.0.142:8080/TXHGYQ/"
 // 吕
-// var httpUrl="http://192.168.0.171:8080/XYHGYQ/"
+//var httpUrl="http://192.168.0.171:8080/XYHGYQ/"
 //施
 // var httpUrl="http://192.168.0.23:8080/TXHGYQ/"
 function request(url, method, data) {
   wx.showLoading({
     title: '加载中' // 数据请求前loading
   });
-  return new __WEBPACK_IMPORTED_MODULE_1_babel_runtime_core_js_promise___default.a(function (resolve, reject) {
+  return new __WEBPACK_IMPORTED_MODULE_0_babel_runtime_core_js_promise___default.a(function (resolve, reject) {
     wx.request({
       url: httpUrl + url,
       method: method,
       data: data,
       headers: {
-        'content-type': 'application/json' // 默认值
+        'content-type': 'application/json;charset=UTF-8' // 默认值
       },
       success: function success(res) {
         var json = res.data;
-        if ((typeof json === 'undefined' ? 'undefined' : __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default()(json)) != 'object') {
-          if (json != null) {
-            json = json.replace('\uFEFF', "");
-            json = JSON.parse(json);
-          }
-        }
         wx.hideLoading();
         resolve(json);
       },
@@ -192,4 +183,4 @@ function post(obj) {
 
 /***/ })
 
-},[53]);
+},[38]);
