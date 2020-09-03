@@ -20,7 +20,7 @@ function request (url, method, data) {
       method: method,
       data: data,
       headers: {
-        'content-type': 'application/json;charset=UTF-8' // 默认值
+        'content-type': 'application/x-www-form-urlencoded'
       },
       success: function (res) {
         var json = res.data
