@@ -662,9 +662,9 @@ if (false) {(function () {
         required: true,
         fileList: [{ url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' }],
         afterRead: function afterRead(event, index) {
+          console.log(file);
           var file = event.mp.detail.file;
 
-          console.log(file);
           this.fileList.push({
             url: file.path,
             name: file.name,
@@ -672,17 +672,34 @@ if (false) {(function () {
             deletable: true
           });
           this.judge = true;
+          // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
           that.$http.post({
-            url: 'app!fileUpload',
+            url: 'app!fileUpload', // 仅为示例，非真实的接口地址
+            filePath: file.path,
+            name: 'file',
             data: {
-              'uploadFileName': file.name,
-              'imgbese': file
+              "imgbese": file.path,
+              "uploadFileName": "Tupac"
+            },
+            success: function success(res) {
+              // 上传完成需要更新 fileList
+              console.log(res);
+              // const { fileList = [] } = this.data;
+              // fileList.push({ ...file, url: res.data });
+              // this.setData({ fileList });
             }
-          }).then(function (res) {
-            console.log(res);
-          }).catch(function (err) {
-            console.log(err);
           });
+          // that.$http.post({
+          //   url: 'app!fileUpload',
+          //   data:{
+          //   'uploadFileName': file.name,
+          //   'imgbese':file
+          //   },
+          //   }).then(res => {
+          //      console.log(res)
+          //   }).catch(err=>{
+          //      console.log(err)
+          //   })
         },
         del_img: function del_img(event) {
           this.fileList.splice(event.mp.detail.index, 1);
@@ -1430,36 +1447,23 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('view', {
-      staticClass: "ui_uploader_cell"
-    }, [_vm._l((item.fileList), function(file, ind) {
-      return _c('view', {
-        key: ind,
-        staticClass: "ui_uploader_item"
-      }, [_c('icon', {
-        staticClass: "ui_uploader_item_icon",
-        attrs: {
-          "bindtap": "clearImg",
-          "type": "clear",
-          "size": "20",
-          "color": "red"
-        }
-      }), _vm._v(" "), _c('image', {
-        attrs: {
-          "bindtap": "showImg",
-          "src": file.src
-        }
-      })], 1)
-    }), _vm._v(" "), (item.fileList.length < 1 ? true : false) ? _c('image', {
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('van-uploader', {
       attrs: {
-        "bindtap": "showImg",
-        "src": "../../../static/images/add.jpg",
-        "eventid": '4_' + index
+        "file-list": item.fileList,
+        "maxCount": item.maxCount,
+        "accept": "image",
+        "eventid": '4_' + index,
+        "mpcomid": '2_' + index
       },
       on: {
-        "click": _vm.upload
+        "afterRead": function($event) {
+          item.afterRead($event, index)
+        },
+        "delete": function($event) {
+          item.del_img($event, index)
+        }
       }
-    }) : _vm._e()], 2)]) : (item.type == 'textarea') ? _c('view', {
+    })], 1) : (item.type == 'textarea') ? _c('view', {
       staticClass: "rich"
     }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
@@ -1493,7 +1497,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "show": item.showsecect,
         "position": "bottom",
-        "mpcomid": '3_' + index
+        "mpcomid": '4_' + index
       }
     }, [_c('van-datetime-picker', {
       attrs: {
@@ -1504,7 +1508,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "max-date": item.maxDate,
         "formatter": _vm.formatter,
         "eventid": '7_' + index,
-        "mpcomid": '2_' + index
+        "mpcomid": '3_' + index
       },
       on: {
         "cancel": function($event) {
@@ -1528,7 +1532,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._v("提交信息")])], 1)], 2), _vm._v(" "), _c('van-toast', {
     attrs: {
       "id": "van-toast",
-      "mpcomid": '4'
+      "mpcomid": '5'
     }
   })], 1)
 }

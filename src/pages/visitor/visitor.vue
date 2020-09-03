@@ -54,13 +54,13 @@
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
           <view>{{item.title}}</view>
-          <view class='ui_uploader_cell'>
-              <view class='ui_uploader_item' v-for="(file,ind) in item.fileList" :key="ind">
-                 <icon class='ui_uploader_item_icon' bindtap='clearImg'  type="clear" size="20" color="red"/>
-                 <image bindtap='showImg'  :src='file.src'></image>
-              </view>
-              <image bindtap='showImg' @click="upload"  src='../../../static/images/add.jpg'  v-if="item.fileList.length<1?true:false"></image>
-          </view>
+          <van-uploader
+              :file-list="item.fileList "
+              :maxCount="item.maxCount"
+              accept="image"
+              @afterRead="item.afterRead($event,index)"
+              @delete="item.del_img($event,index)"
+            />
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
@@ -609,8 +609,8 @@ export default {
               // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
             ],
           afterRead(event,index){
+            console.log(file)
           const { file } = event.mp.detail;
-          console.log(file)
           this.fileList.push({
             url:file.path,
             name: file.name,
@@ -618,17 +618,34 @@ export default {
             deletable: true,
           })
           this.judge=true;
-          that.$http.post({
-            url: 'app!fileUpload',
-            data:{
-            'uploadFileName': file.name,
-            'imgbese':file
-            },
-            }).then(res => {
-               console.log(res)
-            }).catch(err=>{
-               console.log(err)
+            // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
+            that.$http.post({
+              url: 'app!fileUpload', // 仅为示例，非真实的接口地址
+              filePath: file.path,
+              name: 'file',
+              data:{
+                "imgbese":file.path,
+                "uploadFileName":"Tupac"
+              },
+              success(res) {
+                // 上传完成需要更新 fileList
+                console.log(res)
+                // const { fileList = [] } = this.data;
+                // fileList.push({ ...file, url: res.data });
+                // this.setData({ fileList });
+              },
             })
+          // that.$http.post({
+          //   url: 'app!fileUpload',
+          //   data:{
+          //   'uploadFileName': file.name,
+          //   'imgbese':file
+          //   },
+          //   }).then(res => {
+          //      console.log(res)
+          //   }).catch(err=>{
+          //      console.log(err)
+          //   })
         },
         del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
