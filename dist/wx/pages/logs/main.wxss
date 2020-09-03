@@ -14,7 +14,7 @@
   align-items: center;
 }
 .log-list > ._li > ._a>._img {
-  width: 180rpx;
-  height: 160rpx;
+  width: 80rpx;
+  height: 80rpx;
   margin-bottom: 10rpx;
 }

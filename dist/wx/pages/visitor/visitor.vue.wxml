@@ -10,14 +10,10 @@
           </van-action-sheet>
         </view>
         <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text>
-          <view class="_view data-v-7467729a uploader-img  flex justify-content-start" wx:if="{{item.fileList}}">
-            <view class="_view data-v-7467729a uploader-list" wx:key="ind" key="{{ind}}" wx:for="{{item.fileList}}" wx:for-index="ind" wx:for-item="file">
-              <image src="{{file.path}}" data-index="{{ind}}" mode="scaleToFill" bindtap="previewImg1" class="_image data-v-7467729a"></image>
-              <image class="_image data-v-7467729a delete" data-index="{{ind}}" src="{{file.src}}" mode="widthFix" bindtap="deleteImg"></image>
+          <view wx:if="{{item.fileList}}" class="_view data-v-7467729a">
+            <view wx:key="ind" key="{{ind}}" wx:for="{{item.fileList}}" wx:for-index="ind" wx:for-item="file" class="_view data-v-7467729a">
+              <image src="{{file.url}}" data-index="{{ind}}" mode="scaleToFill" bindtap="previewImg1" class="_img data-v-7467729a"></image>
             </view>
-          </view>
-          <view class="_view data-v-7467729a upAdd" bindtap="chooseImg">
-            <image src="{{item.src}}" mode="widthFix" class="_image data-v-7467729a"></image>
           </view>
         </view>
         <view wx:elif="{{item.type=='textarea'}}" class="_view data-v-7467729a"><text class="_text data-v-7467729a">{{item.title}}</text> <textarea required="{{item.required}}" disabled="{{item.disabled}}" bindblur="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_textarea data-v-7467729a" /></view>

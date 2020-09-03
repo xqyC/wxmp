@@ -84,8 +84,8 @@ export default {
   align-items: center;
 }
 .log-list > li > a>img {
-  width: 90px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   margin-bottom: 5px;
 }
 </style>

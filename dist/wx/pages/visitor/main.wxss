@@ -1,1 +1,5 @@
 @import "../../common/vendor.wxss";
+
+.visitor {
+  margin: 0 40rpx;
+}
