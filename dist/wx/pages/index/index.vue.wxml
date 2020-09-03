@@ -1,12 +1,12 @@
-<import src="/components/card.vue.wxml" /><template name="4f469ec8">
+<import src="/components/card.vue.wxml" /><template name="479de6aa">
   <view bindtap="handleProxy" data-eventid="{{'3'}}" data-comkey="{{$k}}" class="_div data-v-3c426aa2">
     <view class="_div data-v-3c426aa2 userinfo" bindtap="handleProxy" data-eventid="{{'0'}}" data-comkey="{{$k}}">
       <image class="_img data-v-3c426aa2 userinfo-avatar" wx:if="{{userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <image class="_img data-v-3c426aa2 userinfo-avatar" src="/static/images/user.png" background-size="cover"></image>
-      <view class="_div data-v-3c426aa2 userinfo-nickname"><template data="{{...$root[$kk+'0'], $root}}" is="e25a72a4"></template></view>
+      <view class="_div data-v-3c426aa2 userinfo-nickname"><template data="{{...$root[$kk+'0'], $root}}" is="6a355151"></template></view>
     </view>
     <view class="_div data-v-3c426aa2 usermotto">
-      <view class="_div data-v-3c426aa2 user-motto"><template data="{{...$root[$kk+'1'], $root}}" is="e25a72a4"></template></view>
+      <view class="_div data-v-3c426aa2 user-motto"><template data="{{...$root[$kk+'1'], $root}}" is="6a355151"></template></view>
     </view>
     <form class="_form data-v-3c426aa2 form-container"><input type="text" class="_input data-v-3c426aa2 form-control" value="{{motto}}" placeholder="v-model" /> <input type="text" class="_input data-v-3c426aa2 form-control" value="{{motto}}" bindinput="handleProxy" placeholder="v-model" data-eventid="{{'1'}}" data-comkey="{{$k}}" /> <input type="text" class="_input data-v-3c426aa2 form-control" value="{{motto}}" bindblur="handleProxy" placeholder="v-model.lazy" data-eventid="{{'2'}}" data-comkey="{{$k}}" /></form>
     <view class="_div data-v-3c426aa2 all">

@@ -199,24 +199,6 @@ if (false) {(function () {
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -1384,10 +1366,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
     return _c('view', {
       key: index
     }, [(item.type == 'text' && item.show == true) ? _c('view', {
-      staticClass: "weui-cell__bd",
-      staticStyle: {
-        "margin": "30rpx 0"
-      }
+      staticClass: "weui-cell__bd"
     }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
       directives: [{
         name: "show",
@@ -1410,13 +1389,16 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
           item.change($event, index)
         }
       }
-    })]) : (item.type == 'select') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
+    })]) : (item.type == 'select') ? _c('view', {
+      staticClass: "weui-cell__bd"
+    }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
       directives: [{
         name: "show",
         rawName: "v-show",
         value: (item.show ? item.show : true),
         expression: "item.show ?item.show:true"
       }],
+      staticClass: "weui-input weui-choose",
       attrs: {
         "value": _vm.value[item.prop],
         "name": item.prop,
@@ -1479,7 +1461,9 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
           "bindtap": "previewImg1"
         }
       })])
-    })) : _vm._e()]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
+    })) : _vm._e()]) : (item.type == 'textarea') ? _c('view', {
+      staticClass: "rich"
+    }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
         "required": item.required,
         "disabled": item.disabled,
@@ -1490,7 +1474,10 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
           item.change($event, index)
         }
       }
-    })]) : (item.type == 'datetime') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
+    })]) : (item.type == 'datetime') ? _c('view', {
+      staticClass: "weui-cell__bd"
+    }, [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('input', {
+      staticClass: "weui-input weui-sele",
       attrs: {
         "value": _vm.value[item.prop],
         "name": item.prop,

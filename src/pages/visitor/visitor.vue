@@ -5,7 +5,6 @@
         <!-- input输入框 -->
         <view
           class="weui-cell__bd"
-          style="margin: 30rpx 0"
           v-if="item.type=='text' && item.show==true"
         >
           <text>{{item.title}}</text>
@@ -22,9 +21,9 @@
           />
         </view>
         <!-- 下拉选择 -->
-        <view v-else-if="item.type=='select'">
+        <view v-else-if="item.type=='select'" class="weui-cell__bd">
           <text>{{item.title}}</text>
-          <input
+          <input class="weui-input weui-choose"
             :value="value[item.prop]"
             :name="item.prop"
             :placeholder="item.placeholder"
@@ -60,26 +59,9 @@
               <img :src="file.url" :data-index="ind" mode="scaleToFill" bindtap="previewImg1" />
             </view>
           </view>
-          <!-- <view class='uploader-img  flex justify-content-start' wx:if="{{item.fileList}}"> -->
-          <!-- <view class='uploader-list' wx:for="{{item.fileList}}" wx:key="item.length">
-             <image src='{{item.path}}' data-index="{{item.index}}" mode="scaleToFill" bindtap='previewImg1'/>
-             <image class='delete' data-index="{{index}}" src='' mode="widthFix" bindtap='deleteImg'/>
-          </view>-->
-          <!-- </view> -->
-          <!-- <view class='upAdd' bindtap='chooseImg'>
-          <image src='' mode="widthFix"/>
-          </view>-->
-          <!-- <van-uploader
-            style="padding: 0 30rpx"
-            :file-list="item.fileList"
-            :multiple="item.multiple"
-            :maxCount="item.maxCount"
-            @afterRead="item.afterRead($event,index)"
-            @delete="item.del_img($event,index)"
-          ></van-uploader>-->
         </view>
         <!-- 多行文本 -->
-        <view v-else-if="item.type=='textarea'">
+        <view v-else-if="item.type=='textarea'" class="rich">
           <text>{{item.title}}</text>
           <textarea
             :required="item.required"
@@ -87,10 +69,10 @@
             @blur="item.change($event,index)"
           ></textarea>
         </view>
-        <view v-else-if="item.type=='datetime'">
+        <view v-else-if="item.type=='datetime'" class="weui-cell__bd">
           <!--时间 -->
           <text>{{item.title}}</text>
-          <input
+          <input class="weui-input weui-sele"
             :value="value[item.prop]"
             :name="item.prop"
             :placeholder="item.placeholder"
@@ -875,7 +857,30 @@ export default {
 }
 </script>
 <style>
-.visitor{
+/* .visitor{
   margin:0 20px;
+} */
+.weui-cell__bd{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #ccc;
+}
+.weui-cell__bd ._text{
+  width: 30%;
+}
+.weui-input{
+  text-align: right;
+  width: 70%;
+}
+.rich{
+  margin: 10px 15px;
+}
+.rich ._textarea{
+  width: calc(100% - 10px);
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
 }
 </style>
