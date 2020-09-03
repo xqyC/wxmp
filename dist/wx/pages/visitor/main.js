@@ -2,41 +2,18 @@ require("../../common/manifest.js")
 require("../../common/vendor.js")
 global.webpackJsonpMpvue([1],{
 
-/***/ 117:
+/***/ 100:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__visitor__ = __webpack_require__(118);
-
-
-
-// add this to handle exception
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.config.errorHandler = function (err) {
-  if (console && console.error) {
-    console.error(err);
-  }
-};
-
-var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_1__visitor__["a" /* default */]);
-app.$mount();
-
-/***/ }),
-
-/***/ 118:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_visitor_vue__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_7467729a_hasScoped_false_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_visitor_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_mpvue_loader_lib_selector_type_script_index_0_visitor_vue__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_mpvue_loader_lib_template_compiler_index_id_data_v_7467729a_hasScoped_false_transformToRequire_video_src_source_src_img_src_image_xlink_href_fileExt_template_wxml_script_js_style_wxss_platform_wx_node_modules_mpvue_loader_lib_selector_type_template_index_0_visitor_vue__ = __webpack_require__(112);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(119)
+  __webpack_require__(101)
 }
-var normalizeComponent = __webpack_require__(9)
+var normalizeComponent = __webpack_require__(4)
 /* script */
 
 /* template */
@@ -79,24 +56,23 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 119:
+/***/ 101:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 120:
+/***/ 103:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_defineProperty__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_datetime__ = __webpack_require__(125);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_validate__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dist_wx_vant_weapp_dist_toast_toast__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_datetime__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_validate__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dist_wx_vant_weapp_dist_toast_toast__ = __webpack_require__(110);
 
-//
 //
 //
 //
@@ -689,6 +665,7 @@ if (false) {(function () {
         afterRead: function afterRead(event, index) {
           var file = event.mp.detail.file;
 
+          console.log(file);
           this.fileList.push({
             url: file.path,
             name: file.name,
@@ -704,6 +681,8 @@ if (false) {(function () {
             }
           }).then(function (res) {
             console.log(res);
+          }).catch(function (err) {
+            console.log(err);
           });
         },
         del_img: function del_img(event) {
@@ -933,13 +912,16 @@ if (false) {(function () {
     //提交app!ajaxCommitTemp
     onClickButtonSubmit: function onClickButtonSubmit(values) {
       console.log(this.vlaue);
+    },
+    clearImg: function clearImg(e) {
+      console.log(e);
     }
   }
 });
 
 /***/ }),
 
-/***/ 125:
+/***/ 108:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1033,7 +1015,7 @@ that.formatDateStr = function (date) {
 
 /***/ }),
 
-/***/ 126:
+/***/ 109:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1235,11 +1217,11 @@ function regxcard(str) {
 
 /***/ }),
 
-/***/ 127:
+/***/ 110:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utils__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_utils__ = __webpack_require__(111);
 
 const defaultOptions = {
     type: 'text',
@@ -1310,7 +1292,7 @@ Toast.resetDefaultOptions = () => {
 
 /***/ }),
 
-/***/ 128:
+/***/ 111:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1349,7 +1331,7 @@ function getSystemInfoSync() {
 
 /***/ }),
 
-/***/ 129:
+/***/ 112:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1449,26 +1431,36 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('van-uploader', {
-      staticStyle: {
-        "padding": "0 30rpx"
-      },
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('view', {
+      staticClass: "ui_uploader_cell"
+    }, [_vm._l((item.fileList), function(file, ind) {
+      return _c('view', {
+        key: ind,
+        staticClass: "ui_uploader_item"
+      }, [_c('icon', {
+        staticClass: "ui_uploader_item_icon",
+        attrs: {
+          "bindtap": "clearImg",
+          "type": "clear",
+          "size": "20",
+          "color": "red"
+        }
+      }), _vm._v(" "), _c('image', {
+        attrs: {
+          "bindtap": "showImg",
+          "src": file.src
+        }
+      })], 1)
+    }), _vm._v(" "), (item.fileList.length < 1 ? true : false) ? _c('image', {
       attrs: {
-        "file-list": item.fileList,
-        "multiple": item.multiple,
-        "maxCount": item.maxCount,
-        "eventid": '4_' + index,
-        "mpcomid": '2_' + index
+        "bindtap": "showImg",
+        "src": "../../../static/images/add.jpg",
+        "eventid": '4_' + index
       },
       on: {
-        "afterRead": function($event) {
-          item.afterRead($event, index)
-        },
-        "delete": function($event) {
-          item.del_img($event, index)
-        }
+        "click": _vm.upload
       }
-    })], 1) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
+    }) : _vm._e()], 2)]) : (item.type == 'textarea') ? _c('view', [_c('text', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('textarea', {
       attrs: {
         "required": item.required,
         "disabled": item.disabled,
@@ -1497,7 +1489,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       attrs: {
         "show": item.showsecect,
         "position": "bottom",
-        "mpcomid": '4_' + index
+        "mpcomid": '3_' + index
       }
     }, [_c('van-datetime-picker', {
       attrs: {
@@ -1508,7 +1500,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
         "max-date": item.maxDate,
         "formatter": _vm.formatter,
         "eventid": '7_' + index,
-        "mpcomid": '3_' + index
+        "mpcomid": '2_' + index
       },
       on: {
         "cancel": function($event) {
@@ -1532,7 +1524,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
   }, [_vm._v("提交信息")])], 1)], 2), _vm._v(" "), _c('van-toast', {
     attrs: {
       "id": "van-toast",
-      "mpcomid": '5'
+      "mpcomid": '4'
     }
   })], 1)
 }
@@ -1547,6 +1539,29 @@ if (false) {
   }
 }
 
+/***/ }),
+
+/***/ 99:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__visitor__ = __webpack_require__(100);
+
+
+
+// add this to handle exception
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.config.errorHandler = function (err) {
+  if (console && console.error) {
+    console.error(err);
+  }
+};
+
+var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a(__WEBPACK_IMPORTED_MODULE_1__visitor__["a" /* default */]);
+app.$mount();
+
 /***/ })
 
-},[117]);
+},[99]);

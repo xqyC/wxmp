@@ -55,14 +55,13 @@
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
           <view>{{item.title}}</view>
-          <van-uploader
-            style="padding: 0 30rpx"
-            :file-list="item.fileList"
-            :multiple="item.multiple"
-            :maxCount="item.maxCount"
-            @afterRead="item.afterRead($event,index)"
-            @delete="item.del_img($event,index)"
-          ></van-uploader>
+          <view class='ui_uploader_cell'>
+              <view class='ui_uploader_item' v-for="(file,ind) in item.fileList" :key="ind">
+                 <icon class='ui_uploader_item_icon' bindtap='clearImg'  type="clear" size="20" color="red"/>
+                 <image bindtap='showImg'  :src='file.src'></image>
+              </view>
+              <image bindtap='showImg' @click="upload"  src='../../../static/images/add.jpg'  v-if="item.fileList.length<1?true:false"></image>
+          </view>
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'">
@@ -248,7 +247,7 @@ export default {
           maxDate: new Date(2060, 10, 1).getTime(),
           currentDate: new Date().getTime(),
             //确定
-        confirm:(e,index)=>{
+          confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
             if(time>that.value.begTime){
                 this.judge=true
@@ -612,6 +611,7 @@ export default {
             ],
           afterRead(event,index){
           const { file } = event.mp.detail;
+          console.log(file)
           this.fileList.push({
             url:file.path,
             name: file.name,
@@ -620,14 +620,16 @@ export default {
           })
           this.judge=true;
           that.$http.post({
-                  url: 'app!fileUpload',
-                  data:{
-                  'uploadFileName': file.name,
-                  'imgbese': file
-                  },
-                  }).then(res => {
-                    console.log(res)
-                  })
+            url: 'app!fileUpload',
+            data:{
+            'uploadFileName': file.name,
+            'imgbese':file
+            },
+            }).then(res => {
+               console.log(res)
+            }).catch(err=>{
+               console.log(err)
+            })
         },
         del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
@@ -854,7 +856,10 @@ export default {
         onClickButtonSubmit(values) {
             console.log(this.vlaue)
         },
-      },
+        clearImg(e){
+          console.log(e)
+        }
+      }
 }
 </script>
 <style>

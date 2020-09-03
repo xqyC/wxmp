@@ -7,7 +7,7 @@ var httpUrl="http://192.168.0.184:8080/XYHGYQ/"
 // 荣
 // var httpUrl="http://192.168.0.142:8080/TXHGYQ/"
 // 吕
-// var httpUrl="http://192.168.0.171:8080/XYHGYQ/"
+ //var httpUrl="http://192.168.0.171:8080/XYHGYQ/"
 //施
 // var httpUrl="http://192.168.0.23:8080/TXHGYQ/"
 function request (url, method, data) {
@@ -20,16 +20,10 @@ function request (url, method, data) {
       method: method,
       data: data,
       headers: {
-        'content-type': 'application/json' // 默认值
+        'content-type': 'application/json;charset=UTF-8' // 默认值
       },
       success: function (res) {
         var json = res.data
-        if (typeof json != 'object') {
-          if (json != null) {
-            json = json.replace("\ufeff", "")
-            json = JSON.parse(json)
-          }
-        }
         wx.hideLoading()
         resolve(json)
       },
