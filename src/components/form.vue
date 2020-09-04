@@ -1,12 +1,9 @@
 <template>
-   <view class="visitor">
+  <view class="box">
     <form catchsubmit="formSubmit" catchreset="formReset" bindsubmit="formSubmit">
       <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
-        <view
-          class="weui-cell__bd"
-          v-if="item.type=='text' && item.show==true"
-        >
+        <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
           <text>{{item.title}}</text>
           <input
             class="weui-input"
@@ -24,7 +21,8 @@
         <!-- 下拉选择 -->
         <view v-else-if="item.type=='select'" class="weui-cell__bd">
           <text>{{item.title}}</text>
-          <input class="weui-input weui-choose"
+          <input
+            class="weui-input weui-choose"
             :value="value[item.prop]"
             placeholder-class="phcolor"
             :name="item.prop"
@@ -55,15 +53,15 @@
         </view>
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
-          <view  class="weui-cell__td">{{item.title}}</view>
+          <view class="weui-cell__td">{{item.title}}</view>
           <van-uploader
-              class="weui-cell__bd"
-              :file-list="item.fileList "
-              :maxCount="item.maxCount"
-              accept="image"
-              @afterRead="item.afterRead($event,index)"
-              @delete="item.del_img($event,index)"
-            />
+            class="weui-cell__bd"
+            :file-list="item.fileList "
+            :maxCount="item.maxCount"
+            accept="image"
+            @afterRead="item.afterRead($event,index)"
+            @delete="item.del_img($event,index)"
+          />
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
@@ -79,7 +77,8 @@
         <view v-else-if="item.type=='datetime'" class="weui-cell__bd">
           <!--时间 -->
           <text>{{item.title}}</text>
-          <input class="weui-input weui-sele"
+          <input
+            class="weui-input weui-sele"
             :value="value[item.prop]"
             placeholder-class="phcolor"
             :name="item.prop"
@@ -103,7 +102,7 @@
         </view>
       </view>
       <view class="btn-area">
-        <button style="margin: 30rpx" type="primary"  formType="formSubmit">提交信息</button>
+        <button style="margin: 30rpx" type="primary" formType="formSubmit">提交信息</button>
       </view>
     </form>
     <van-toast id="van-toast" />
@@ -122,7 +121,47 @@ export default {
 </script>
 
 <style>
-.card {
+ .weui-cell__bd {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #f1eded;
+}
+.weui-cell__td {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+.weui-cell__bd ._text {
+  width: 30%;
+}
+.weui-input {
+  text-align: right;
+  width: 70%;
+  font-size: 15px;
+  color: rgb(94, 92, 92);
+}
+.rich {
+  margin: 10px 15px;
+}
+.rich ._textarea {
+  width: calc(100% - 10px);
+  margin-top: 10px;
+  border: 1px solid #f1eded;
+  border-radius: 5px;
+  padding: 5px;
+}
+.actiondata {
   padding: 10px;
+  display: block;
+}
+.actiondata:not(:last-child) {
+  border: 1px solid #f1eded;
+}
+.phcolor {
+  font-size: 14px;
+  color: #aab2bd;
+  text-align: right;
 }
 </style>
+
