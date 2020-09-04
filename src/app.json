@@ -3,8 +3,9 @@
     "pages/logs/main",
     "pages/index/main",
     "pages/search/main",
-    "pages/transport/main",
-    "pages/visitor/main"
+    "pages/details/main",
+    "pages/visitor/main",
+    "pages/transport/main"
   ],
   "usingComponents": {
     "van-button": "vant-weapp/dist/button/index",

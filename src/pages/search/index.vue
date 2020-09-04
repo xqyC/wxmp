@@ -11,14 +11,32 @@
         <van-button type="primary" @click="search" style="flex-shrink:0;margin-right:5px;">搜索</van-button>
       </view>
     </view>
-    <view type="primary" v-if="appList.length>0">
-      <view v-for="(item,index) in appList" :key="index">
-          <view>
-            <text></text>
-          </view>
+    <!--v-for="(item,index) in appList" :key="index" v-if="appList.length>0" -->
+    <view type="primary" class="lists">
+      <view class="listbox" @click="details">
+        <view class="first between">
+          <text>LIm</text>
+          <van-button type="primary">待审核</van-button>
+        </view>
+        <view class="first">
+          <text>身份证号码:</text>
+          <text type="primary">3201236541236598456</text>
+        </view>
+        <view class="first">
+          <text>到访单位:</text>
+          <text type="primary">江苏大范德萨发生的</text>
+        </view>
+        <view class="first">
+          <text>来访时间:</text>
+          <text type="primary">20120306 08:32</text>
+        </view>
+        <view class="first">
+          <text>离开时间:</text>
+          <text type="primary">20120306 09:32</text>
+        </view>
       </view>
     </view>
-    <view class="empty" v-else>暂无记录!</view>
+    <!-- <view class="empty" v-else>暂无记录!</view> -->
   </view>
 </template>
 <script>
@@ -98,6 +116,11 @@ export default {
           }
       })
     },
+    details(){
+      wx.navigateTo({
+        url:'../details/main'
+      })
+    },
     search(){
       that.page=1;
       this.getList();
@@ -111,19 +134,46 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+.search {
+  background: #f6f6f6;
+  height: 100vh;
+}
 .header {
   display: flex;
+  background: #fff;
 }
 .empty {
   font-size: 18px;
   text-align: center;
   color: rgb(141, 140, 140);
-  margin-top:10px;
+  margin-top: 10px;
 }
 .add {
   text-align: right;
   padding: 5px;
+}
+.listbox {
+  margin: 5px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+.lists {
+  padding: 5px;
+}
+.first {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: 40px;
+  text {
+    padding-left: 5px;
+  }
+}
+
+.between {
+  justify-content: space-between;
 }
 </style>
 <style lang="scss">
@@ -136,8 +186,8 @@ export default {
     height: 30px !important;
     line-height: 30px !important;
   }
-  .van-search{
-    padding:0 5px;
+  .van-search {
+    padding: 0 5px;
     align-items: center;
   }
 }
