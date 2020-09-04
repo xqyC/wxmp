@@ -58,21 +58,39 @@ export default {
           searchvalue:'',
           actions: [],
           secetevent:(index)=>{
-             that.formdata[index].showsecect=true;
+            that.formdata[index].showsecect=true;
+            that.formdata[0].searchvalue = ""
+            that.getCompany();
           },
           //关闭弹框
-        Close(index){
-          this.showsecect=false
-          if(that.value.fwdeptName){
-            this.judge=true
-          }else{
+          Close(index){
+            this.showsecect=false
+            if(that.value.fwdeptName){
+              this.judge=true
+            }else{
               this.judge=false
-             this.message="请选择访问单位"
-             Toast(this.message);
-          }
-        },
-        //选中
-        onSearch(index,ind){
+              this.message="请选择访问单位"
+              Toast(this.message);
+            }
+          },
+          // 监听输入变化
+          onInput(value){
+            // console.log(value.mp.detail);
+            that.formdata[0].searchvalue = value.mp.detail;
+            let listdata=[];
+            if(value.mp.detail.length < 1){
+              that.getCompany();
+            }else{
+              for(var i=0;i<that.formdata[0].actions.length;i++){
+                if(that.formdata[0].actions[i].deptName.indexOf(value.mp.detail) != -1){
+                  listdata.push(that.formdata[0].actions[i])
+                }
+              }
+              that.formdata[0].actions = listdata
+            }
+          },
+          //选中
+          onSearch(index,ind){
             this.activeaction=ind;
             that.value.fwdeptName=this.actions[ind].name
             this.showsecect=false
