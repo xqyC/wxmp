@@ -741,7 +741,7 @@ export default {
           message:"",
           judge:true,//判断
           prop:"followMan",
-              color:'#ff976a',
+          color:'#ff976a',
           disabled:false,
           placeholder:"请输入随行人员姓名",
           required:false,

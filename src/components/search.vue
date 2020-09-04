@@ -1,16 +1,13 @@
 <template>
   <view class="search">
-    <view>
       <view class="add">
         <van-button type="primary" @click="add">新增</van-button>
       </view>
       <view class="header">
-        <view v-for="(item,index) in search" :key="index" style="flex-shrink: 1;">
-          <van-search :value="value[prop]" :placeholder="item.placeholder" />
-        </view>
+        <van-search :value="value[firstprop]" :placeholder="value.firstplaceholder" />
+        <van-search :value="value[twoprop]" :placeholder="value.twoplaceholder" />
         <van-button type="primary" @click="search" style="flex-shrink:0;margin-right:5px;">搜索</van-button>
       </view>
-    </view>
     <!---->
     <view scroll-view type="primary" class="lists" v-if="appList.length>0">
       <view class="listbox" @click="details(item)" v-for="(item,index) in appList" :key="index">
@@ -48,7 +45,7 @@
 </template>
 <script>
     export default{
-        props:["search","appList","value"],
+        props:["appList","value"],
         methods:{
             add(){
                this.$emit("add")

@@ -2,7 +2,6 @@
   <view class="search">
       <searchdom 
         :appList="appList" 
-        :search="searchtop"
         :value="value"
         @add="add"
         @search="search"
@@ -15,7 +14,12 @@ import searchdom from "../../components/search";
 export default {
   data () {
     return {
-      value:{},
+      value:{
+          firstprop:"dept",
+          twoprop:"car",
+          firstplaceholder:"请输入到访单位",
+          twoplaceholder:"请输入姓名"
+      },
       appList: [{
         ID:'lime',
         fcontact:"user-circle-o",
@@ -40,17 +44,6 @@ export default {
       }], // 列表数据
       page: 1,      // 当前页数
       total_page: 0,// 总页数
-      searchtop:[
-        {
-          prop:"deptid",
-          placeholder:'请输入到访单位',
-        },
-        {
-          prop:'car',
-          placeholder:'请输入姓名',
-        },
-       
-      ],
     }
   },
   components:{
