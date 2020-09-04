@@ -77,11 +77,13 @@ export default {
           actions: [],
           secetevent:(index)=>{
             that.formdata[index].showsecect=true;
+            that.formdata[1].searchvalue = ""
+            that.getCompany();
           },
           // 监听输入变化
           onInput(value){
             // console.log(value.mp.detail);
-            that.formdata[0].searchvalue = value.mp.detail;
+            that.formdata[1].searchvalue = value.mp.detail;
             let listdata=[];
             if(value.mp.detail.length < 1){
               that.getCompany();
@@ -210,9 +212,28 @@ export default {
           show:true,
           message:'请选择危化品名称',
           searchvalue:'',
-          actions: [ ],
+          actions: [],
           secetevent:(index)=>{
             that.formdata[index].showsecect=true;
+            that.formdata[6].searchvalue = ""
+            that.getCompany();
+          },
+          // 监听输入变化
+          onInput(value){
+            // console.log(value.mp.detail);
+            // console.log(that.formdata[6].actions)
+            that.formdata[6].searchvalue = value.mp.detail;
+            let listdata=[];
+            if(value.mp.detail.length < 1){
+              that.getCompany();
+            }else{
+              for(var i=0;i<that.formdata[6].actions.length;i++){
+                if(that.formdata[6].actions[i].name.indexOf(value.mp.detail) != -1){
+                  listdata.push(that.formdata[6].actions[i])
+                }
+              }
+              that.formdata[6].actions = listdata
+            }
           },
           //关闭弹框
           Close(index){
@@ -799,23 +820,22 @@ export default {
       })
       //危化品名称
       this.$http.post({
-      url: 'app!Chemicals',
+        url: 'app!Chemicals',
         data : {},
       }).then(res => {
-          if(res.result=="success"){
-            console.log(res)
-            res.data.map(item=>{
-              item.name =item.NAME
-            })
-            this.formdata[6].actions=res.data
-            this.formdata[6].actions.push( {name:"空车"})
-          }
+        if(res.result=="success"){
+          // console.log(res)
+          res.data.map(item=>{
+            item.name =item.NAME
+          })
+          this.formdata[6].actions=res.data
+          this.formdata[6].actions.push( {name:"空车"})
+        }
       })
     },
     //提交app!ajaxCommitTemp
     formSubmit(values) {
-      
-        console.log(this.vlaue)
+      console.log(this.vlaue)
     },
     clearImg(e){
       console.log(e)
