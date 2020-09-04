@@ -1,46 +1,47 @@
 <template>
-  <view class="box">
-    <view v-for="(item,index) in formdata" :key="index">
-      <!-- input输入框 -->
-      <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
-        <van-icon :name="item.contact" :color="item.color" />
-        <text>{{item.title}}</text>
-        <input
-          class="weui-input"
-          :value="value[item.prop]"
-          :disabled="item.disabled"
-          v-show="item.show ?item.show:true"
-        />
-      </view>
-      <!-- 上传文件 -->
-      <view v-else-if="item.type=='upload' && item.fileList.length>0">
-        <view class="weui-cell__up">
+  <view>
+    <view class="box">
+      <view v-for="(item,index) in formdata" :key="index">
+        <!-- input输入框 -->
+        <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
           <van-icon :name="item.contact" :color="item.color" />
           <text>{{item.title}}</text>
+          <input
+            class="weui-input"
+            :value="value[item.prop]"
+            :disabled="item.disabled"
+            v-show="item.show ?item.show:true"
+          />
         </view>
-        <van-uploader
-          class="weui-cell__bd"
-          :file-list="item.fileList "
-          :deletable="item.deletable"
-          :maxCount="item.maxCount"
-        />
-      </view>
-      <!-- 多行文本 -->
-      <view v-else-if="item.type=='textarea'" class="rich">
-        <view class="txts">
-          <van-icon :name="item.contact" :color="item.color" />
-          <text>{{item.title}}</text>
+        <!-- 上传文件 -->
+        <view v-else-if="item.type=='upload' && item.fileList.length>0">
+          <view class="weui-cell__up">
+            <van-icon :name="item.contact" :color="item.color" />
+            <text>{{item.title}}</text>
+          </view>
+          <van-uploader
+            class="weui-cell__bd"
+            :file-list="item.fileList "
+            :deletable="item.deletable"
+            :maxCount="item.maxCount"
+          />
         </view>
-        <textarea
-          :required="item.required"
-          :disabled="item.disabled"
-          :placeholder="item.placeholder"
-          placeholder-class="phcolor"
-          @blur="item.change($event,index)"
-        ></textarea>
+        <!-- 多行文本 -->
+        <view v-else-if="item.type=='textarea'" class="rich">
+          <view class="txts">
+            <van-icon :name="item.contact" :color="item.color" />
+            <text>{{item.title}}</text>
+          </view>
+          <textarea
+            :required="item.required"
+            :disabled="item.disabled"
+            :placeholder="item.placeholder"
+            @blur="item.change($event,index)"
+          ></textarea>
+        </view>
       </view>
+      <van-toast id="van-toast" />
     </view>
-    <van-toast id="van-toast" />
   </view>
 </template>
 <script>
