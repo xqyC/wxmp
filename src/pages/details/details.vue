@@ -194,10 +194,12 @@ export default {
            color:'#07c160',
         },{
           title:"审批文件:",
-           type:"upload",
-             maxCount:1,
-           show:true,
-           color:'#ff976a',
+          type:"upload",
+          contact:"idcard",
+           color:'#07c160',
+          maxCount:1,
+          show:true,
+          color:'#ff976a',
            fileList: [],
         },{
           title:"其他审批文件1:",

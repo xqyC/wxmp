@@ -4,7 +4,8 @@
       <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
         <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
-          <text>{{item.title}}</text>
+            <van-icon  class="lefticon" :name="item.contact" :color="item.color" />
+            <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input"
             placeholder-class="phcolor"
@@ -12,25 +13,22 @@
             :name="item.prop"
             @blur="item.change($event,index)"
             :placeholder="item.placeholder"
-            :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
-            :required="item.required"
           />
+          
         </view>
         <!-- 下拉选择 -->
         <view v-else-if="item.type=='select'" class="weui-cell__bd">
-          <text>{{item.title}}</text>
+           <van-icon class="lefticon"  :name="item.contact" :color="item.color" />
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input weui-choose"
             :value="value[item.prop]"
-            placeholder-class="phcolor"
             :name="item.prop"
             :placeholder="item.placeholder"
-            :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
-            :required="item.required"
             @click="item.secetevent(index)"
           />
           <van-action-sheet
@@ -53,7 +51,10 @@
         </view>
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
-          <view class="weui-cell__td">{{item.title}}</view>
+          <view class="upbox">
+             <van-icon class="lefticon"  :name="item.contact" :color="item.color" />
+             <view :class="item.required?'required':''" class="weui-cell__td">{{item.title}}</view>
+          </view>
           <van-uploader
             class="weui-cell__bd"
             :file-list="item.fileList "
@@ -65,26 +66,24 @@
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
-          <text>{{item.title}}</text>
+           <van-icon class="lefticon"  :name="item.contact" :color="item.color" />
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <textarea
-            :required="item.required"
             :disabled="item.disabled"
             :placeholder="item.placeholder"
-            placeholder-class="phcolor"
             @blur="item.change($event,index)"
           ></textarea>
         </view>
         <view v-else-if="item.type=='datetime'" class="weui-cell__bd">
           <!--时间 -->
-          <text>{{item.title}}</text>
+          <van-icon class="lefticon"  :name="item.contact" :color="item.color" />
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input weui-sele"
             :value="value[item.prop]"
-            placeholder-class="phcolor"
             :name="item.prop"
             :placeholder="item.placeholder"
             :disabled="item.disabled"
-            :required="item.required"
             @click="item.secetevent(index)"
           />
           <van-popup :show="item.showsecect" position="bottom">
@@ -120,7 +119,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
  .weui-cell__bd {
   display: flex;
   justify-content: space-between;
@@ -133,11 +132,11 @@ export default {
   padding: 10px 15px;
 }
 .weui-cell__bd ._text {
-  width: 30%;
+  width: 32%;
 }
 .weui-input {
   text-align: right;
-  width: 70%;
+  width: 68%;
   font-size: 15px;
   color: rgb(94, 92, 92);
 }
@@ -158,10 +157,25 @@ export default {
 .actiondata:not(:last-child) {
   border: 1px solid #f1eded;
 }
+text:not(:first-child){
+  padding-left:16px;
+}
 .phcolor {
   font-size: 14px;
   color: #aab2bd;
   text-align: right;
+}
+.required::before {
+    position: absolute;
+    left: 38px;
+    color: #ee0a24;
+    font-size: 14px;
+    content: '*';
+}
+.upbox{
+  display:flex;
+  align-items: center;
+  padding:0 15px;
 }
 </style>
 

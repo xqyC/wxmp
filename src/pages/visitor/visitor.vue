@@ -49,6 +49,7 @@ export default {
         prop:"fwdeptName",
         placeholder:"请选择访问单位",
         required:true,
+        color:'#1989fa',
         contact:"wap-home-o",
         showsecect:false,
         activeaction:'',
@@ -58,8 +59,6 @@ export default {
         actions: [],
         secetevent:(index)=>{
           that.formdata[index].showsecect=true;
-          that.formdata[0].searchvalue = "";
-          that.getCompany();
         },
         //关闭弹框
         Close(index){
@@ -105,6 +104,7 @@ export default {
           placeholder:"",
           required:false,
           contact:"credit-pay",
+          color:'#1989fa',
         },
         {
           title:"预约来访时间:",
@@ -159,6 +159,7 @@ export default {
           showsecect:false,
           show:true,
           activeaction:'',
+          color:'#07c160',
           searchvalue:'',
           secetevent:(index)=>{
              if(that.value.begTime){
@@ -203,7 +204,8 @@ export default {
           disabled:false,
           placeholder:"请输入所属企业",
           required:false,
-          contact:"wap-home-o",
+           contact:"wap-home-o",
+          color:'#1989fa',
           change:(event)=>{
                that.value.fromDeptName=event.mp.detail.value
           }
@@ -218,7 +220,8 @@ export default {
           disabled:false,
           placeholder:"请输入访客姓名",
           required:true,
-          contact:"user-circle-o",
+            contact:"user-circle-o",
+           color:'#1989fa',
           change:(event)=>{
                that.value.peopleName=event.mp.detail.value
                if(that.value.peopleName){
@@ -235,12 +238,13 @@ export default {
           judge:false,//判断
           message:'请输入访客身份证号',
           required:true,
+          contact:"idcard",
+          color:'#1989fa',
           show:true,
           type:"text",
           prop:"idCard",
           disabled:false,
           placeholder:"请输入访客身份证号",
-          contact:"idcard",
           change:(event)=>{
                that.value.idCard=event.mp.detail.value
                if(that.value.idCard){
@@ -267,11 +271,12 @@ export default {
           judge:false,//判断
           message:'请输入访客手机号',
           type:"text",
-           prop:"peopleTel",
+          prop:"peopleTel",
           disabled:false,
           placeholder:"请输入访客手机号",
           required:true,
           contact:"phone-circle-o",
+          color:'#1989fa',
           change:(event)=>{
                that.value.peopleTel=event.mp.detail.value
                if(that.value.peopleTel){
@@ -302,8 +307,9 @@ export default {
           disabled:true,
           prop:"isOrnot",
           placeholder:"请选择入园方式",
-          contact:"logistics",
           showsecect:false,
+          contact:"logistics",
+          color:'#ee0a24',
           activeaction:'',
           show:false,
           searchvalue:'',
@@ -404,7 +410,8 @@ export default {
           placeholder:"请输入访客车牌号",
           required:true,
           show:false,
-          contact:"logistics",
+           contact:"logistics",
+          color:'#ff976a',
           change:(event,index)=>{
                that.value.load=event.mp.detail.value
                if(that.value.load){
@@ -435,7 +442,8 @@ export default {
           disabled:false,
           placeholder:"请输入载重量",
           required:true,
-          contact:"logistics",
+           contact:"logistics",
+          color:'#07c160',
           change:(event)=>{
               that.value.carNum=event.mp.detail.value
               if(that.value.carNum){
@@ -462,11 +470,12 @@ export default {
            message:'',
           type:"text",
           prop:"carrays",
-           show:false,
+          show:false,
           disabled:false,
           placeholder:"请输入载客人数",
           required:true,
           contact:"friends-o",
+          color:'#07c160',
           change:(event)=>{
                that.value.carrays=event.mp.detail.value
                 if(that.value.carrays){
@@ -498,6 +507,7 @@ export default {
           placeholder:"请输入限载人数",
           required:true,
           contact:"friends-o",
+          color:'#ee0a24',
           change:(event)=>{
                that.value.posting=event.mp.detail.value
               if(that.value.posting){
@@ -520,6 +530,8 @@ export default {
         },
         {
           title:"司机驾驶证:",
+          contact:"idcard",
+          color:'#07c160',
           judge:false,//判断
           show:false,
           multiple:false,
@@ -566,6 +578,8 @@ export default {
         },{
           title:"车辆行驶证:",
           message:'请上传车辆行驶证',
+          contact:"idcard",
+           color:'#07c160',
           judge:false,//判断
            maxCount:1,
           disabled:true,
@@ -593,6 +607,8 @@ export default {
           }
         },{
           title:"审批文件:",
+          contact:"idcard",
+           color:'#07c160',
            type:"upload",
             maxCount:1,
            judge:true,//判断
@@ -615,6 +631,8 @@ export default {
           }
         },{
           title:"其他审批文件1:",
+            contact:"idcard",
+           color:'#07c160',
            judge:true,//判断
            multiple:false,
             maxCount:1,
@@ -638,6 +656,8 @@ export default {
           }
         },{
           title:"其他审批文件2:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
            multiple:false,
@@ -660,6 +680,8 @@ export default {
           }
         },{
           title:"其他审批文件3:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
             multiple:false,
@@ -682,6 +704,8 @@ export default {
           }
         },{
           title:"其他审批文件4:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
            multiple:false,
@@ -707,6 +731,8 @@ export default {
           judge:true,//判断8608917@qq.com
            multiple:false,
               maxCount:1,
+                  contact:"idcard",
+           color:'#07c160',
           type:"upload",
           disabled:true,
           required:false,
@@ -731,6 +757,7 @@ export default {
           message:"",
           judge:true,//判断
           prop:"followMan",
+              color:'#ff976a',
           disabled:false,
           placeholder:"请输入随行人员姓名",
           required:false,
@@ -742,6 +769,7 @@ export default {
         {
           type:"textarea",
           title:"申请说明",
+           color:'#ee0a24',
           judge:false,//判断
           message:"请输入申请说明",
           prop:"remark",

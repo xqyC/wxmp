@@ -41,16 +41,23 @@ export default {
       formdata:[
         {
           title:"运输单号:",
-          judge:true,//判断
+          judge:false,//判断
           show:true,
           type:"text",
           prop:"transNo",
           disabled:false,
           placeholder:"请输入运输单号",
-          required:false,
+          required:true,
           contact:"wap-home-o",
           change:(event)=>{
             that.value.transNo=event.mp.detail.value
+            if( that.value.transNo){
+              this.judge=true
+            }else {
+              this.judge=false
+              this.message="请输入运输单号"
+              Toast(this.message);
+            }
           }
         },{
           title:"前往企业:",
@@ -189,6 +196,44 @@ export default {
             }
           }
         },{
+          title:"危化品名称:",
+          type:"select",
+          judge:false,//判断
+          titlename:"==请选择==",
+          disabled:true,
+          prop:"dangerGoodName",
+          placeholder:"请选择危化品名称",
+          required:true,
+          contact:"wap-home-o",
+          showsecect:false,
+          activeaction:'',
+          show:true,
+          message:'请选择危化品名称',
+          searchvalue:'',
+          actions: [ ],
+          secetevent:(index)=>{
+             that.formdata[index].showsecect=true;
+          },
+          //关闭弹框
+        Close(index){
+          this.showsecect=false
+          if(that.value.dangerGoodName){
+            this.judge=true
+          }else{
+              this.judge=false
+             this.message="请选择危化品名称"
+             Toast(this.message);
+          }
+        },
+        //选中
+        onSearch(index,ind){
+            this.activeaction=ind;
+            that.value.dept=this.actions[ind].name
+            this.showsecect=false
+            this.judge=true;
+            },
+          },
+         {
           title:"货运状态:",
           judge:false,//判断
           message:'请选择货运状态',
@@ -752,6 +797,20 @@ export default {
           })
           this.formdata[1].actions= res.data
         }
+      })
+      //危化品名称
+      this.$http.post({
+      url: 'app!Chemicals',
+        data : {},
+      }).then(res => {
+          if(res.result=="success"){
+            console.log(res)
+            res.data.map(item=>{
+              item.name =item.NAME
+            })
+            this.formdata[6].actions=res.data
+            this.formdata[6].actions.push( {name:"空车"})
+          }
       })
     },
     //提交app!ajaxCommitTemp
