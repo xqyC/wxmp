@@ -4,6 +4,7 @@
       <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
         <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
+          <van-icon :name="item.contact" :color="item.color" />
           <text>{{item.title}}</text>
           <input
             class="weui-input"
@@ -14,16 +15,23 @@
         </view>
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.fileList.length>0">
-          <view class="weui-cell__td">{{item.title}}</view>
+          <view class="weui-cell__up">
+            <van-icon :name="item.contact" :color="item.color" />
+            <text>{{item.title}}</text>
+          </view>
           <van-uploader
             class="weui-cell__bd"
             :file-list="item.fileList "
+            :deletable="item.deletable"
             :maxCount="item.maxCount"
           />
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
-          <text>{{item.title}}</text>
+          <view class="txts">
+            <van-icon :name="item.contact" :color="item.color" />
+            <text>{{item.title}}</text>
+          </view>
           <textarea
             :required="item.required"
             :disabled="item.disabled"
@@ -48,6 +56,7 @@ export default {
         },
       formdata:[{
           title:"访问单位:",
+          color:'#1989fa',
           type:"text",
           disabled:true,
           prop:"fwdeptName",
@@ -56,6 +65,7 @@ export default {
         },
         {
           title:"临时卡类型:",
+          color:'#1989fa',
           type:"text",
           disabled:true,
           show:true,
@@ -64,6 +74,7 @@ export default {
         },
         {
           title:"预约来访时间:",
+          color:'#07c160',
           type:"text",
           prop:"begTime",
           disabled:true,
@@ -72,6 +83,7 @@ export default {
         },
         {
           title:"预约离开时间:",
+           color:'#07c160',
           type:"text",
           prop:"endTime",
           disabled:true,
@@ -85,6 +97,7 @@ export default {
           prop:"fromDeptName",
           disabled:true,
           contact:"wap-home-o",
+          color:'#1989fa'
         },
         {
           title:"访客姓名:",
@@ -93,6 +106,7 @@ export default {
           type:"text",
           disabled:true,
           contact:"user-circle-o",
+           color:'#1989fa'
         },
         {
           title:"访客身份证号:",
@@ -101,6 +115,7 @@ export default {
           prop:"idCard",
           disabled:true,
           contact:"idcard",
+           color:'#1989fa'
         },
         {
           title:"访客手机号:",
@@ -109,6 +124,7 @@ export default {
           prop:"peopleTel",
           disabled:true,
           contact:"phone-circle-o",
+          color:'#1989fa'
         },
           {
           title:"入园方式:",
@@ -116,6 +132,7 @@ export default {
           disabled:true,
           prop:"isOrnot",
           contact:"logistics",
+          color:'#ee0a24',
         },
         {
           title:"访客车牌号:",
@@ -124,6 +141,7 @@ export default {
           disabled:true,
           show:false,
           contact:"logistics",
+          color:'#ff976a',
         },
         {
           title:"载重量:",
@@ -132,6 +150,7 @@ export default {
           prop:"carNum",
           disabled:false,
           contact:"logistics",
+          color:'#07c160',
         },
         {
           title:"载客人数:",
@@ -140,6 +159,7 @@ export default {
           show:false,
           disabled:true,
           contact:"friends-o",
+           color:'#07c160',
         },
          {
           title:"限载人数:",
@@ -148,11 +168,15 @@ export default {
           show:true,
           disabled:false,
           contact:"friends-o",
+          color:'#ee0a24'
         },
         {
           title:"司机驾驶证:",
+          deletable:false,
           type:"upload",
           show:true,
+          contact:"idcard",
+          color:'#07c160',
           maxCount:1,
             fileList: [
              { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
@@ -161,42 +185,61 @@ export default {
             ],
         },{
           title:"车辆行驶证:",
+          contact:"idcard",
+          deletable:false,
           type:"upload",
           maxCount:1,
           fileList: [],
           show:true,
+           color:'#07c160',
         },{
           title:"审批文件:",
            type:"upload",
              maxCount:1,
            show:true,
+           color:'#ff976a',
            fileList: [],
         },{
           title:"其他审批文件1:",
-            maxCount:1,
+           color:'#ff976a',
+           deletable:false,
+           contact:"idcard",
+          maxCount:1,
           type:"upload",
           show:true,
           fileList: [],
         },{
           title:"其他审批文件2:",
+           color:'#ff976a',
+           deletable:false,
+           contact:"idcard",
             maxCount:1,
           type:"upload",
           show:true,
           fileList: [],
         },{
           title:"其他审批文件3:",
+           deletable:false,
+           contact:"idcard",
             maxCount:1,
            type:"upload",
+           color:'#1989fa',
            show:true,
           fileList: [],
         },{
           title:"其他审批文件4:",
+             color:'#1989fa',
+           deletable:false,
+           contact:"idcard",
             maxCount:1,
            type:"upload",
            show:true,
           fileList: [],
         },{
           title:"其他审批文件5:",
+           deletable:false,
+           contact:"idcard",
+              color:'#1989fa',
             maxCount:1,
           type:"upload",
           show:true,
@@ -206,6 +249,7 @@ export default {
           type:"textarea",
           title:"随行人员姓名(逗号分隔):",
           prop:"followMan",
+          color:'#ff976a',
           disabled:true,
           contact:"user-circle-o",
         },
@@ -213,39 +257,35 @@ export default {
           type:"textarea",
           title:"申请说明",
           prop:"remark",
+          color:'#ee0a24',
           disabled:true,
           contact:"edit",
         },
         ], 
         };
     },
-    mounted(){
-      //访问单位
-      // this.$http.post({
-      // url: 'system/department!ajaxAppDepts',
-      //   data : {},
-      // }).then(res => {
-      //     if(res.result=="success"){
-      //       res.data.map(item=>{
-      //         item.name =item.deptName
-      //       })
-      //       this.formdata[0].actions= res.data
-      //     }
-      // })
-    },
+    mounted(){},
     methods: {}
 
 }
 </script>
 <style>
-.details {
-  /* background:red; */
+._van-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 }
 .weui-cell__bd {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 15px;
   border-bottom: 1px solid #f1eded;
+}
+.weui-cell__up {
+  display: flex;
+  padding: 10px 15px;
+  align-items: center;
 }
 .weui-cell__td {
   display: flex;
@@ -253,13 +293,17 @@ export default {
   padding: 10px 15px;
 }
 .weui-cell__bd ._text {
-  width: 30%;
+  width: 32%;
 }
 .weui-input {
   text-align: right;
-  width: 70%;
+  width: 68%;
   font-size: 15px;
   color: rgb(94, 92, 92);
+}
+.txts {
+  display: flex;
+  align-items: center;
 }
 .rich {
   margin: 10px 15px;
