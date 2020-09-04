@@ -21,7 +21,7 @@ export default {
     data() {
        let that=this
         return {
-        value:{ },
+        value:{inOut:"拉货" },
         formatter (type, value) {
             if (type === 'year') {
               return `${value}年`

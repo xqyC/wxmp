@@ -1,8 +1,8 @@
 
 //新沂地址
-/* var httpUrl="http://221.6.40.82:8090/XYHGYQ/" */
+ var httpUrl="http://221.6.40.82:8090/XYHGYQ/" 
 //连云港测试
-var httpUrl="http://221.6.40.82:9180/TXHGYQ/"
+//var httpUrl="http://221.6.40.82:9180/TXHGYQ/"
 // 测试环境
 //var httpUrl="http://192.168.0.184:8080/XYHGYQ/"
 // 荣

@@ -1,6 +1,11 @@
 <template>
   <view class="visitor">
-      <FormComponents :formdata="formdata" :value="value" :formatter="formatter" @formSubmit="formSubmit"></FormComponents>
+    <FormComponents
+      :formdata="formdata"
+      :value="value"
+      :formatter="formatter"
+      @formSubmit="formSubmit"
+    ></FormComponents>
   </view>
 </template>
 <script>
@@ -497,6 +502,8 @@ export default {
         },
         {
           title:"司机驾驶证:",
+          contact:"idcard",
+          color:'#07c160',
           judge:false,//判断
           show:false,
           multiple:false,
@@ -543,6 +550,8 @@ export default {
         },{
           title:"车辆行驶证:",
           message:'请上传车辆行驶证',
+          contact:"idcard",
+           color:'#07c160',
           judge:false,//判断
            maxCount:1,
           disabled:true,
@@ -570,6 +579,8 @@ export default {
           }
         },{
           title:"审批文件:",
+          contact:"idcard",
+           color:'#07c160',
            type:"upload",
             maxCount:1,
            judge:true,//判断
@@ -592,6 +603,8 @@ export default {
           }
         },{
           title:"其他审批文件1:",
+            contact:"idcard",
+           color:'#07c160',
            judge:true,//判断
            multiple:false,
             maxCount:1,
@@ -615,6 +628,8 @@ export default {
           }
         },{
           title:"其他审批文件2:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
            multiple:false,
@@ -637,6 +652,8 @@ export default {
           }
         },{
           title:"其他审批文件3:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
             multiple:false,
@@ -659,6 +676,8 @@ export default {
           }
         },{
           title:"其他审批文件4:",
+              contact:"idcard",
+           color:'#07c160',
            maxCount:1,
            judge:true,//判断
            multiple:false,
@@ -684,6 +703,8 @@ export default {
           judge:true,//判断8608917@qq.com
            multiple:false,
               maxCount:1,
+                  contact:"idcard",
+           color:'#07c160',
           type:"upload",
           disabled:true,
           required:false,

@@ -41,16 +41,23 @@ export default {
       formdata:[
         {
           title:"运输单号:",
-          judge:true,//判断
+          judge:false,//判断
           show:true,
           type:"text",
           prop:"transNo",
           disabled:false,
           placeholder:"请输入运输单号",
-          required:false,
+          required:true,
           contact:"wap-home-o",
           change:(event)=>{
                that.value.transNo=event.mp.detail.value
+                if( that.value.transNo){
+                  this.judge=true
+                }else {
+                    this.judge=false
+                    this.message="请输入运输单号"
+                    Toast(this.message);
+                }
           }
         },{
           title:"前往企业:",
@@ -92,30 +99,44 @@ export default {
           },
         {
           title:"车辆所属企业:",
-          judge:true,//判断
+          judge:false,//判断
           show:true,
           type:"text",
           prop:"enterprise",
           disabled:false,
           placeholder:"请输入车辆所属企业",
-          required:false,
+          required:true,
           contact:"wap-home-o",
           change:(event)=>{
                that.value.enterprise=event.mp.detail.value
+                       if(that.value.enterprise){
+                  this.judge=true
+                }else {
+                    this.judge=false
+                    this.message="请输入车辆所属企业"
+                    Toast(this.message);
+                }
           }
         },
         {
           title:"接受单位:",
-          judge:true,//判断
+          judge:false,//判断
           show:true,
           type:"text",
           prop:"acceptunit",
           disabled:false,
           placeholder:"请输入接受单位",
-          required:false,
+          required:true,
           contact:"wap-home-o",
           change:(event)=>{
                that.value.acceptunit=event.mp.detail.value
+                 if(that.value.acceptunit){
+                  this.judge=true
+                }else {
+                    this.judge=false
+                    this.message="请输入接受单位"
+                    Toast(this.message);
+                }
           }
         },
          {
@@ -156,12 +177,11 @@ export default {
           show:true,
           prop:"driverType",
           placeholder:"",
-          required:false,
+          required:true,
           contact:"credit-pay",
         },
-   
         {
-          title:"运输重量:",
+          title:"运输重量(吨):",
           judge:false,//判断
           message:'请输入运输重量',
          show:true,
@@ -283,7 +303,7 @@ export default {
           show:true,
           prop:"hwname",
           placeholder:"",
-          required:false,
+          required:true,
           contact:"credit-pay",
         },
         {
@@ -745,7 +765,7 @@ export default {
         ], 
         };
     },
-    created(){
+    mounted(){
       //访问单位
       this.$http.post({
       url: 'system/department!ajaxAppDepts',
@@ -758,6 +778,19 @@ export default {
             this.formdata[1].actions= res.data
           }
       })
+       this.$http.post({
+      url: 'app!whSelect',
+        data : {},
+      }).then(res => {
+          if(res.result=="success"){
+            console.log(res)
+            res.data.map(item=>{
+              item.name =item.HWCODE
+            })
+            this.formdata[8].actions= res.data
+          }
+      })
+     
     },
     methods: {
       //提交app!ajaxCommitTemp
