@@ -52,18 +52,7 @@
           </van-action-sheet>
         </view>
         <!-- 上传文件 -->
-<<<<<<< HEAD
-        <view v-else-if="item.type=='upload' && item.show==true " class="uploader">
-          <view>{{item.title}}</view>
-          <van-uploader
-              :file-list="item.fileList "
-              :maxCount="item.maxCount"
-              accept="image"
-              @afterRead="item.afterRead($event,index)"
-              @delete="item.del_img($event,index)"
-            />
-=======
-        <view v-else-if="item.type=='upload' && item.show==true">
+        <view v-else-if="item.type=='upload' && item.show==true ">
           <view class="weui-cell__td">{{item.title}}</view>
           <van-uploader
             class="weui-cell__bd"
@@ -73,7 +62,6 @@
             @afterRead="item.afterRead($event,index)"
             @delete="item.del_img($event,index)"
           />
->>>>>>> a2f927a94568eb8a26bdd3d633f3d15bc7211e83
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
@@ -174,13 +162,6 @@ export default {
   font-size: 14px;
   color: #aab2bd;
   text-align: right;
-}
-.uploader{
-  padding: 10px 15px 0;
-  border-bottom: 1px solid #ccc;
-}
-.uploader ._view{
-  margin-bottom: 5px;
 }
 </style>
 
