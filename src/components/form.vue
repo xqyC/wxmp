@@ -4,7 +4,8 @@
       <view v-for="(item,index) in formdata" :key="index">
         <!-- input输入框 -->
         <view class="weui-cell__bd" v-if="item.type=='text' && item.show==true">
-          <text>{{item.title}}</text>
+
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input"
             placeholder-class="phcolor"
@@ -12,25 +13,20 @@
             :name="item.prop"
             @blur="item.change($event,index)"
             :placeholder="item.placeholder"
-            :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
-            :required="item.required"
           />
         </view>
         <!-- 下拉选择 -->
         <view v-else-if="item.type=='select'" class="weui-cell__bd">
-          <text>{{item.title}}</text>
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input weui-choose"
             :value="value[item.prop]"
-            placeholder-class="phcolor"
             :name="item.prop"
             :placeholder="item.placeholder"
-            :left-icon="item.contact"
             :disabled="item.disabled"
             v-show="item.show ?item.show:true"
-            :required="item.required"
             @click="item.secetevent(index)"
           />
           <van-action-sheet
@@ -53,7 +49,7 @@
         </view>
         <!-- 上传文件 -->
         <view v-else-if="item.type=='upload' && item.show==true ">
-          <view class="weui-cell__td">{{item.title}}</view>
+          <view :class="item.required?'required':''" class="weui-cell__td">{{item.title}}</view>
           <van-uploader
             class="weui-cell__bd"
             :file-list="item.fileList "
@@ -65,26 +61,22 @@
         </view>
         <!-- 多行文本 -->
         <view v-else-if="item.type=='textarea'" class="rich">
-          <text>{{item.title}}</text>
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <textarea
-            :required="item.required"
             :disabled="item.disabled"
             :placeholder="item.placeholder"
-            placeholder-class="phcolor"
             @blur="item.change($event,index)"
           ></textarea>
         </view>
         <view v-else-if="item.type=='datetime'" class="weui-cell__bd">
           <!--时间 -->
-          <text>{{item.title}}</text>
+          <text :class="item.required?'required':''">{{item.title}}</text>
           <input
             class="weui-input weui-sele"
             :value="value[item.prop]"
-            placeholder-class="phcolor"
             :name="item.prop"
             :placeholder="item.placeholder"
             :disabled="item.disabled"
-            :required="item.required"
             @click="item.secetevent(index)"
           />
           <van-popup :show="item.showsecect" position="bottom">
@@ -162,6 +154,13 @@ export default {
   font-size: 14px;
   color: #aab2bd;
   text-align: right;
+}
+.required::before {
+    position: absolute;
+    left: 8px;
+    color: #ee0a24;
+    font-size: 14px;
+    content: '*';
 }
 </style>
 
