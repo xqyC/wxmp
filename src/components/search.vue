@@ -6,13 +6,13 @@
       </view>
       <view class="header">
         <view v-for="(item,index) in search" :key="index" style="flex-shrink: 1;">
-          <van-search :value="item.value" :placeholder="item.placeholder" />
+          <van-search :value="item[prop]" :placeholder="item.placeholder" />
         </view>
         <van-button type="primary" @click="search" style="flex-shrink:0;margin-right:5px;">搜索</van-button>
       </view>
     </view>
     <!---->
-    <scroll-view type="primary" class="lists" v-if="appList.length>0">
+    <view scroll-view type="primary" class="lists" v-if="appList.length>0">
       <view class="listbox" @click="details(item)" v-for="(item,index) in appList" :key="index">
         <view class="first between">
           <view class="fitstleft">
@@ -42,7 +42,7 @@
           <text type="primary">{{item.TOTIME}}</text>
         </view>
       </view>
-    </scroll-view>
+    </view>
     <view class="empty" v-else>暂无记录!</view>
   </view>
 </template>

@@ -40,11 +40,11 @@ export default {
       total_page: 0,// 总页数
       searchtop:[
         {
-           dept:"",
+          prop:"deptid",
           placeholder:'请输入到访单位',
         },
         {
-          car:'',
+          prop:'car',
           placeholder:'请输入姓名',
         },
        
@@ -88,8 +88,6 @@ export default {
 						userId:"",
 						count:15,
 						audit: that.page,
-						jcName: that.search[0].dept,
-						carNo: that.search[1].car,
         },
       }).then(res => {
           if(res.result=="success"){
