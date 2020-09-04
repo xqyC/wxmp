@@ -186,7 +186,6 @@ export default {
         },{
           title:"车辆行驶证:",
           contact:"idcard",
-           color:'#07c160',
           deletable:false,
           type:"upload",
           maxCount:1,
