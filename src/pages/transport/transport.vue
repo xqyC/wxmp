@@ -212,28 +212,27 @@ export default {
           searchvalue:'',
           actions: [ ],
           secetevent:(index)=>{
-             that.formdata[index].showsecect=true;
+            that.formdata[index].showsecect=true;
           },
           //关闭弹框
-        Close(index){
-          this.showsecect=false
-          if(that.value.dangerGoodName){
-            this.judge=true
-          }else{
+          Close(index){
+            this.showsecect=false
+            if(that.value.dangerGoodName){
+              this.judge=true
+            }else{
               this.judge=false
-             this.message="请选择危化品名称"
-             Toast(this.message);
-          }
-        },
-        //选中
-        onSearch(index,ind){
+              this.message="请选择危化品名称"
+              Toast(this.message);
+            }
+          },
+          //选中
+          onSearch(index,ind){
             this.activeaction=ind;
             that.value.dept=this.actions[ind].name
             this.showsecect=false
             this.judge=true;
-            },
           },
-         {
+        },{
           title:"货运状态:",
           judge:false,//判断
           message:'请选择货运状态',

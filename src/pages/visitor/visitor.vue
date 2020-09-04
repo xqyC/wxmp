@@ -41,26 +41,26 @@ export default {
         return value
       },
       formdata:[{
-        title:"访问单位:",
-        type:"select",
-        judge:false,//判断
-        titlename:"==访问单位==",
-        disabled:true,
-        prop:"fwdeptName",
-        placeholder:"请选择访问单位",
-        required:true,
-        color:'#1989fa',
-        contact:"wap-home-o",
-        showsecect:false,
-        activeaction:'',
-        show:true,
-        message:'请选择访问单位',
-        searchvalue:'',
-        actions: [],
-        secetevent:(index)=>{
-          that.formdata[index].showsecect=true;
-        },
-        //关闭弹框
+          title:"访问单位:",
+          type:"select",
+          judge:false,//判断
+          titlename:"==访问单位==",
+          disabled:true,
+          prop:"fwdeptName",
+          placeholder:"请选择访问单位",
+          required:true,
+          color:'#1989fa',
+          contact:"wap-home-o",
+          showsecect:false,
+          activeaction:'',
+          show:true,
+          message:'请选择访问单位',
+          searchvalue:'',
+          actions: [],
+          secetevent:(index)=>{
+             that.formdata[index].showsecect=true;
+          },
+          //关闭弹框
         Close(index){
           this.showsecect=false
           if(that.value.fwdeptName){
