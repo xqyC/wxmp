@@ -1,122 +1,25 @@
 <template>
   <view class="visitor">
-    <form catchsubmit="formSubmit" catchreset="formReset">
-      <view v-for="(item,index) in formdata" :key="index">
-        <!-- input输入框 -->
-        <view
-          class="weui-cell__bd"
-          v-if="item.type=='text' && item.show==true"
-        >
-          <text>{{item.title}}</text>
-          <input
-            class="weui-input"
-            :value="value[item.prop]"
-            :name="item.prop"
-            @blur="item.change($event,index)"
-            :placeholder="item.placeholder"
-            :left-icon="item.contact"
-            :disabled="item.disabled"
-            v-show="item.show ?item.show:true"
-            :required="item.required"
-          />
-        </view>
-        <!-- 下拉选择 -->
-        <view v-else-if="item.type=='select'" class="weui-cell__bd">
-          <text>{{item.title}}</text>
-          <input class="weui-input weui-choose"
-            :value="value[item.prop]"
-            :name="item.prop"
-            :placeholder="item.placeholder"
-            :left-icon="item.contact"
-            :disabled="item.disabled"
-            v-show="item.show ?item.show:true"
-            :required="item.required"
-            @click="item.secetevent(index)"
-          />
-          <van-action-sheet
-            :show="item.showsecect"
-            :title="item.titlename"
-            @close="item.Close(index)"
-            @select="item.onSelect(index)"
-          >
-            <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" />
-            <view
-              v-for="(list,ind) in item.actions"
-              :key="ind"
-              class="actiondata"
-              :class="item.activeaction==ind?'activeaction':''"
-              @click="item.onSearch(index,ind)"
-            >
-              <span class="actionsvalue">{{list.name}}</span>
-            </view>
-          </van-action-sheet>
-        </view>
-        <!-- 上传文件 -->
-        <view v-else-if="item.type=='upload' && item.show==true ">
-          <view>{{item.title}}</view>
-          <van-uploader
-              :file-list="item.fileList "
-              :maxCount="item.maxCount"
-              accept="image"
-              @afterRead="item.afterRead($event,index)"
-              @delete="item.del_img($event,index)"
-            />
-        </view>
-        <!-- 多行文本 -->
-        <view v-else-if="item.type=='textarea'" class="rich">
-          <text>{{item.title}}</text>
-          <textarea
-            :required="item.required"
-            :disabled="item.disabled"
-            @blur="item.change($event,index)"
-          ></textarea>
-        </view>
-        <view v-else-if="item.type=='datetime'" class="weui-cell__bd">
-          <!--时间 -->
-          <text>{{item.title}}</text>
-          <input class="weui-input weui-sele"
-            :value="value[item.prop]"
-            :name="item.prop"
-            :placeholder="item.placeholder"
-            :disabled="item.disabled"
-            :required="item.required"
-            @click="item.secetevent(index)"
-          />
-          <van-popup :show="item.showsecect" position="bottom">
-            <van-datetime-picker
-              :value="item.currentDate"
-              :type="item.type"
-              :min-date="item.minDate"
-              :lazy-render="false"
-              :max-date="item.maxDate"
-              :formatter="formatter"
-              @cancel="item.cancel($event,index)"
-              @confirm="item.confirm($event,index)"
-            />
-          </van-popup>
-        </view>
-      </view>
-      <view class="btn-area">
-        <button style="margin: 30rpx 0" type="primary" formType="onClickButtonSubmit">提交信息</button>
-      </view>
-    </form>
-    <van-toast id="van-toast" />
+      <FormComponents :formdata="formdata" :value="value" :formatter="formatter" @formSubmit="formSubmit"></FormComponents>
   </view>
 </template>
 <script>
 import {formatWithSeperator,getBase64Image}  from  "../../utils/datetime"
 import {ID,isMobile,regxcard,regxPlusDecimal2,number}  from  "../../utils/validate"
 import Toast from '../../../dist/wx/vant-weapp/dist/toast/toast';
+import FormComponents from "../../components/form"
 export default { 
     name:"visitor",
+    components:{
+      FormComponents,
+    },
     data() {
        let that=this
         return {
-        errorMessage: { fwdeptName:"访客单位不能为空", pwdInput:"", zipCode:"" },
         value:{
           leixing:'访客临时通行卡'
         },
-          formatter (type, value) {
+        formatter (type, value) {
             if (type === 'year') {
               return `${value}年`
             } else if (type === 'month') {
@@ -132,7 +35,7 @@ export default {
             }
             return value
           },
-        formdata:[{
+      formdata:[{
           title:"访问单位:",
           type:"select",
           judge:false,//判断
@@ -609,7 +512,6 @@ export default {
               // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
             ],
           afterRead(event,index){
-            console.log(file)
           const { file } = event.mp.detail;
           this.fileList.push({
             url:file.path,
@@ -621,31 +523,15 @@ export default {
             // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
             that.$http.post({
               url: 'app!fileUpload', // 仅为示例，非真实的接口地址
-              filePath: file.path,
               name: 'file',
               data:{
                 "imgbese":file.path,
                 "uploadFileName":"Tupac"
               },
               success(res) {
-                // 上传完成需要更新 fileList
                 console.log(res)
-                // const { fileList = [] } = this.data;
-                // fileList.push({ ...file, url: res.data });
-                // this.setData({ fileList });
               },
             })
-          // that.$http.post({
-          //   url: 'app!fileUpload',
-          //   data:{
-          //   'uploadFileName': file.name,
-          //   'imgbese':file
-          //   },
-          //   }).then(res => {
-          //      console.log(res)
-          //   }).catch(err=>{
-          //      console.log(err)
-          //   })
         },
         del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
@@ -706,14 +592,14 @@ export default {
           }
         },{
           title:"其他审批文件1:",
-          judge:true,//判断
-          multiple:false,
-          maxCount:1,
-          type:"upload",
+           judge:true,//判断
+           multiple:false,
+            maxCount:1,
+           type:"upload",
           disabled:true,
-          required:false,
-          show:false,
-          required:false,
+           required:false,
+           show:false,
+           required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -729,13 +615,13 @@ export default {
           }
         },{
           title:"其他审批文件2:",
-          maxCount:1,
-          judge:true,//判断
-          multiple:false,
-          type:"upload",
+           maxCount:1,
+           judge:true,//判断
+           multiple:false,
+           type:"upload",
           disabled:true,
-          show:false,
-          required:false,
+           show:false,
+           required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -751,13 +637,13 @@ export default {
           }
         },{
           title:"其他审批文件3:",
-          maxCount:1,
-          judge:true,//判断
-          multiple:false,
-          type:"upload",
+           maxCount:1,
+           judge:true,//判断
+            multiple:false,
+           type:"upload",
           disabled:true,
-          show:false,
-          required:false,
+           show:false,
+           required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -773,13 +659,13 @@ export default {
           }
         },{
           title:"其他审批文件4:",
-          maxCount:1,
-          judge:true,//判断
-          multiple:false,
-          type:"upload",
-          disabled:true,
-          show:false,
-          required:false,
+           maxCount:1,
+           judge:true,//判断
+           multiple:false,
+           type:"upload",
+           disabled:true,
+           show:false,
+           required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -796,8 +682,8 @@ export default {
         },{
           title:"其他审批文件5:",
           judge:true,//判断8608917@qq.com
-          multiple:false,
-          maxCount:1,
+           multiple:false,
+              maxCount:1,
           type:"upload",
           disabled:true,
           required:false,
@@ -869,7 +755,8 @@ export default {
     },
     methods: {
       //提交app!ajaxCommitTemp
-        onClickButtonSubmit(values) {
+        formSubmit(values) {
+          
             console.log(this.vlaue)
         },
         clearImg(e){
@@ -879,33 +766,46 @@ export default {
 }
 </script>
 <style>
-/* .visitor{
-  margin:0 20px;
-} */
-.weui-cell__bd{
+.weui-cell__bd {
   display: flex;
   justify-content: space-between;
   padding: 10px 15px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #f1eded;
 }
-.weui-cell__bd ._text{
+.weui-cell__td {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+.weui-cell__bd ._text {
   width: 30%;
 }
-.weui-input{
+.weui-input {
   text-align: right;
   width: 70%;
+  font-size: 15px;
+  color: rgb(94, 92, 92);
 }
-.rich{
+.rich {
   margin: 10px 15px;
 }
-.rich ._textarea{
+.rich ._textarea {
   width: calc(100% - 10px);
   margin-top: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #f1eded;
   border-radius: 5px;
   padding: 5px;
 }
-.actiondata{
-  padding: 0 18px 5px;
+.actiondata {
+  padding: 10px;
+  display: block;
+}
+.actiondata:not(:last-child) {
+  border: 1px solid #f1eded;
+}
+.phcolor {
+  font-size: 14px;
+  color: #aab2bd;
+  text-align: right;
 }
 </style>
