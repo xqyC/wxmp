@@ -1,6 +1,11 @@
 <template>
   <view class="visitor">
-      <FormComponents :formdata="formdata" :value="value" :formatter="formatter" @formSubmit="formSubmit"></FormComponents>
+    <FormComponents
+      :formdata="formdata"
+      :value="value"
+      :formatter="formatter"
+      @formSubmit="formSubmit"
+    ></FormComponents>
   </view>
 </template>
 <script>
@@ -14,65 +19,83 @@ export default {
       FormComponents,
     },
     data() {
-       let that=this
-        return {
-        value:{
-          leixing:'访客临时通行卡'
-        },
-        formatter (type, value) {
-            if (type === 'year') {
-              return `${value}年`
-            } else if (type === 'month') {
-              return `${value}月`
-            } else if (type === 'day') {
-              return `${value}日`
-            } else if (type === 'hour') {
-              return `${value}时`
-            } else if (type === 'minute') {
-              return `${value}分`
-            } else if (type === 'second') {
-              return `${value}秒`
-            }
-            return value
-          },
+      let that=this
+      return {
+      value:{
+        leixing:'访客临时通行卡'
+      },
+      formatter (type, value) {
+        if (type === 'year') {
+          return `${value}年`
+        } else if (type === 'month') {
+          return `${value}月`
+        } else if (type === 'day') {
+          return `${value}日`
+        } else if (type === 'hour') {
+          return `${value}时`
+        } else if (type === 'minute') {
+          return `${value}分`
+        } else if (type === 'second') {
+          return `${value}秒`
+        }
+        return value
+      },
       formdata:[{
-          title:"访问单位:",
-          type:"select",
-          judge:false,//判断
-          titlename:"==访问单位==",
-          disabled:true,
-          prop:"fwdeptName",
-          placeholder:"请选择访问单位",
-          required:true,
-          contact:"wap-home-o",
-          showsecect:false,
-          activeaction:'',
-          show:true,
-          message:'请选择访问单位',
-          searchvalue:'',
-          actions: [],
-          secetevent:(index)=>{
-             that.formdata[index].showsecect=true;
-          },
-          //关闭弹框
+        title:"访问单位:",
+        type:"select",
+        judge:false,//判断
+        titlename:"==访问单位==",
+        disabled:true,
+        prop:"fwdeptName",
+        placeholder:"请选择访问单位",
+        required:true,
+        contact:"wap-home-o",
+        showsecect:false,
+        activeaction:'',
+        show:true,
+        message:'请选择访问单位',
+        searchvalue:'',
+        actions: [],
+        secetevent:(index)=>{
+          that.formdata[index].showsecect=true;
+          that.formdata[0].searchvalue = "";
+          that.getCompany();
+        },
+        //关闭弹框
         Close(index){
           this.showsecect=false
           if(that.value.fwdeptName){
             this.judge=true
           }else{
-              this.judge=false
-             this.message="请选择访问单位"
-             Toast(this.message);
+            this.judge=false
+            this.message="请选择访问单位"
+            Toast(this.message);
+          }
+        },
+        // 监听输入变化
+        onInput(value){
+          // console.log(value.mp.detail);
+          that.formdata[0].searchvalue = value.mp.detail;
+          let listdata=[];
+          if(value.mp.detail.length < 1){
+            that.getCompany();
+          }else{
+            for(var i=0;i<that.formdata[0].actions.length;i++){
+              if(that.formdata[0].actions[i].deptName.indexOf(value.mp.detail) != -1){
+                listdata.push(that.formdata[0].actions[i])
+              }
+            }
+            that.formdata[0].actions = listdata
           }
         },
         //选中
         onSearch(index,ind){
-            this.activeaction=ind;
-            that.value.fwdeptName=this.actions[ind].name
-            this.showsecect=false
-            this.judge=true;
-            },
-          },
+          this.activeaction=ind;
+          that.value.fwdeptName=this.actions[ind].name
+          this.showsecect=false
+          this.judge=true;
+          }
+        },
         {
           title:"临时卡类型:",
           type:"text",
@@ -740,20 +763,23 @@ export default {
         };
     },
     mounted(){
+      this.getCompany()
+    },
+    methods: {
       //访问单位
-      this.$http.post({
-      url: 'system/department!ajaxAppDepts',
-        data : {},
-      }).then(res => {
+      getCompany(){
+        this.$http.post({
+          url: 'system/department!ajaxAppDepts',
+          data : {},
+        }).then(res => {
           if(res.result=="success"){
             res.data.map(item=>{
               item.name =item.deptName
             })
             this.formdata[0].actions= res.data
           }
-      })
-    },
-    methods: {
+        })
+      },
       //提交app!ajaxCommitTemp
         formSubmit(values) {
           

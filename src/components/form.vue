@@ -39,7 +39,7 @@
             @close="item.Close(index)"
             @select="item.onSelect(index)"
           >
-            <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" />
+            <van-search :value="item.searchvalue" placeholder="请输入搜索关键词" v-if="item.show" @change="item.onInput"/>
             <view
               v-for="(list,ind) in item.actions"
               :key="ind"

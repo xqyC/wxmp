@@ -14,30 +14,30 @@ import {ID,isMobile,regxcard,regxPlusDecimal2,number}  from  "../../utils/valida
 import Toast from '../../../dist/wx/vant-weapp/dist/toast/toast';
 import FormComponents from "../../components/form"
 export default { 
-    name:"visitor",
-    components:{
-      FormComponents,
-    },
-    data() {
-       let that=this
-        return {
-        value:{ },
-        formatter (type, value) {
-            if (type === 'year') {
-              return `${value}年`
-            } else if (type === 'month') {
-              return `${value}月`
-            } else if (type === 'day') {
-              return `${value}日`
-            } else if (type === 'hour') {
-              return `${value}时`
-            } else if (type === 'minute') {
-              return `${value}分`
-            } else if (type === 'second') {
-              return `${value}秒`
-            }
-            return value
-          },
+  name:"visitor",
+  components:{
+    FormComponents,
+  },
+  data() {
+    let that=this
+    return {
+      value:{ },
+      formatter (type, value) {
+        if (type === 'year') {
+          return `${value}年`
+        } else if (type === 'month') {
+          return `${value}月`
+        } else if (type === 'day') {
+          return `${value}日`
+        } else if (type === 'hour') {
+          return `${value}时`
+        } else if (type === 'minute') {
+          return `${value}分`
+        } else if (type === 'second') {
+          return `${value}秒`
+        }
+        return value
+      },
       formdata:[
         {
           title:"运输单号:",
@@ -50,7 +50,7 @@ export default {
           required:false,
           contact:"wap-home-o",
           change:(event)=>{
-               that.value.transNo=event.mp.detail.value
+            that.value.transNo=event.mp.detail.value
           }
         },{
           title:"前往企业:",
@@ -69,27 +69,43 @@ export default {
           searchvalue:'',
           actions: [],
           secetevent:(index)=>{
-             that.formdata[index].showsecect=true;
+            that.formdata[index].showsecect=true;
+          },
+          // 监听输入变化
+          onInput(value){
+            // console.log(value.mp.detail);
+            that.formdata[0].searchvalue = value.mp.detail;
+            let listdata=[];
+            if(value.mp.detail.length < 1){
+              that.getCompany();
+            }else{
+              for(var i=0;i<that.formdata[1].actions.length;i++){
+                if(that.formdata[1].actions[i].deptName.indexOf(value.mp.detail) != -1){
+                  listdata.push(that.formdata[1].actions[i])
+                }
+              }
+              that.formdata[1].actions = listdata
+            }
           },
           //关闭弹框
-        Close(index){
-          this.showsecect=false
-          if(that.value.dept){
-            this.judge=true
-          }else{
+          Close(index){
+            this.showsecect=false
+            if(that.value.dept){
+              this.judge=true
+            }else{
               this.judge=false
-             this.message="请选择前往企业"
-             Toast(this.message);
-          }
-        },
-        //选中
-        onSearch(index,ind){
+              this.message="请选择前往企业"
+              Toast(this.message);
+            }
+          },
+          //选中
+          onSearch(index,ind){
             this.activeaction=ind;
             that.value.dept=this.actions[ind].name
             this.showsecect=false
             this.judge=true;
-            },
-          },
+          }
+        },
         {
           title:"车辆所属企业:",
           judge:true,//判断
@@ -101,10 +117,9 @@ export default {
           required:false,
           contact:"wap-home-o",
           change:(event)=>{
-               that.value.enterprise=event.mp.detail.value
+            that.value.enterprise=event.mp.detail.value
           }
-        },
-            {
+        },{
           title:"车牌号:",
           judge:false,//判断
           message:'请输入车牌号',
@@ -113,29 +128,28 @@ export default {
           disabled:false,
           placeholder:"请输入车牌号",
           required:true,
-         show:true,
+          show:true,
           contact:"logistics",
           change:(event,index)=>{
-               that.value.carNo=event.mp.detail.value
-               if(that.value.carNo){
-                  this.judge=true
-               }else{
-                  this.judge=false
-                  this.message="请输入车牌号"
-                 Toast(this.message);
-                  return
-               }
-               if(regxcard(that.value.carNo)){
-                  this.judge=true
-               }else{
-                 this.judge=false
-                  this.message="请输入正确的车牌号"
-                 Toast(this.message);
-                 return
-               }
+            that.value.carNo=event.mp.detail.value
+            if(that.value.carNo){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入车牌号"
+              Toast(this.message);
+              return
+            }
+            if(regxcard(that.value.carNo)){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入正确的车牌号"
+              Toast(this.message);
+              return
+            }
           }
-        },
-        {
+        },{
           title:"车辆类型:",
           type:"text",
           disabled:true,
@@ -144,13 +158,11 @@ export default {
           placeholder:"",
           required:false,
           contact:"credit-pay",
-        },
-   
-        {
+        },{
           title:"运输重量:",
           judge:false,//判断
           message:'请输入运输重量',
-         show:true,
+          show:true,
           type:"text",
           prop:"carETC",
           disabled:false,
@@ -158,26 +170,25 @@ export default {
           required:true,
           contact:"logistics",
           change:(event)=>{
-              that.value.carETC=event.mp.detail.value
-              if(that.value.carETC){
-                  this.judge=true
-               }else{
-                  this.judge=false
-                  this.message="请输入运输重量"
-                 Toast(this.message);
-                  return
-               }
-               if(regxPlusDecimal2(that.value.carETC)){
-                  this.judge=true
-               }else{
-                 this.judge=false
-                  this.message="请输入数字最多保留2位小数"
-                 Toast(this.message);
-                 return
-               }
+            that.value.carETC=event.mp.detail.value
+            if(that.value.carETC){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入运输重量"
+              Toast(this.message);
+              return
+            }
+            if(regxPlusDecimal2(that.value.carETC)){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入数字最多保留2位小数"
+              Toast(this.message);
+              return
+            }
           }
-        },
-   {
+        },{
           title:"货运状态:",
           judge:false,//判断
           message:'请选择货运状态',
@@ -190,21 +201,21 @@ export default {
           contact:"logistics",
           showsecect:false,
           activeaction:'',
-         show:true,
+          show:true,
           searchvalue:'',
           actions:[
             {
-                name: '拉货',
-                openType: 'share',
+              name: '拉货',
+              openType: 'share',
             },
             {
-                name: '送货',
-                openType: 'share',
+              name: '送货',
+              openType: 'share',
             },
-            ],
+          ],
           secetevent:(index)=>{
-             that.formdata[index].showsecect=true;
-            },
+            that.formdata[index].showsecect=true;
+          },
           Close(index){
             if(that.value.inOut){
               this.judge=true
@@ -222,8 +233,7 @@ export default {
             this.showsecect=false
             change:(event)=>{}
           },
-        },
-        {
+        },{
           title:"货物来源:",
           judge:true,//判断
           show:true,
@@ -234,10 +244,9 @@ export default {
           required:false,
           contact:"wap-home-o",
           change:(event)=>{
-               that.value.goodsSource=event.mp.detail.value
+            that.value.goodsSource=event.mp.detail.value
           }
-        },
-        {
+        },{
           title:"预约开始时间:",
           judge:false,//判断
           message:'请选择预约开始时间',
@@ -252,37 +261,36 @@ export default {
           show:true,
           searchvalue:'',
           secetevent:(index)=>{
-              that.formdata[index].showsecect=true;
-              that.value.endTime ='';
+            that.formdata[index].showsecect=true;
+            that.value.endTime ='';
           },
-        minDate: new Date().getTime(),
-        maxDate: new Date(2060, 10, 1).getTime(),
-        currentDate: new Date().getTime(),
-        //确定
-        confirm:(e,index)=>{
-              let time= formatWithSeperator(e.mp.detail,"-",":") 
-              that.value.startTime = time
-              that.formdata[index].showsecect=false;
-              this.judge=true
+          minDate: new Date().getTime(),
+          maxDate: new Date(2060, 10, 1).getTime(),
+          currentDate: new Date().getTime(),
+          //确定
+          confirm:(e,index)=>{
+            let time= formatWithSeperator(e.mp.detail,"-",":") 
+            that.value.startTime = time
+            that.formdata[index].showsecect=false;
+            this.judge=true
           },
           cancel:(e,index)=>{
             console.log(that.formdata[index].showsecect)
             if(that.value.startTime){
-                this.judge=true
-              }else{
-                this.judge=false
-                this.message="请选择预约开始时间"
-                Toast(this.message);
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请选择预约开始时间"
+              Toast(this.message);
             }
             that.formdata[index].showsecect=false;
           }
-        },
-        {
+        },{
           title:"预约结束时间:",
-           judge:false,//判断
-           message:'请选择预约结束时间',
-           type:"datetime",
-           prop:"endTime",
+          judge:false,//判断
+          message:'请选择预约结束时间',
+          type:"datetime",
+          prop:"endTime",
           disabled:true,
           placeholder:"请选择预约结束时间",
           required:true,
@@ -292,12 +300,12 @@ export default {
           activeaction:'',
           searchvalue:'',
           secetevent:(index)=>{
-             if(that.value.startTime){
-               that.formdata[index].showsecect=true;
-             }else{
-               this.message="请先选择预约开始时间"
-               Toast(this.message)
-             }
+            if(that.value.startTime){
+              that.formdata[index].showsecect=true;
+            }else{
+              this.message="请先选择预约开始时间"
+              Toast(this.message)
+            }
           },
           minDate: new Date().getTime(),
           maxDate: new Date(2060, 10, 1).getTime(),
@@ -305,27 +313,26 @@ export default {
             //确定
           confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
-            if(time>that.value.startTime){
-                this.judge=true
-                that.value.endTime = time
-                that.formdata[index].showsecect=false;
-           }else {
-              this.judge=false
-              this.message="预约结束时间必须大于预约开始时间"
+          if(time>that.value.startTime){
+            this.judge=true
+            that.value.endTime = time
+            that.formdata[index].showsecect=false;
+          }else {
+            this.judge=false
+            this.message="预约结束时间必须大于预约开始时间"
               Toast(this.message);
-             }
+            }
           },
-        cancel:(e,index)=>{
-          if(that.value.endTime){
+          cancel:(e,index)=>{
+            if(that.value.endTime){
               this.judge=true
-           }else {
+            }else {
               this.judge=false
               this.message="请选择预约结束时间"
               Toast(this.message);
-           }
+            }
           }
-        },
-        {
+        },{
           title:"驾驶员姓名:",
           prop:"driverName",
           judge:false,//判断
@@ -337,17 +344,16 @@ export default {
           required:true,
           contact:"user-circle-o",
           change:(event)=>{
-               that.value.driverName=event.mp.detail.value
-               if(that.value.driverName){
-                 this.judge=true
-               }else{
-                 this.judge=false
-                 this.message="请输入驾驶员姓名"
-                 Toast(this.message);
-               }
+            that.value.driverName=event.mp.detail.value
+            if(that.value.driverName){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入驾驶员姓名"
+              Toast(this.message);
+            }
           }
-        },
-        {
+        },{
           title:"驾驶员身份证:",
           judge:false,//判断
           message:'请输入驾驶员身份证',
@@ -359,57 +365,55 @@ export default {
           placeholder:"请输入驾驶员身份证",
           contact:"idcard",
           change:(event)=>{
-               that.value.driverIDNum=event.mp.detail.value
-               if(that.value.driverIDNum){
-                  this.judge=true
-               }else{
-                   this.judge=false
-                   this.message="请输入驾驶员身份证"
-                    Toast(this.message);
-                   return
-               }
-              if(ID(that.value.driverIDNum)){
-                this.judge=true
-              }else{
-                this.judge=false
-                this.message="请输入正确的身份证"
-                Toast(this.message);
-                return
-              }
+            that.value.driverIDNum=event.mp.detail.value
+            if(that.value.driverIDNum){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入驾驶员身份证"
+              Toast(this.message);
+              return
+            }
+            if(ID(that.value.driverIDNum)){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入正确的身份证"
+              Toast(this.message);
+              return
+            }
           }
-        },
-        {
+        },{
           title:"驾驶员手机号:",
           show:true,
           judge:false,//判断
           message:'请输入驾驶员手机号',
           type:"text",
-           prop:"driverPhone",
+          prop:"driverPhone",
           disabled:false,
           placeholder:"请输入驾驶员手机号",
           required:true,
           contact:"phone-circle-o",
           change:(event)=>{
-               that.value.driverPhone=event.mp.detail.value
-               if(that.value.driverPhone){
-                 this.judge=true
-               }else{
-                  this.judge=false
-                  this.message="请输入驾驶员手机号"
-                 Toast(this.message);
-                  return
-               }
-               if(isMobile(that.value.driverPhone)){
-                  this.judge=true
-               }else {
-                 this.judge=false
-                 this.message="请输入正确的手机号码"
-                 Toast(this.message);
-                  return
-               }
+            that.value.driverPhone=event.mp.detail.value
+            if(that.value.driverPhone){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入驾驶员手机号"
+              Toast(this.message);
+              return
+            }
+            if(isMobile(that.value.driverPhone)){
+              this.judge=true
+            }else {
+              this.judge=false
+              this.message="请输入正确的手机号码"
+              Toast(this.message);
+              return
+            }
           }
-        },
-        {
+        },{
           title:"押运员姓名:",
           prop:"yayunName",
           judge:false,//判断
@@ -421,17 +425,16 @@ export default {
           required:true,
           contact:"user-circle-o",
           change:(event)=>{
-               that.value.yayunName=event.mp.detail.value
-               if(that.value.yayunName){
-                 this.judge=true
-               }else{
-                 this.judge=false
-                 this.message="请输入押运员姓名"
-                 Toast(this.message);
-               }
+            that.value.yayunName=event.mp.detail.value
+            if(that.value.yayunName){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入押运员姓名"
+              Toast(this.message);
+            }
           }
-        },
-        {
+        },{
           title:"押运员身份证:",
           judge:false,//判断
           message:'请输入押运员身份证',
@@ -443,60 +446,58 @@ export default {
           placeholder:"请输入押运员身份证",
           contact:"idcard",
           change:(event)=>{
-               that.value.yayunID=event.mp.detail.value
-               if(that.value.yayunID){
-                  this.judge=true
-               }else{
-                   this.judge=false
-                   this.message="请输入押运员身份证"
-                    Toast(this.message);
-                   return
-               }
-              if(ID(that.value.yayunID)){
-                this.judge=true
-              }else{
+            that.value.yayunID=event.mp.detail.value
+            if(that.value.yayunID){
+              this.judge=true
+            }else{
                 this.judge=false
-                this.message="请输入正确的身份证"
+                this.message="请输入押运员身份证"
                 Toast(this.message);
                 return
-              }
+            }
+            if(ID(that.value.yayunID)){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入正确的身份证"
+              Toast(this.message);
+              return
+            }
           }
-        },
-        {
+        },{
           title:"押运员手机号:",
           show:true,
           judge:false,//判断
           message:'请输入押运员手机号',
           type:"text",
-           prop:"yayunPhone",
+          prop:"yayunPhone",
           disabled:false,
           placeholder:"请输入驾驶员手机号",
           required:true,
           contact:"phone-circle-o",
           change:(event)=>{
-               that.value.yayunPhone=event.mp.detail.value
-               if(that.value.yayunPhone){
-                 this.judge=true
-               }else{
-                  this.judge=false
-                  this.message="请输入押运员手机号"
-                 Toast(this.message);
-                  return
-               }
-               if(isMobile(that.value.yayunPhone)){
-                  this.judge=true
-               }else {
-                 this.judge=false
-                 this.message="请输入正确的手机号码"
-                 Toast(this.message);
-                  return
-               }
+            that.value.yayunPhone=event.mp.detail.value
+            if(that.value.yayunPhone){
+              this.judge=true
+            }else{
+              this.judge=false
+              this.message="请输入押运员手机号"
+              Toast(this.message);
+              return
+            }
+            if(isMobile(that.value.yayunPhone)){
+              this.judge=true
+            }else {
+              this.judge=false
+              this.message="请输入正确的手机号码"
+              Toast(this.message);
+              return
+            }
           }
-        },
-        {
+        },{
           title:"司机驾驶证:",
           judge:false,//判断
-         show:true,
+          show:true,
           multiple:false,
           maxCount:1,
           message:'请上传司机驾驶证',
@@ -504,20 +505,20 @@ export default {
           accept:'image',
           disabled:true,
           required:true,
-            fileList: [
-             { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
-              // Uploader 根据文件后缀来判断是否为图片文件
-              // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-            ],
+          fileList: [
+            { url: 'https://img.yzcdn.cn/vant/leaf.jpg', name: '图片1' },
+            // Uploader 根据文件后缀来判断是否为图片文件
+            // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+          ],
           afterRead(event,index){
-          const { file } = event.mp.detail;
-          this.fileList.push({
-            url:file.path,
-            name: file.name,
-            isImage: true,
-            deletable: true,
-          })
-          this.judge=true;
+            const { file } = event.mp.detail;
+            this.fileList.push({
+              url:file.path,
+              name: file.name,
+              isImage: true,
+              deletable: true,
+            })
+            this.judge=true;
             // 当设置 mutiple 为 true 时, file 为数组格式，否则为对象格式
             that.$http.post({
               url: 'app!fileUpload', // 仅为示例，非正实的接口地址
@@ -530,19 +531,19 @@ export default {
                 console.log(res)
               },
             })
-        },
-        del_img(event){
+          },
+          del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
             if(this.fileList.length<1){
-                this.judge=false;
-                Toast(this.message)
+              this.judge=false;
+              Toast(this.message)
             }
           }
         },{
           title:"车辆行驶证:",
           message:'请上传车辆行驶证',
           judge:false,//判断
-           maxCount:1,
+          maxCount:1,
           disabled:true,
           multiple:false,
           type:"upload",
@@ -562,21 +563,21 @@ export default {
           del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
             if(this.fileList.length<1){
-                this.judge=false;
-                Toast(this.message)
+              this.judge=false;
+              Toast(this.message)
             }
           }
         },{
           title:"审批文件:",
-           type:"upload",
-            maxCount:1,
-           judge:true,//判断
-           multiple:false,
-           disabled:true,
-           required:false,
+          type:"upload",
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          disabled:true,
+          required:false,
           show:true,
-           fileList: [],
-           afterRead(event,index){
+          fileList: [],
+          afterRead(event,index){
             const { file } = event.mp.detail;
             this.fileList.push({
               url:file.path,
@@ -590,14 +591,14 @@ export default {
           }
         },{
           title:"其他审批文件1:",
-           judge:true,//判断
-           multiple:false,
-            maxCount:1,
-           type:"upload",
-           disabled:true,
-           required:false,
-           show:true,
-           required:false,
+          judge:true,//判断
+          multiple:false,
+          maxCount:1,
+          type:"upload",
+          disabled:true,
+          required:false,
+          show:true,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -613,13 +614,13 @@ export default {
           }
         },{
           title:"其他审批文件2:",
-           maxCount:1,
-           judge:true,//判断
-           multiple:false,
-           type:"upload",
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
           disabled:true,
-           show:true,
-           required:false,
+          show:true,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -635,13 +636,13 @@ export default {
           }
         },{
           title:"其他审批文件3:",
-           maxCount:1,
-           judge:true,//判断
-            multiple:false,
-           type:"upload",
-           disabled:true,
-           show:true,
-           required:false,
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
+          disabled:true,
+          show:true,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -657,13 +658,13 @@ export default {
           }
         },{
           title:"其他审批文件4:",
-           maxCount:1,
-           judge:true,//判断
-           multiple:false,
-           type:"upload",
-           disabled:true,
-           show:true,
-           required:false,
+          maxCount:1,
+          judge:true,//判断
+          multiple:false,
+          type:"upload",
+          disabled:true,
+          show:true,
+          required:false,
           fileList: [],
           afterRead(event,index){
             const { file } = event.mp.detail;
@@ -687,7 +688,7 @@ export default {
           required:false,
           show:true,
           fileList: [],
-           afterRead(event,index){
+          afterRead(event,index){
             const { file } = event.mp.detail;
             this.fileList.push({
               url:file.path,
@@ -699,8 +700,7 @@ export default {
           del_img(event){
             this.fileList.splice(event.mp.detail.index,1); 
           }
-        },
-        {
+        },{
           type:"textarea",
           title:"应急处理措施（设备）:",
           message:"",
@@ -713,8 +713,7 @@ export default {
           change:(event,index)=>{
              that.value.carDeal=event.mp.detail.value
           }
-        },
-        {
+        },{
           type:"textarea",
           title:"备注:",
           judge:false,//判断
@@ -725,41 +724,44 @@ export default {
           required:true,
           contact:"edit",
           change:(event,index)=>{
-              that.value.bz1=event.mp.detail.value
-              if(that.value.bz1){
-                  this.judge=true
-              }else{
-                this.judge=false;
-                Toast(message)
-              }
+            that.value.bz1=event.mp.detail.value
+            if(that.value.bz1){
+                this.judge=true
+            }else{
+              this.judge=false;
+              Toast(message)
+            }
           }
         },
-        ], 
-        };
-    },
-    mounted(){
-      //访问单位
+      ], 
+    }
+  },
+  mounted(){
+    this.getCompany()
+  },
+  methods: {
+    //访问单位
+    getCompany(){
       this.$http.post({
-      url: 'system/department!ajaxAppDepts',
+        url: 'system/department!ajaxAppDepts',
         data : {},
       }).then(res => {
-          if(res.result=="success"){
-            res.data.map(item=>{
-              item.name =item.deptName
-            })
-            this.formdata[1].actions= res.data
-          }
+        if(res.result=="success"){
+          res.data.map(item=>{
+            item.name =item.deptName
+          })
+          this.formdata[1].actions= res.data
+        }
       })
     },
-    methods: {
-      //提交app!ajaxCommitTemp
-        formSubmit(values) {
-          
-            console.log(this.vlaue)
-        },
-        clearImg(e){
-          console.log(e)
-        }
-      }
+    //提交app!ajaxCommitTemp
+    formSubmit(values) {
+      
+        console.log(this.vlaue)
+    },
+    clearImg(e){
+      console.log(e)
+    }
+  }
 }
 </script>
