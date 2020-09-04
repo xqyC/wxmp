@@ -11,39 +11,67 @@
         <van-button type="primary" @click="search" style="flex-shrink:0;margin-right:5px;">搜索</van-button>
       </view>
     </view>
-    <!--v-for="(item,index) in appList" :key="index" v-if="appList.length>0" -->
-    <view type="primary" class="lists">
-      <view class="listbox" @click="details">
+    <!---->
+    <view type="primary" class="lists" v-if="appList.length>0">
+      <view class="listbox" @click="details" v-for="(item,index) in appList" :key="index">
         <view class="first between">
-          <text>LIm</text>
-          <van-button type="primary">待审核</van-button>
+          <view class="fitstleft">
+            <van-icon :name="item.fcontact" :color="item.fcolor" />
+            <text>{{item.ID}}</text>
+          </view>
+          <van-button type="primary">{{item.PEOPLENAME}}</van-button>
         </view>
         <view class="first">
-          <text>身份证号码:</text>
-          <text type="primary">3201236541236598456</text>
+          <van-icon :name="item.tcontact" :color="item.tcolor" />
+          <text>{{item.cardtitle}}</text>
+          <text type="primary">{{item.IDENTITYNUMBER}}</text>
         </view>
         <view class="first">
-          <text>到访单位:</text>
-          <text type="primary">江苏大范德萨发生的</text>
+          <van-icon :name="item.scontact" :color="item.scolor" />
+          <text>{{item.comptitle}}</text>
+          <text type="primary">{{item.DEPTNAME}}</text>
         </view>
         <view class="first">
-          <text>来访时间:</text>
-          <text type="primary">20120306 08:32</text>
+          <van-icon :name="item.econtact" :color="item.ecolor" />
+          <text>{{item.shartTime}}</text>
+          <text type="primary">{{item.FROMTIME}}</text>
         </view>
         <view class="first">
-          <text>离开时间:</text>
-          <text type="primary">20120306 09:32</text>
+          <van-icon :name="item.gcontact" :color="item.gcolor" />
+          <text>{{item.endTime}}</text>
+          <text type="primary">{{item.TOTIME}}</text>
         </view>
       </view>
     </view>
-    <!-- <view class="empty" v-else>暂无记录!</view> -->
+    <view class="empty" v-else>暂无记录!</view>
   </view>
 </template>
 <script>
 export default {
   data () {
     return {
-      appList: [], // 列表数据
+      appList: [{
+        ID:'lime',
+        fcontact:"user-circle-o",
+        fcolor:'#1989fa',
+        cardtitle:"身份证号码:",
+        tcontact:"idcard",
+        tcolor:'#1989fa',
+        comptitle:"到访单位:",
+        scolor:'#1989fa',
+        scontact:"wap-home-o",
+        shartTime:"来访时间:",
+        ecolor:'#07c160',
+        econtact:"underway-o",
+        endTime:"离开时间:",
+        gcolor:'#07c160',
+        gcontact:"underway-o",
+        PEOPLENAME:'待审核',
+        IDENTITYNUMBER:"3201236541236598456",
+        DEPTNAME:'江苏大范德萨发生的',
+        FROMTIME:'20120306 08:32',
+        TOTIME:'20120306 09:32',
+      }], // 列表数据
       page: 1,      // 当前页数
       total_page: 0,// 总页数
       search:[
@@ -159,6 +187,10 @@ export default {
   padding: 10px;
   border-radius: 5px;
 }
+.fitstleft{
+  display:flex;
+  align-items: center;
+}
 .lists {
   padding: 5px;
 }
@@ -171,7 +203,10 @@ export default {
     padding-left: 5px;
   }
 }
-
+text:last-child{
+  font-size:15px;
+  color:rgb(92, 86, 86);
+}
 .between {
   justify-content: space-between;
 }
@@ -188,6 +223,10 @@ export default {
   }
   .van-search {
     padding: 0 5px;
+    align-items: center;
+  }
+  ._van-icon{
+    display:flex;
     align-items: center;
   }
 }
