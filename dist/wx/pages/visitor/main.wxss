@@ -26,3 +26,10 @@
 .actiondata {
   padding: 0 36rpx 10rpx;
 }
+.uploader {
+  padding: 20rpx 30rpx 0;
+  border-bottom: 2rpx solid #ccc;
+}
+.uploader ._view {
+  margin-bottom: 10rpx;
+}

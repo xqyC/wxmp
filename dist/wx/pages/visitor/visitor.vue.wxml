@@ -9,7 +9,7 @@
             <view wx:key="ind" key="{{ind}}" class="_view data-v-7467729a actiondata {{item.activeaction == ind ? 'activeaction' : ''}}" bindtap="handleProxy" data-eventid="{{'2_'+index+'-'+ind}}" data-comkey="{{$k}}" wx:for="{{item.actions}}" wx:for-index="ind" wx:for-item="list"><label class="_span data-v-7467729a actionsvalue">{{list.name}}</label></view>
           </van-action-sheet>
         </view>
-        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a">
+        <view wx:elif="{{item.type=='upload' && item.show==true }}" class="_view data-v-7467729a uploader">
           <view class="_view data-v-7467729a">{{item.title}}</view>
           <van-uploader file-list="{{item.fileList }}" maxCount="{{item.maxCount}}" accept="image" bindafterRead="handleProxy" binddelete="handleProxy" data-eventid="{{'4_'+index}}" data-comkey="{{$k}}" class="_van-uploader data-v-7467729a"></van-uploader>
         </view>

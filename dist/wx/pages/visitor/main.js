@@ -1447,7 +1447,9 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
       }, [_c('span', {
         staticClass: "actionsvalue"
       }, [_vm._v(_vm._s(list.name))])])
-    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('van-uploader', {
+    })], 2)], 1) : (item.type == 'upload' && item.show == true) ? _c('view', {
+      staticClass: "uploader"
+    }, [_c('view', [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c('van-uploader', {
       attrs: {
         "file-list": item.fileList,
         "maxCount": item.maxCount,

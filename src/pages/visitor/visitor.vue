@@ -52,7 +52,7 @@
           </van-action-sheet>
         </view>
         <!-- 上传文件 -->
-        <view v-else-if="item.type=='upload' && item.show==true ">
+        <view v-else-if="item.type=='upload' && item.show==true " class="uploader">
           <view>{{item.title}}</view>
           <van-uploader
               :file-list="item.fileList "
@@ -907,5 +907,12 @@ export default {
 }
 .actiondata{
   padding: 0 18px 5px;
+}
+.uploader{
+  padding: 10px 15px 0;
+  border-bottom: 1px solid #ccc;
+}
+.uploader ._view{
+  margin-bottom: 5px;
 }
 </style>
