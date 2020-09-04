@@ -54,10 +54,9 @@
           </van-action-sheet>
         </view>
         <!-- 上传文件 -->
-        <view v-else-if="item.type=='upload' && item.show==true ">
-          <view  class="weui-cell__td">{{item.title}}</view>
+        <view v-else-if="item.type=='upload' && item.show==true " class="uploader">
+          <view>{{item.title}}</view>
           <van-uploader
-              class="weui-cell__bd"
               :file-list="item.fileList "
               :maxCount="item.maxCount"
               accept="image"
@@ -122,7 +121,53 @@ export default {
 </script>
 
 <style>
-.card {
+.weui-cell__bd {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #f1eded;
+}
+.weui-cell__td {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+.weui-cell__bd ._text {
+  width: 30%;
+}
+.weui-input {
+  text-align: right;
+  width: 70%;
+  font-size: 15px;
+  color: rgb(94, 92, 92);
+}
+.rich {
+  margin: 10px 15px;
+}
+.rich ._textarea {
+  width: calc(100% - 10px);
+  margin-top: 10px;
+  border: 1px solid #f1eded;
+  border-radius: 5px;
+  padding: 5px;
+}
+.actiondata {
   padding: 10px;
+  display: block;
+}
+.actiondata:not(:last-child) {
+  border: 1px solid #f1eded;
+}
+.phcolor {
+  font-size: 14px;
+  color: #aab2bd;
+  text-align: right;
+}
+.uploader{
+  padding: 10px 15px 0;
+  border-bottom: 1px solid #ccc;
+}
+.uploader ._view{
+  margin-bottom: 5px;
 }
 </style>
