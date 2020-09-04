@@ -12,7 +12,7 @@
       </view>
     </view>
     <!---->
-    <view type="primary" class="lists" v-if="appList.length>0">
+    <scroll-view type="primary" class="lists" v-if="appList.length>0">
       <view class="listbox" @click="details(item)" v-for="(item,index) in appList" :key="index">
         <view class="first between">
           <view class="fitstleft">
@@ -42,7 +42,7 @@
           <text type="primary">{{item.TOTIME}}</text>
         </view>
       </view>
-    </view>
+    </scroll-view>
     <view class="empty" v-else>暂无记录!</view>
   </view>
 </template>
