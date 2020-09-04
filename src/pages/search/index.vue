@@ -3,6 +3,7 @@
       <searchdom 
         :appList="appList" 
         :search="searchtop"
+        :value="value"
         @add="add"
         @search="search"
         @details="details"
@@ -14,6 +15,7 @@ import searchdom from "../../components/search";
 export default {
   data () {
     return {
+      value:{},
       appList: [{
         ID:'lime',
         fcontact:"user-circle-o",

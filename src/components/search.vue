@@ -6,7 +6,7 @@
       </view>
       <view class="header">
         <view v-for="(item,index) in search" :key="index" style="flex-shrink: 1;">
-          <van-search :value="item[prop]" :placeholder="item.placeholder" />
+          <van-search :value="value[prop]" :placeholder="item.placeholder" />
         </view>
         <van-button type="primary" @click="search" style="flex-shrink:0;margin-right:5px;">搜索</van-button>
       </view>
@@ -48,7 +48,7 @@
 </template>
 <script>
     export default{
-        props:["search","appList"],
+        props:["search","appList","value"],
         methods:{
             add(){
                this.$emit("add")

@@ -1,22 +1,20 @@
 <template>
   <view class="details">
-    <detalis :formdata="formdata"></detalis>
+    <detailsdom :formdata="formdata" :value="value"></detailsdom>
   </view>
 </template>
 <script>
-import detalis from "../../components/details"
+import detailsdom from "../../components/details";
 export default { 
     name:"details",
-    components:{
-      detalis
-    },
     data() {
        let that=this
         return {
         value:{
           leixing:'访客临时通行卡'
         },
-      formdata:[{
+      formdata:[
+        {
           title:"访问单位:",
           type:"text",
           disabled:true,
@@ -24,15 +22,6 @@ export default {
           color:'#1989fa',
           contact:"wap-home-o",
           show:true,
-        },
-        {
-          title:"临时卡类型:",
-          color:'#1989fa',
-          type:"text",
-          disabled:true,
-          show:true,
-          prop:"leixing",
-          contact:"credit-pay",
         },
         {
           title:"预约来访时间:",
@@ -228,8 +217,8 @@ export default {
         ], 
         };
     },
-    mounted(){},
-    methods: {}
-
+   components:{
+    detailsdom
+  },
 }
 </script>

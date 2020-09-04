@@ -46,7 +46,7 @@
 </template>
 <script>
     export default{
-        porps:["formdata"]
+        props:["formdata","value"]
     }
 </script>
 <style scoped>
