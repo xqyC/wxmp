@@ -52,7 +52,7 @@
           </van-action-sheet>
         </view>
         <!-- 上传文件 -->
-        <view v-else-if="item.type=='upload' && item.show==true ">
+        <view v-else-if="item.type=='upload' && item.show==true">
           <view class="weui-cell__td">{{item.title}}</view>
           <van-uploader
             class="weui-cell__bd"
