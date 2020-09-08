@@ -1,43 +1,49 @@
 <template>
   <div>
-    <swiper
-      style="width:100%;height:384rpx"
-      indidator-dots="true"
-      indicator-dots="true"
-      interval="2000"
-      autoplay="true"
-      circular="true"
-      duration="500"
-    >
-      <block v-for="(item, index) in imgUrls" :key="index">
-        <swiper-item>
-          <image :src="item" mode="scaleToFill" style="width:100%;" />
-        </swiper-item>
-      </block>
-    </swiper>
-    <ul class="log-list">
-      <li>
-        <a href="/pages/visitorSearch/main" class="counter">
-          <img src="../../../static/images/visitor.png"/>
-          <p>访客预约</p>
-        </a>
-      </li>
-      <li>
-        <a href="/pages/transportSearch/main" class="counter">
-          <img src="../../../static/images/trans.png"/>
-          <p>运输申报</p>
-        </a>
-      </li>
-      <li>
-        <a href="/pages/moveaplySearch/main" class="counter">
-           <img src="../../../static/images/moveaply.png"/>
-          <p>危废申报</p>
-        </a>
-      </li>
-    </ul>
+    <div>
+      <swiper
+        style="width:100%;height:384rpx"
+        indidator-dots="true"
+        indicator-dots="true"
+        interval="2000"
+        autoplay="true"
+        circular="true"
+        duration="500"
+      >
+        <block v-for="(item, index) in imgUrls" :key="index">
+          <swiper-item>
+            <image :src="item" mode="scaleToFill" style="width:100%;" />
+          </swiper-item>
+        </block>
+      </swiper>
+      <ul class="log-list">
+        <li>
+          <a href="/pages/visitorSearch/main" class="counter">
+            <img src="../../../static/images/visitor.png" />
+            <p>访客预约</p>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/transportSearch/main" class="counter">
+            <img src="../../../static/images/trans.png" />
+            <p>运输申报</p>
+          </a>
+        </li>
+        <li>
+          <a href="/pages/moveaplySearch/main" class="counter">
+            <img src="../../../static/images/moveaply.png" />
+            <p>危废申报</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <!-- <van-popup :show="show" bind:close="onClose">
+        <button  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信授权一键登录</button>
+      </van-popup>-->
+    </div>
   </div>
 </template>
-
 <script>
 import { formatTime } from '@/utils/index'
 import card from '@/components/form'
@@ -55,7 +61,6 @@ export default {
       ]
     }
   },
-
   created () {
     let logs
     if (mpvuePlatform === 'my') {
@@ -64,7 +69,9 @@ export default {
       logs = mpvue.getStorageSync('logs') || []
     }
     this.logs = logs.map(log => formatTime(new Date(log)))
-  }
+  },
+  methods: {
+  },
 }
 </script>
 
@@ -73,7 +80,7 @@ export default {
   display: flex;
   padding: 20rpx;
 }
-.log-list > li>a {
+.log-list > li > a {
   width: 100px;
   height: 130px;
   display: flex;
@@ -82,9 +89,14 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.log-list > li > a>img {
+.log-list > li > a > img {
   width: 40px;
   height: 40px;
   margin-bottom: 5px;
+}
+button {
+  background: #07c160;
+  color: #fff;
+  border-radius: 5px;
 }
 </style>
