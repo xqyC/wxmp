@@ -1,4 +1,4 @@
-# wxmp
+# xiyi-wx
 
 > A Mpvue project
 
