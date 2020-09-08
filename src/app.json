@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/logs/main",
+    "pages/index/main",
     "pages/moveaply/main",
-    "pages/search/main",
-    "pages/details/main",
+    "pages/visitorSearch/main",
+    "pages/visitorDetails/main",
     "pages/visitor/main",
     "pages/transport/main"
   ],

@@ -106,7 +106,7 @@ export default {
     },
     details(){
       wx.navigateTo({
-        url:'../details/main'
+        url:'../visitorDetails/main'
       })
     },
     search(){

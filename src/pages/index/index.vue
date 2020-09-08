@@ -17,7 +17,7 @@
     </swiper>
     <ul class="log-list">
       <li>
-        <a href="/pages/search/main" class="counter">
+        <a href="/pages/visitorSearch/main" class="counter">
           <img src="../../../static/images/visitor.png"/>
           <p>访客预约</p>
         </a>
