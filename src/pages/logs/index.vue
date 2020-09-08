@@ -29,7 +29,7 @@
         </a>
       </li>
       <li>
-        <a href="/pages/index/main" class="counter">
+        <a href="/pages/moveaply/main" class="counter">
            <img src="../../../static/images/moveaply.png"/>
           <p>危废申报</p>
         </a>
