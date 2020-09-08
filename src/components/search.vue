@@ -67,6 +67,7 @@
 .header {
   display: flex;
   background: #fff;
+  padding:10px 0;
 }
 .empty {
   font-size: 18px;

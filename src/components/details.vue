@@ -50,6 +50,9 @@
     }
 </script>
 <style scoped>
+.box{
+  margin-bottom:20px;
+}
 ._van-icon {
   display: flex;
   align-items: center;

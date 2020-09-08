@@ -6,12 +6,12 @@
 		"enhance": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
-		"minified": true,
+		"minified": false,
 		"newFeature": true,
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
+		"showShadowRootInWxmlPanel": false,
 		"scopeDataCheck": false,
 		"uglifyFileName": false,
 		"checkInvalidKey": true,
@@ -23,9 +23,10 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
+		"bundle": false,
 		"useIsolateContext": true,
-		"useCompilerModule": false,
-		"userConfirmedUseCompilerModuleSwitch": false
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": true
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",

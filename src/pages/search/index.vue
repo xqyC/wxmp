@@ -110,7 +110,7 @@ export default {
       })
     },
     search(){
-      that.page=1;
+      this.page=1;
       this.getList();
       console.log("搜素")
     },

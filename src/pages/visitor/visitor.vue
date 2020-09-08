@@ -2,7 +2,7 @@
   <view class="visitor">
     <FormComponents
       :formdata="formdata"
-      :value="value"
+      :value="values"
       :formatter="formatter"
       @formSubmit="formSubmit"
     ></FormComponents>
@@ -21,7 +21,7 @@ export default {
     data() {
        let that=this
         return {
-        value:{
+        values:{
           leixing:'访客临时通行卡'
         },
         formatter (type, value) {
@@ -65,7 +65,7 @@ export default {
           //关闭弹框
           Close(index){
             this.showsecect=false
-            if(that.value.fwdeptName){
+            if(that.values.fwdeptName){
               this.judge=true
             }else{
               this.judge=false
@@ -92,7 +92,7 @@ export default {
           //选中
           onSearch(index,ind){
             this.activeaction=ind;
-            that.value.fwdeptName=this.actions[ind].name
+            that.values.fwdeptName=this.actions[ind].name
             this.showsecect=false
             this.judge=true;
             },
@@ -124,7 +124,7 @@ export default {
           searchvalue:'',
           secetevent:(index)=>{
               that.formdata[index].showsecect=true;
-              that.value.endTime ='';
+              that.values.endTime ='';
           },
         minDate: new Date().getTime(),
         maxDate: new Date(2060, 10, 1).getTime(),
@@ -132,13 +132,13 @@ export default {
         //确定
         confirm:(e,index)=>{
               let time= formatWithSeperator(e.mp.detail,"-",":") 
-              that.value.begTime = time
+              that.values.begTime = time
               that.formdata[index].showsecect=false;
               this.judge=true
           },
           cancel:(e,index)=>{
             console.log(that.formdata[index].showsecect)
-            if(that.value.begTime){
+            if(that.values.begTime){
                 this.judge=true
               }else{
                 this.judge=false
@@ -164,7 +164,7 @@ export default {
           color:'#07c160',
           searchvalue:'',
           secetevent:(index)=>{
-             if(that.value.begTime){
+             if(that.values.begTime){
                that.formdata[index].showsecect=true;
              }else{
                this.message="请先选择预约来访时间"
@@ -177,9 +177,9 @@ export default {
             //确定
           confirm:(e,index)=>{
           let time= formatWithSeperator(e.mp.detail,"-",":") 
-            if(time>that.value.begTime){
+            if(time>that.values.begTime){
                 this.judge=true
-                that.value.endTime = time
+                that.values.endTime = time
                 that.formdata[index].showsecect=false;
            }else {
               this.judge=false
@@ -188,7 +188,7 @@ export default {
              }
           },
         cancel:(e,index)=>{
-          if(that.value.endTime){
+          if(that.values.endTime){
               this.judge=true
            }else {
               this.judge=false
@@ -209,7 +209,7 @@ export default {
            contact:"wap-home-o",
           color:'#1989fa',
           change:(event)=>{
-               that.value.fromDeptName=event.mp.detail.value
+               that.values.fromDeptName=event.mp.detail.value
           }
         },
         {
@@ -225,8 +225,8 @@ export default {
             contact:"user-circle-o",
            color:'#1989fa',
           change:(event)=>{
-               that.value.peopleName=event.mp.detail.value
-               if(that.value.peopleName){
+               that.values.peopleName=event.mp.detail.value
+               if(that.values.peopleName){
                  this.judge=true
                }else{
                  this.judge=false
@@ -248,8 +248,8 @@ export default {
           disabled:false,
           placeholder:"请输入访客身份证号",
           change:(event)=>{
-               that.value.idCard=event.mp.detail.value
-               if(that.value.idCard){
+               that.values.idCard=event.mp.detail.value
+               if(that.values.idCard){
                   this.judge=true
                }else{
                    this.judge=false
@@ -257,7 +257,7 @@ export default {
                     Toast(this.message);
                    return
                }
-              if(ID(that.value.idCard)){
+              if(ID(that.values.idCard)){
                 this.judge=true
               }else{
                 this.judge=false
@@ -280,8 +280,8 @@ export default {
           contact:"phone-circle-o",
           color:'#1989fa',
           change:(event)=>{
-               that.value.peopleTel=event.mp.detail.value
-               if(that.value.peopleTel){
+               that.values.peopleTel=event.mp.detail.value
+               if(that.values.peopleTel){
                  this.judge=true
                }else{
                   this.judge=false
@@ -289,7 +289,7 @@ export default {
                  Toast(this.message);
                   return
                }
-               if(isMobile(that.value.peopleTel)){
+               if(isMobile(that.values.peopleTel)){
                   this.judge=true
                }else {
                  this.judge=false
@@ -353,7 +353,7 @@ export default {
              that.formdata[index].showsecect=true;
             },
           Close(index){
-            if(that.value.isOrnot){
+            if(that.values.isOrnot){
               this.judge=true
             }else{
               this.judge=false
@@ -364,17 +364,17 @@ export default {
           },
           onSearch(index,ind){
             this.activeaction=ind;
-            that.value.isOrnot=this.actions[ind].name;
+            that.values.isOrnot=this.actions[ind].name;
             this.judge=true
             this.showsecect=false
-            if(that.value.isOrnot=="自驾车" || that.value.isOrnot=="特种车辆" ||that.value.isOrnot=="农用车" ||that.value.isOrnot=="货车"||that.value.isOrnot=="客车"){
+            if(that.values.isOrnot=="自驾车" || that.values.isOrnot=="特种车辆" ||that.values.isOrnot=="农用车" ||that.values.isOrnot=="货车"||that.values.isOrnot=="客车"){
                 for(var i=9;i<that.formdata.length;i++){
                 if(i==10 ||i ==11 || i== 12){
-                    if(that.value.isOrnot=="货车"){
+                    if(that.values.isOrnot=="货车"){
                       that.formdata[10].show=true;
                       that.formdata[11].show=false;
                       that.formdata[12].show=false;
-                    }else if(that.value.isOrnot=="客车" ){
+                    }else if(that.values.isOrnot=="客车" ){
                         that.formdata[11].show=true;
                         that.formdata[12].show=true;
                         that.formdata[10].show=false;
@@ -388,7 +388,7 @@ export default {
                 return
              }else{
                 for(var i=9;i<that.formdata.length;i++){
-                     if(that.value.isOrnot=="其他"){
+                     if(that.values.isOrnot=="其他"){
                         if(i>=15){
                           that.formdata[i].show=true;
                         }else{
@@ -415,8 +415,8 @@ export default {
            contact:"logistics",
           color:'#ff976a',
           change:(event,index)=>{
-               that.value.load=event.mp.detail.value
-               if(that.value.load){
+               that.values.load=event.mp.detail.value
+               if(that.values.load){
                   this.judge=true
                }else{
                   this.judge=false
@@ -424,7 +424,7 @@ export default {
                  Toast(this.message);
                   return
                }
-               if(regxcard(that.value.load)){
+               if(regxcard(that.values.load)){
                   this.judge=true
                }else{
                  this.judge=false
@@ -447,8 +447,8 @@ export default {
            contact:"logistics",
           color:'#07c160',
           change:(event)=>{
-              that.value.carNum=event.mp.detail.value
-              if(that.value.carNum){
+              that.values.carNum=event.mp.detail.value
+              if(that.values.carNum){
                   this.judge=true
                }else{
                   this.judge=false
@@ -456,7 +456,7 @@ export default {
                  Toast(this.message);
                   return
                }
-               if(regxPlusDecimal2(that.value.carNum)){
+               if(regxPlusDecimal2(that.values.carNum)){
                   this.judge=true
                }else{
                  this.judge=false
@@ -479,8 +479,8 @@ export default {
           contact:"friends-o",
           color:'#07c160',
           change:(event)=>{
-               that.value.carrays=event.mp.detail.value
-                if(that.value.carrays){
+               that.values.carrays=event.mp.detail.value
+                if(that.values.carrays){
                   this.judge=true
                }else{
                   this.judge=false
@@ -488,7 +488,7 @@ export default {
                  Toast(this.message);
                   return
                }
-               if(number(that.value.carrays)){
+               if(number(that.values.carrays)){
                   this.judge=true
                }else{
                  this.judge=false
@@ -511,8 +511,8 @@ export default {
           contact:"friends-o",
           color:'#ee0a24',
           change:(event)=>{
-               that.value.posting=event.mp.detail.value
-              if(that.value.posting){
+               that.values.posting=event.mp.detail.value
+              if(that.values.posting){
                   this.judge=true
                }else{
                   this.judge=false
@@ -520,7 +520,7 @@ export default {
                  Toast(this.message);
                   return
                }
-               if(number(that.value.posting)){
+               if(number(that.values.posting)){
                   this.judge=true
                }else{
                  this.judge=false
@@ -765,7 +765,7 @@ export default {
           required:false,
           contact:"user-circle-o",
           change:(event,index)=>{
-             that.value.followMan=event.mp.detail.value
+             that.values.followMan=event.mp.detail.value
           }
         },
         {
@@ -780,8 +780,8 @@ export default {
           required:true,
           contact:"edit",
           change:(event,index)=>{
-              that.value.remark=event.mp.detail.value
-              if(that.value.remark){
+              that.values.remark=event.mp.detail.value
+              if(that.values.remark){
                   this.judge=true
               }else{
                 this.judge=false;
@@ -808,9 +808,8 @@ export default {
     },
     methods: {
       //提交app!ajaxCommitTemp
-        formSubmit(values) {
-          
-            console.log(this.vlaue)
+        formSubmit(event) {
+           console.log(event)
         },
         clearImg(e){
           console.log(e)
