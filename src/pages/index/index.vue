@@ -23,13 +23,13 @@
         </a>
       </li>
       <li>
-        <a href="/pages/transport/main" class="counter">
+        <a href="/pages/transportSearch/main" class="counter">
           <img src="../../../static/images/trans.png"/>
           <p>运输申报</p>
         </a>
       </li>
       <li>
-        <a href="/pages/moveaply/main" class="counter">
+        <a href="/pages/moveaplySearch/main" class="counter">
            <img src="../../../static/images/moveaply.png"/>
           <p>危废申报</p>
         </a>
@@ -41,7 +41,6 @@
 <script>
 import { formatTime } from '@/utils/index'
 import card from '@/components/form'
-
 export default {
   components: {
     card
